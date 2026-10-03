@@ -5,7 +5,7 @@ const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 function Step({ n, children }: { n: string; children: React.ReactNode }) {
   return (
-    <p className="mb-4 flex gap-3 text-[15px] leading-[1.6] text-mute md:text-[16px]">
+    <p className="mb-4 flex gap-3 text-[15px] text-mute md:text-[16px]">
       <span className="font-display font-[750] text-ink [font-stretch:94%]">{n}</span>
       <span>{children}</span>
     </p>
@@ -22,7 +22,7 @@ export function AutoDm() {
           <br />
           {autoDm.heading[1]}
         </h2>
-        <p className="col-span-6 mt-6 max-w-[32em] text-[16px] leading-[1.8] text-ink/80 md:col-span-6 md:mt-10 md:text-[18px]">
+        <p className="col-span-6 mt-6 max-w-[32em] text-[16px] text-ink/80 md:col-span-6 md:mt-10 md:text-[18px]">
           {autoDm.intro}
         </p>
       </div>
@@ -116,7 +116,7 @@ export function AutoDm() {
             </tbody>
           </table>
 
-          <p className="mt-8 max-w-[40em] text-[12px] leading-[1.7] text-mute md:text-[13px]">{autoDm.note}</p>
+          <p className="mt-8 max-w-[40em] text-[12px] text-mute md:text-[13px]">{autoDm.note}</p>
         </div>
       </div>
     </section>

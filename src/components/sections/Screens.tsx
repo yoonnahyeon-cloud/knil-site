@@ -32,7 +32,7 @@ export function Screens() {
             key={s.step}
             className={`col-span-6 md:col-span-4 ${i === 0 ? "md:col-start-2" : "md:col-start-8 md:mt-[18svh]"}`}
           >
-            <figcaption className="mb-4 flex gap-3 text-[15px] leading-[1.6] text-mute md:text-[16px]">
+            <figcaption className="mb-4 flex gap-3 text-[15px] text-mute md:text-[16px]">
               <span className="font-display font-[750] text-ink [font-stretch:94%]">{s.step}</span>
               <span>{s.caption}</span>
             </figcaption>

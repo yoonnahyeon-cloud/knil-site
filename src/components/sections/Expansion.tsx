@@ -23,7 +23,7 @@ export function Expansion() {
         gsap.set(words.slice(1), { autoAlpha: 0, yPercent: 30 });
         gsap.set(trail.slice(1), { opacity: 0.28 });
         gsap.set(biz, { autoAlpha: 0, y: 18 });
-        gsap.set("[data-progress]", { scaleX: 1 / stages.length });
+        gsap.set("[data-progress]", { width: `${100 / stages.length}%` });
 
         const tl = gsap.timeline({
           defaults: { ease: "power3.inOut", duration: 0.7 },
@@ -40,7 +40,7 @@ export function Expansion() {
           tl.to(words[k - 1], { autoAlpha: 0, yPercent: -30 })
             .to(words[k], { autoAlpha: 1, yPercent: 0 }, "<0.15")
             .to(trail[k], { opacity: 1, duration: 0.4, ease: "none" }, "<")
-            .to("[data-progress]", { scaleX: (k + 1) / stages.length, duration: 0.6 }, "<")
+            .to("[data-progress]", { width: `${((k + 1) / stages.length) * 100}%`, duration: 0.6 }, "<")
             .to({}, { duration: 0.6 });
         }
         tl.to(biz, { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.14, ease: "power2.out" }).to({}, { duration: 0.8 });
@@ -65,7 +65,7 @@ export function Expansion() {
 
       <div data-expansion-stage className="relative flex h-[100svh] flex-col overflow-hidden pt-[clamp(72px,11svh,120px)]">
         <div className="frame">
-          <ol className="flex flex-wrap gap-x-[clamp(14px,2.4vw,40px)] text-[15px] font-semibold tracking-[-0.03em] md:text-[19px]">
+          <ol className="flex flex-wrap gap-x-[clamp(14px,2.4vw,40px)] text-[15px] font-semibold md:text-[19px]">
             {stages.map((s, i) => (
               <li key={s.word} data-trail className={i === 2 ? "text-signal" : ""}>
                 {s.word}
@@ -73,7 +73,12 @@ export function Expansion() {
             ))}
           </ol>
           <div className="mt-3 h-px bg-rule">
-            <div data-progress className="h-full origin-left bg-ink" />
+            <div data-progress className="relative h-full w-full bg-ink">
+              <span
+                aria-hidden="true"
+                className="absolute top-1/2 right-0 size-[7px] -translate-y-1/2 rotate-45 border-t border-r border-ink"
+              />
+            </div>
           </div>
         </div>
 
@@ -86,13 +91,13 @@ export function Expansion() {
                 className={i === 0 ? "relative" : "absolute inset-x-0 top-0"}
               >
                 <p
-                  className={`text-[clamp(56px,15vw,176px)] leading-[1] font-bold tracking-[-0.055em] whitespace-nowrap md:text-[min(11vw,19svh)] ${
+                  className={`t-display text-[clamp(56px,15vw,176px)] whitespace-nowrap md:text-[min(11vw,19svh)] ${
                     i === 2 ? "text-signal" : ""
                   }`}
                 >
                   {s.word}
                 </p>
-                <p className="mt-[clamp(14px,2svh,24px)] max-w-[22em] text-[17px] leading-[1.6] text-ink/75 md:text-[clamp(18px,1.5vw,24px)]">
+                <p className="mt-[clamp(14px,2svh,24px)] max-w-[22em] text-[17px] text-ink/75 md:text-[clamp(18px,1.5vw,24px)]">
                   {s.note}
                 </p>
               </div>
@@ -108,7 +113,7 @@ export function Expansion() {
               <li
                 key={b}
                 data-biz
-                className="border-b border-rule first:border-t first:border-t-ink py-[clamp(9px,1.5svh,16px)] text-[clamp(20px,5.6vw,24px)] font-semibold tracking-[-0.035em] md:text-[clamp(22px,2vw,32px)]"
+                className="border-b border-rule first:border-t first:border-t-ink py-[clamp(9px,1.5svh,16px)] text-[clamp(20px,5.6vw,24px)] font-semibold md:text-[clamp(22px,2vw,32px)]"
               >
                 {b}
               </li>

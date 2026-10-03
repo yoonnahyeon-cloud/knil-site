@@ -28,18 +28,13 @@ export function Vision() {
   );
 
   return (
-    <section ref={root} aria-label="크리에이터 데이터 플랫폼" className="relative bg-ink pt-[18svh] pb-[20svh] text-paper">
+    <section ref={root} aria-label="크리에이터 산업의 데이터" className="relative bg-ink pt-[18svh] pb-[20svh] text-paper">
       <div className="grid-12">
         <h2 className="t-display col-span-6 text-[clamp(34px,5.9vw,108px)] md:col-span-11">
-          결국 <Latin>KNIL</Latin>은
+          {vision.heading[0]}
           <br />
           {vision.heading[1]}
-          <br />
-          {vision.heading[2]}
         </h2>
-        <p className="col-span-6 mt-6 max-w-[30em] text-[16px] leading-[1.8] text-white/65 md:col-span-6 md:mt-10 md:text-[18px]">
-          {vision.lead}
-        </p>
       </div>
 
       <ol className="grid-12 mt-[clamp(64px,12svh,128px)]">
@@ -56,14 +51,20 @@ export function Vision() {
         ))}
       </ol>
 
+      <div className="grid-12 mt-[clamp(48px,8svh,96px)]">
+        <p className="col-span-6 max-w-[30em] text-[17px] text-white/65 md:col-start-1 md:col-span-7 md:text-[clamp(18px,1.6vw,26px)]">
+          <Latin>KNIL</Latin>에는 {vision.lead}
+        </p>
+      </div>
+
       <div className="grid-12 mt-[clamp(80px,16svh,160px)]">
+        <p className="col-span-6 mb-4 text-[17px] text-white/55 md:col-start-3 md:col-span-8 md:text-[clamp(18px,1.6vw,26px)]">
+          그리고 결국 <Latin>KNIL</Latin>은
+        </p>
         <p className="t-display col-span-6 text-[clamp(30px,4.8vw,88px)] md:col-start-3 md:col-span-10">
           {vision.close[0]}
           <br />
           {vision.close[1]}
-        </p>
-        <p className="col-span-6 mt-5 text-[17px] text-white/55 md:col-start-3 md:col-span-8 md:text-[clamp(18px,1.6vw,26px)]">
-          그것이 <Latin>KNIL</Latin>이 만들어 가려는 미래입니다.
         </p>
       </div>
     </section>

@@ -65,7 +65,7 @@ export function Finale() {
             mode="hover"
             className="font-display cursor-pointer text-[min(24vw,30svh)] leading-[0.82] font-[800] tracking-[-0.055em] [font-stretch:92%]"
           />
-          <p className="mt-[min(3vw,4svh)] text-[clamp(16px,1.7vw,26px)] font-medium tracking-[-0.03em]">{site.slogan}</p>
+          <p className="mt-[min(3vw,4svh)] text-[clamp(16px,1.7vw,26px)] font-medium">{site.slogan}</p>
         </div>
       </div>
     </section>

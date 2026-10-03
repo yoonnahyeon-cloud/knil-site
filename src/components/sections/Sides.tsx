@@ -45,7 +45,7 @@ export function Sides() {
               <br />
               {l.gets}
             </p>
-            <p className="col-span-6 mt-5 max-w-[30em] text-[16px] leading-[1.8] text-ink/80 md:col-span-4 md:mt-0 md:text-[clamp(16px,1.2vw,19px)]">
+            <p className="col-span-6 mt-5 max-w-[30em] text-[16px] text-ink/80 md:col-span-4 md:mt-0 md:text-[clamp(16px,1.2vw,19px)]">
               {l.body}
             </p>
           </li>

@@ -30,6 +30,10 @@ body {
   font-family: var(--font-sans);
   font-feature-settings: "ss06";
   word-break: keep-all;
+  /* One rhythm for the whole site: every line of running text shares this
+     tracking and leading; headings share the pair in .t-display/.t-head. */
+  letter-spacing: -0.02em;
+  line-height: 1.7;
   overflow-wrap: break-word;
   -webkit-font-smoothing: antialiased;
 }
@@ -58,13 +62,13 @@ body {
   /* Korean display type: tight but never touching. */
   .t-display {
     font-weight: 700;
-    letter-spacing: -0.045em;
-    line-height: 1.12;
+    letter-spacing: -0.04em;
+    line-height: 1.25;
   }
   .t-head {
     font-weight: 600;
-    letter-spacing: -0.035em;
-    line-height: 1.2;
+    letter-spacing: -0.04em;
+    line-height: 1.25;
   }
 
   .mask {

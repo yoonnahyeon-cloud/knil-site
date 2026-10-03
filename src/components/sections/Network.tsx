@@ -45,7 +45,7 @@ export function Network() {
               ))}
             </span>
           </p>
-          <p className="mt-6 text-[15px] leading-[1.6] md:mt-8 md:text-[17px]">
+          <p className="mt-6 text-[15px] md:mt-8 md:text-[17px]">
             {network.figureLabel[0]}
             <br />
             <span className="font-semibold">{network.figureLabel[1]}</span>
@@ -81,10 +81,10 @@ export function Network() {
               ]}
               className="t-display text-[clamp(30px,3.9vw,68px)]"
             />
-            <p className="mt-[clamp(24px,3vw,44px)] max-w-[34em] text-[16px] leading-[1.8] text-ink/80 md:text-[17px]">
+            <p className="mt-[clamp(24px,3vw,44px)] max-w-[34em] text-[16px] text-ink/80 md:text-[17px]">
               {network.body}
             </p>
-            <p className="mt-10 max-w-[38em] border-t border-rule pt-4 text-[12px] leading-[1.7] text-mute md:text-[13px]">
+            <p className="mt-10 max-w-[38em] border-t border-rule pt-4 text-[12px] text-mute md:text-[13px]">
               {network.footnote}
             </p>
           </div>

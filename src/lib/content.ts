@@ -105,13 +105,13 @@ export const autoDm = {
 
 // Where the data leads: the long-term picture.
 export const vision = {
-  heading: ["결국 KNIL은", "크리에이터 데이터 플랫폼이", "됩니다."],
-  lead:
-    "링크 하나에서 시작한 활동과 협업의 기록이 쌓일수록, KNIL은 크리에이터 한 명이 아니라 크리에이터 산업 전체를 읽을 수 있게 됩니다.",
+  heading: ["링크에서 시작해,", "크리에이터 산업의 데이터로."],
   questions: [
-    { before: "누가 어떤 ", key: "브랜드와 협업", after: "해 왔는지" },
-    { before: "어떤 분야에서 ", key: "영향력", after: "을 가졌는지" },
-    { before: "어떤 ", key: "비즈니스", after: "를 만들어 왔는지" },
+    { before: "크리에이터가 어떤 ", key: "콘텐츠", after: "를 만들고," },
+    { before: "어떤 ", key: "브랜드", after: "와 협업하고," },
+    { before: "어떤 ", key: "상품", after: "을 판매하고," },
+    { before: "어떤 ", key: "반응", after: "을 만들어내는지." },
   ],
-  close: ["크리에이터 산업을", "가장 깊이 이해하는 플랫폼."],
+  lead: "크리에이터의 활동과 비즈니스 이력이 계속해서 축적됩니다.",
+  close: ["크리에이터 산업을 가장 잘 이해하는", "데이터 플랫폼이 됩니다."],
 };

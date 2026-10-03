@@ -117,7 +117,7 @@ export function Channels() {
         <div className="grid-12 h-full content-center">
           <div
             data-caption
-            className="col-span-6 mb-8 self-end text-[14px] leading-[1.65] text-mute md:col-span-3 md:mb-0 md:text-[clamp(15px,1.2vw,19px)]"
+            className="col-span-6 mb-8 self-end text-[14px] text-mute md:col-span-3 md:mb-0 md:text-[clamp(15px,1.2vw,19px)]"
           >
             <p className="text-ink">흩어져 있던 활동이 하나의 주소로 모입니다.</p>
             <p data-backside className="mt-3">
@@ -142,7 +142,7 @@ export function Channels() {
                 하
               </div>
               <div data-ui>
-                <p className="text-[19px] font-bold tracking-[-0.03em] md:text-[clamp(21px,1.75vw,27px)]">{creatorPage.name}</p>
+                <p className="text-[19px] font-bold md:text-[clamp(21px,1.75vw,27px)]">{creatorPage.name}</p>
                 <p className="text-[13px] text-mute md:text-[clamp(14px,1.1vw,17px)]">{creatorPage.bio}</p>
               </div>
             </div>
@@ -155,7 +155,7 @@ export function Channels() {
                     <span>
                       <span
                         data-ch
-                        className="inline-block origin-top-left text-[15px] font-semibold tracking-[-0.03em] whitespace-nowrap md:text-[clamp(16px,1.3vw,20px)]"
+                        className="inline-block origin-top-left text-[15px] font-semibold whitespace-nowrap md:text-[clamp(16px,1.3vw,20px)]"
                       >
                         {r.channel}
                       </span>

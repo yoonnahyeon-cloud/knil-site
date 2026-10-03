@@ -36,11 +36,11 @@ export function Hero() {
         onSettled={() => after.current?.play()}
       />
 
-      <p className="mask mt-[min(3.2vw,4svh)] text-[clamp(17px,1.9vw,30px)] font-medium tracking-[-0.03em]">
+      <p className="mask mt-[min(3.2vw,4svh)] text-[clamp(17px,1.9vw,30px)] font-medium">
         <span data-slogan>{site.slogan}</span>
       </p>
 
-      <div className="absolute inset-x-0 bottom-0 frame flex items-end pb-[clamp(20px,3.2vw,44px)] text-[12px] leading-[1.6] md:text-[13px]">
+      <div className="absolute inset-x-0 bottom-0 frame flex items-end pb-[clamp(20px,3.2vw,44px)] text-[12px] md:text-[13px]">
         <p data-credit className="text-mute">
           <span className="text-ink">{site.company}</span>
           <br />
