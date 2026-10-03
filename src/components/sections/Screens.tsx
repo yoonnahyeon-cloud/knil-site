@@ -3,23 +3,23 @@ import { site } from "@/lib/site";
 const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 // What the multilink looks like in a creator's hands: the one link in a
-// profile, and the page it opens. HARU is a fictional creator.
+// profile, and the page it opens. ROSIE is a fictional creator.
 const shots = [
   {
-    src: `${base}/visuals/haru-instagram.webp`,
-    alt: "가상의 크리에이터 HARU의 Instagram 프로필. 소개 아래에 knil.com/@haru 링크가 있다.",
+    src: `${base}/visuals/rosie-instagram.webp`,
+    alt: "가상의 크리에이터 ROSIE의 Instagram 프로필. 소개 아래에 knil.com/@rosie 링크가 있다.",
     step: "1",
     caption: (
       <>
-        Instagram 프로필에는 <span className="font-semibold text-ink">knil.com/@haru</span> 링크 하나.
+        Instagram 프로필에는 <span className="font-semibold text-ink">knil.com/@rosie</span> 링크 하나.
       </>
     ),
   },
   {
-    src: `${base}/visuals/haru-knil.webp`,
-    alt: "링크를 누르면 열리는 HARU의 KNIL 페이지. Instagram, YouTube, TikTok, Xiaohongshu, 새 영상, 데일리 룩, 뷰티 제품, 브랜드 협업, 숍이 한 페이지에 모여 있다.",
+    src: `${base}/visuals/rosie-knil.webp`,
+    alt: "링크를 누르면 열리는 ROSIE의 KNIL 페이지. Instagram, YouTube, TikTok, Xiaohongshu, 새 영상, 데일리 룩, 뷰티 제품, 브랜드 협업, 숍이 한 페이지에 모여 있다.",
     step: "2",
-    caption: <>누르면 HARU의 채널, 콘텐츠, 상품, 협업이 한 페이지에 열립니다.</>,
+    caption: <>누르면 ROSIE의 채널, 콘텐츠, 상품, 협업이 한 페이지에 열립니다.</>,
   },
 ];
 

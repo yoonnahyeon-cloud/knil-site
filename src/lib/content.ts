@@ -19,18 +19,18 @@ export type ChannelRow = {
   clicks: string;
 };
 
-// Sample creator page. "하루" is a fictional creator used for illustration.
+// Sample creator page. "로지" is a fictional creator used for illustration.
 export const creatorPage = {
   heading: ["크리에이터의 모든 활동을", "하나의 KNIL로."],
-  handle: "haru",
-  name: "하루",
+  handle: "rosie",
+  name: "로지",
   bio: "옷장과 일상을 기록합니다",
   rows: [
-    { channel: "Instagram", title: "@haru.archive", meta: "12.8만", clicks: "1,942" },
-    { channel: "YouTube", title: "하루의 옷장", meta: "4.2만", clicks: "1,206" },
-    { channel: "TikTok", title: "@haru.archive", meta: "8.6만", clicks: "731" },
-    { channel: "Xiaohongshu", title: "haru archive", meta: "1.1만", clicks: "288" },
-    { channel: "Shop", title: "하루 셀렉트", meta: "상품 24", clicks: "2,415" },
+    { channel: "Instagram", title: "@rosie.archive", meta: "12.8만", clicks: "1,942" },
+    { channel: "YouTube", title: "로지의 옷장", meta: "4.2만", clicks: "1,206" },
+    { channel: "TikTok", title: "@rosie.archive", meta: "8.6만", clicks: "731" },
+    { channel: "Xiaohongshu", title: "rosie archive", meta: "1.1만", clicks: "288" },
+    { channel: "Shop", title: "로지 셀렉트", meta: "상품 24", clicks: "2,415" },
     { channel: "공동구매", title: "가을 니트 공동구매", meta: "D-3", clicks: "3,870" },
     { channel: "콘텐츠", title: "가을 옷장 정리 루틴", meta: "영상", clicks: "1,123" },
   ] satisfies ChannelRow[],
@@ -85,8 +85,8 @@ export const autoDm = {
   setup: [
     { label: "키워드", value: "정보" },
     { label: "콘텐츠", value: "릴스 · 가을 데일리룩 3가지" },
-    { label: "메시지", value: "요청하신 HARU의 착장 정보를 보내드릴게요." },
-    { label: "링크", value: "knil.com/@haru/look" },
+    { label: "메시지", value: "요청하신 ROSIE의 착장 정보를 보내드릴게요." },
+    { label: "링크", value: "knil.com/@rosie/look" },
   ],
   totals: [
     { label: "댓글", value: "1,248" },
@@ -114,4 +114,16 @@ export const vision = {
   ],
   lead: "크리에이터의 활동과 비즈니스 이력이 계속해서 축적됩니다.",
   close: ["크리에이터 산업을 가장 잘 이해하는", "데이터 플랫폼이 됩니다."],
+};
+
+export const revenue = {
+  heading: ["어떻게 매출을", "만들 것인가."],
+  intro:
+    "처음에는 무료로 진입 장벽을 낮춰 최대한 많은 크리에이터를 모으고, 일부 고급 기능부터 수익화를 시작합니다.",
+  phases: [
+    { when: "초기", aim: "크리에이터를 확보하고", items: ["무료 멀티 링크", "일부 유료 기능"] },
+    { when: "중기", aim: "거래를 만들고", items: ["광고 협업 수수료", "커머스 수수료"] },
+    { when: "장기", aim: "데이터의 가치를 수익으로", items: ["브랜드용 데이터 솔루션", "광고 플랫폼"] },
+  ],
+  close: ["크리에이터를 확보하고, 거래를 만들고,", "데이터의 가치를 수익으로 확장합니다."],
 };

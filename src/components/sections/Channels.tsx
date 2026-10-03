@@ -126,7 +126,7 @@ export function Channels() {
           </div>
 
           {/* A creator's KNIL page, set in the site's own grid rather than a device frame. */}
-          <div className="col-span-6 md:col-start-5 md:col-span-6 lg:col-span-5" role="img" aria-label="크리에이터 하루의 KNIL 페이지 예시">
+          <div className="col-span-6 md:col-start-5 md:col-span-6 lg:col-span-5" role="img" aria-label="크리에이터 로지의 KNIL 페이지 예시">
             <div className="flex items-baseline justify-between pb-3 text-[13px] md:text-[clamp(13px,1.05vw,16px)]">
               <span data-ui className="font-medium">
                 knil.me/<span className="text-mute">{creatorPage.handle}</span>
@@ -139,7 +139,7 @@ export function Channels() {
 
             <div className="flex items-center gap-4 py-5 md:py-6">
               <div data-ui className="grid size-12 shrink-0 place-items-center rounded-full bg-ink text-[17px] font-semibold text-paper md:size-16 md:text-[20px]">
-                하
+                로
               </div>
               <div data-ui>
                 <p className="text-[19px] font-bold md:text-[clamp(21px,1.75vw,27px)]">{creatorPage.name}</p>

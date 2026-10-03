@@ -35,5 +35,5 @@ src/components/sections/              섹션 01~06, 푸터
 
 ## 참고
 
-- 섹션 03의 크리에이터 "하루"와 클릭 수치는 설명용 예시입니다.
+- 섹션 03의 크리에이터 "로지"와 클릭 수치는 설명용 예시입니다.
 - 폰트: Pretendard (KS X 1001 서브셋, 자체 호스팅), Archivo (next/font/google, 빌드 시 다운로드).

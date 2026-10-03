@@ -45,8 +45,8 @@ export function AutoDm() {
         <figure className="col-span-6 md:col-start-8 md:col-span-4 md:row-span-2">
           <Step n="2">팔로워가 ‘정보’라고 댓글을 남기면</Step>
           <img
-            src={`${base}/visuals/haru-reel.webp`}
-            alt="HARU의 릴스 댓글 창. 캡션에 '착장 정보가 궁금하면 댓글에 정보라고 남겨주세요'라고 적혀 있고, 팔로워들이 '정보'라고 댓글을 남겼다."
+            src={`${base}/visuals/rosie-reel.webp`}
+            alt="ROSIE의 릴스 댓글 창. 캡션에 '착장 정보가 궁금하면 댓글에 정보라고 남겨주세요'라고 적혀 있고, 팔로워들이 '정보'라고 댓글을 남겼다."
             width={1170}
             height={2532}
             loading="lazy"
@@ -58,8 +58,8 @@ export function AutoDm() {
         <figure className="col-span-6 md:col-start-2 md:col-span-4">
           <Step n="3">KNIL이 DM과 링크를 자동으로 보냅니다.</Step>
           <img
-            src={`${base}/visuals/haru-dm.webp`}
-            alt="팔로워가 받은 HARU의 DM. '요청하신 HARU의 착장 정보를 보내드릴게요'라는 메시지와 knil.com/@haru/look 링크가 와 있다."
+            src={`${base}/visuals/rosie-dm.webp`}
+            alt="팔로워가 받은 ROSIE의 DM. '요청하신 ROSIE의 착장 정보를 보내드릴게요'라는 메시지와 knil.com/@rosie/look 링크가 와 있다."
             width={1170}
             height={2532}
             loading="lazy"

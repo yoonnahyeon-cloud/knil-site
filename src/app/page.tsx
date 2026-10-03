@@ -5,6 +5,7 @@ import { Channels } from "@/components/sections/Channels";
 import { Screens } from "@/components/sections/Screens";
 import { AutoDm } from "@/components/sections/AutoDm";
 import { Expansion } from "@/components/sections/Expansion";
+import { Revenue } from "@/components/sections/Revenue";
 import { Sides } from "@/components/sections/Sides";
 import { Network } from "@/components/sections/Network";
 import { Vision } from "@/components/sections/Vision";
@@ -22,6 +23,7 @@ export default function Home() {
         <Screens />
         <AutoDm />
         <Expansion />
+        <Revenue />
         <Sides />
         <Network />
         <Vision />
