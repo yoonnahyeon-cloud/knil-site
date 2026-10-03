@@ -1,0 +1,4 @@
+User-Agent: *
+Allow: /
+
+Sitemap: https://yoonnahyeon-cloud.github.io/knil-site/sitemap.xml
