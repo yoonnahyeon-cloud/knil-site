@@ -81,3 +81,12 @@ body {
     display: block;
   }
 }
+
+/* Entry notice: the page underneath stays put until the visitor agrees. */
+html:not([data-entered]),
+html:not([data-entered]) body {
+  overflow: hidden;
+}
+html[data-gate-skip] [data-gate] {
+  display: none;
+}

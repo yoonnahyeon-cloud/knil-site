@@ -10,7 +10,7 @@ npm run dev      # http://localhost:3000
 npm run build    # out/ 에 정적 사이트 생성
 ```
 
-배포 도메인은 `NEXT_PUBLIC_SITE_URL` 로 지정합니다 (기본값 https://knil.me). canonical, OG, sitemap 에 쓰입니다.
+배포 도메인은 `NEXT_PUBLIC_SITE_URL` 로 지정합니다 (기본값 https://knil.com). canonical, OG, sitemap 에 쓰입니다.
 
 ## 구조
 
@@ -31,7 +31,7 @@ src/components/sections/              섹션 01~06, 푸터
 
 ## 서비스 확장
 
-현재 `output: "export"` 정적 사이트입니다. 로그인, 크리에이터 페이지(knil.me/{handle}) 등 실제 서비스가 붙으면 `next.config.ts` 의 `output: "export"` 를 제거하고 `src/app/(service)/...` 라우트 그룹으로 추가하면 됩니다. 브랜드 페이지는 그대로 `/` 에 남습니다.
+현재 `output: "export"` 정적 사이트입니다. 로그인, 크리에이터 페이지(knil.com/@{handle}) 등 실제 서비스가 붙으면 `next.config.ts` 의 `output: "export"` 를 제거하고 `src/app/(service)/...` 라우트 그룹으로 추가하면 됩니다. 브랜드 페이지는 그대로 `/` 에 남습니다.
 
 ## 참고
 

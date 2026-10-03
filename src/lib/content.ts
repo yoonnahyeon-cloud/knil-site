@@ -9,7 +9,7 @@ export const reverse = {
     { kind: "선택", text: "무엇을 선택했는지," },
     { kind: "반응", text: "어떤 콘텐츠와 브랜드에 반응했는지." },
   ],
-  close: ["LINK를 뒤집으면 KNIL.", "링크 너머에 남겨진 데이터를 발견하고,", "그 데이터에서 새로운 가능성을 찾습니다."],
+  close: ["LINK를 뒤집으면 KNIL", "링크 너머에 남겨진 데이터를 발견하고,", "그 데이터에서 새로운 가능성을 찾습니다."],
 };
 
 export type ChannelRow = {

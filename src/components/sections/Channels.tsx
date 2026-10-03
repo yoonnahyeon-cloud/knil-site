@@ -129,7 +129,7 @@ export function Channels() {
           <div className="col-span-6 md:col-start-5 md:col-span-6 lg:col-span-5" role="img" aria-label="크리에이터 로지의 KNIL 페이지 예시">
             <div className="flex items-baseline justify-between pb-3 text-[13px] md:text-[clamp(13px,1.05vw,16px)]">
               <span data-ui className="font-medium">
-                knil.me/<span className="text-mute">{creatorPage.handle}</span>
+                knil.com/<span className="text-mute">@{creatorPage.handle}</span>
               </span>
               <span data-clicks className="invisible text-right whitespace-nowrap text-signal">
                 이번 주 클릭

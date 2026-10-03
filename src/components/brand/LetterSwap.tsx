@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { gsap, useGSAP, MOTION_OK, MOTION_REDUCED } from "@/lib/gsap";
+import { whenEntered } from "@/lib/gate";
 
 // The four letters are always rendered in LINK order. Each one travels to
 // the slot it holds in KNIL, measured from an invisible KNIL set in the same
@@ -53,6 +54,7 @@ export function LetterSwap({ className = "", mode, delay = 0.7, onSettled }: Pro
 
       const mm = gsap.matchMedia();
       let cancelled = false;
+      let stopWaiting = () => {};
 
       document.fonts.ready.then(() => {
         if (cancelled) return;
@@ -63,7 +65,7 @@ export function LetterSwap({ className = "", mode, delay = 0.7, onSettled }: Pro
           tlRef.current = tl;
           if (mode === "intro") {
             tl.eventCallback("onComplete", () => onSettled?.());
-            gsap.delayedCall(delay, () => tl.play());
+            stopWaiting = whenEntered(() => gsap.delayedCall(delay, () => tl.play()));
           } else {
             tl.progress(1);
           }
@@ -83,6 +85,7 @@ export function LetterSwap({ className = "", mode, delay = 0.7, onSettled }: Pro
 
       return () => {
         cancelled = true;
+        stopWaiting();
         mm.revert();
       };
     },

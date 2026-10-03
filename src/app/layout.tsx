@@ -1,3 +1,5 @@
+import { EntryNotice } from "@/components/EntryNotice";
+import { gateBootScript } from "@/lib/gate";
 import type { Metadata, Viewport } from "next";
 import localFont from "next/font/local";
 import { Archivo } from "next/font/google";
@@ -70,9 +72,13 @@ const jsonLd = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ko" className={`${pretendard.variable} ${archivo.variable}`}>
+    <html lang="ko" className={`${pretendard.variable} ${archivo.variable}`} suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: gateBootScript }} />
+      </head>
       <body>
         {children}
+        <EntryNotice />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

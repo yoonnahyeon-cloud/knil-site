@@ -109,7 +109,7 @@ export function Reverse() {
             as="p"
             lines={[
               <>
-                <Latin>LINK</Latin>를 뒤집으면 <Latin>KNIL</Latin>.
+                <Latin>LINK</Latin>를 뒤집으면 <Latin>KNIL</Latin>
               </>,
             ]}
             className={`${statement} col-span-6 md:col-start-3 md:col-span-10`}
