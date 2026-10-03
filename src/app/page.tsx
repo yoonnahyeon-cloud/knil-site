@@ -23,10 +23,10 @@ export default function Home() {
         <Channels />
         <Screens />
         <AutoDm />
-        <Expansion />
-        <Revenue />
         <Sides />
         <Compare />
+        <Expansion />
+        <Revenue />
         <Network />
         <Vision />
         <Finale />

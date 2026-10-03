@@ -37,7 +37,7 @@ export const creatorPage = {
 };
 
 export const expansion = {
-  opening: ["하지만,", "링크가 끝은 아닙니다."],
+  opening: ["그 시작은,", "링크입니다."],
   stages: [
     { word: "멀티 링크", note: "크리에이터가 흩어진 채널을 하나의 페이지에 연결합니다." },
     { word: "크리에이터", note: "더 많은 크리에이터가 KNIL로 자신을 소개합니다." },
