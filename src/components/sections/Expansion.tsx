@@ -72,25 +72,12 @@ export function Expansion() {
               </li>
             ))}
           </ol>
-          {/* The rule runs off the right edge of the screen; its head is a
-              long swept arrow that is pushed forward one stage at a time. */}
-          <div className="-mr-[var(--margin)] mt-4 h-[1.5px] bg-rule">
+          <div className="mt-3 h-px bg-rule">
             <div data-progress className="relative h-full w-full bg-ink">
-              <svg
+              <span
                 aria-hidden="true"
-                viewBox="0 0 48 26"
-                className="absolute top-1/2 right-0 h-[26px] w-[48px] -translate-y-1/2 overflow-visible md:h-[32px] md:w-[60px]"
-              >
-                <path
-                  d="M3 1.5 C18 8 34 11.5 47 13 C34 14.5 18 18 3 24.5"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  vectorEffect="non-scaling-stroke"
-                />
-              </svg>
+                className="absolute top-1/2 right-0 size-[7px] -translate-y-1/2 rotate-45 border-t border-r border-ink"
+              />
             </div>
           </div>
         </div>
