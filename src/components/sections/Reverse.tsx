@@ -61,7 +61,7 @@ export function Reverse() {
   );
 
   return (
-    <section ref={root} aria-label="링크의 반대편" className="relative">
+    <section ref={root} aria-label="링크를 반대로 바라보기" className="relative">
       <div data-flip-stage className="relative h-[100svh] overflow-hidden">
         <div className="grid-12 h-full content-start pt-[18svh]">
           <div data-outward className="col-span-6 md:col-span-10">
@@ -76,10 +76,11 @@ export function Reverse() {
         >
           <div className="grid-12 h-full content-end pb-[16svh]">
             <h2 className={`${statement} col-span-6 text-right md:col-start-3 md:col-span-10`}>
-              <span className="block">
-                <Latin>KNIL</Latin>은
-              </span>
-              <span className="block">그 반대편을 봅니다.</span>
+              {reverse.inward.map((line) => (
+                <span key={line} className="block">
+                  {line}
+                </span>
+              ))}
             </h2>
           </div>
         </div>
@@ -115,7 +116,7 @@ export function Reverse() {
           />
           <Lines
             as="p"
-            lines={[reverse.close[1]]}
+            lines={reverse.close.slice(1)}
             className="t-head col-span-6 mt-[clamp(18px,2.4vw,40px)] text-[clamp(20px,2.6vw,46px)] text-white/55 md:col-start-3 md:col-span-10"
             start="top 88%"
           />

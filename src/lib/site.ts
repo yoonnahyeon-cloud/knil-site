@@ -5,10 +5,10 @@ export const site = {
   name: "KNIL",
   nameKo: "크닐",
   company: "주식회사 크닐",
-  parent: "주식회사 텍스처",
   slogan: "링크, 그 반대편의 가능성.",
+  category: "크리에이터 멀티링크 플랫폼",
   description:
-    "KNIL은 LINK를 뒤집은 이름입니다. 크리에이터를 위한 멀티링크에서 시작해, 링크 반대편에 쌓이는 크리에이터와 행동 데이터를 새로운 사업으로 연결합니다.",
+    "링크가 사람을 어디론가 보내는 것에 집중했다면, 크닐은 링크를 반대로 바라봅니다. 크리에이터에게는 데이터, 브랜드에게는 더 정확한 선택, 팔로워에게는 더 편리한 연결. KNIL은 이 세 주체가 만나는 크리에이터 멀티링크 플랫폼입니다.",
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://knil.me",
   serviceUrl: null as string | null,
   locale: "ko_KR",

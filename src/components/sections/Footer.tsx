@@ -6,7 +6,7 @@ export function Footer() {
       <p className="col-span-6 md:col-span-6">
         <span className="font-semibold">{site.company}</span>
         <br />
-        <span className="text-mute">{site.parent}의 자회사</span>
+        <span className="text-mute">{site.category}</span>
       </p>
     </footer>
   );

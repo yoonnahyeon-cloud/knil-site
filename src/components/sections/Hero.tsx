@@ -42,9 +42,9 @@ export function Hero() {
 
       <div className="absolute inset-x-0 bottom-0 frame flex items-end pb-[clamp(20px,3.2vw,44px)] text-[12px] leading-[1.6] md:text-[13px]">
         <p data-credit className="text-mute">
-          {site.parent}의 자회사
-          <br />
           <span className="text-ink">{site.company}</span>
+          <br />
+          {site.category}
         </p>
       </div>
     </section>
