@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #f7f6f2;
+  --color-ink: #0c0c0b;
+  --color-mute: #8a8984;
+  --color-rule: #d9d7d0;
+  /* The one accent. It only ever marks data: the other side of a link. */
+  --color-signal: #ff4b14;
+
+  --font-sans: var(--font-pretendard), system-ui, sans-serif;
+  --font-display: var(--font-archivo), var(--font-pretendard), sans-serif;
+}
+
+:root {
+  --margin: clamp(20px, 4.2vw, 72px);
+  --gutter: clamp(12px, 1.6vw, 28px);
+  color-scheme: light;
+}
+
+html {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: var(--color-paper);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss06";
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+@layer components {
+  .frame {
+    padding-inline: var(--margin);
+  }
+  .grid-12 {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    column-gap: var(--gutter);
+    padding-inline: var(--margin);
+  }
+  @media (min-width: 768px) {
+    .grid-12 {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+    }
+  }
+
+  /* Korean display type: tight but never touching. */
+  .t-display {
+    font-weight: 700;
+    letter-spacing: -0.045em;
+    line-height: 1.12;
+  }
+  .t-head {
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 1.2;
+  }
+
+  .mask {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+  }
+  .mask > span {
+    display: block;
+  }
+}
