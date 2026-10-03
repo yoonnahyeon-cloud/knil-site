@@ -39,7 +39,7 @@ export const creatorPage = {
 export const expansion = {
   opening: ["하지만,", "링크가 끝은 아닙니다."],
   stages: [
-    { word: "멀티링크", note: "크리에이터가 흩어진 채널을 하나의 페이지에 연결합니다." },
+    { word: "멀티 링크", note: "크리에이터가 흩어진 채널을 하나의 페이지에 연결합니다." },
     { word: "크리에이터", note: "더 많은 크리에이터가 KNIL로 자신을 소개합니다." },
     { word: "데이터", note: "방문, 클릭, 콘텐츠 관심, 상품 반응이 쌓입니다." },
     { word: "비즈니스", note: "쌓인 데이터 위에서 새로운 사업이 시작됩니다." },
@@ -54,7 +54,7 @@ export const sides = {
     { who: "브랜드", gets: "더 정확한 선택,", body: "브랜드는 단순 팔로워 수가 아닌 실제 반응 데이터를 기반으로 크리에이터를 발견하고, 더 정교한 광고와 협업을 진행합니다." },
     { who: "팔로워", gets: "더 편리한 연결.", body: "팔로워는 여러 플랫폼에 흩어진 크리에이터의 콘텐츠, 상품, 브랜드와 활동을 하나의 KNIL에서 더 편리하게 발견하고 이용합니다." },
   ],
-  close: ["KNIL은 이 세 주체가 만나는", "크리에이터 멀티링크 플랫폼입니다."],
+  close: ["KNIL은 이 세 주체가 만나는", "크리에이터 멀티 링크 플랫폼입니다."],
 };
 
 export const network = {
@@ -101,4 +101,17 @@ export const autoDm = {
   ],
   note:
     "자동 DM은 Instagram 프로페셔널 계정을 KNIL에 연결해 Meta 공식 API로 동작합니다. 팔로워가 남긴 댓글에 대한 답장으로만 발송되며, 댓글 하나에 메시지 한 번, 댓글 작성 후 7일 이내라는 Meta의 정책 범위 안에서 운영됩니다. 수치는 예시입니다.",
+};
+
+// Where the data leads: the long-term picture.
+export const vision = {
+  heading: ["결국 KNIL은", "크리에이터 데이터 플랫폼이", "됩니다."],
+  lead:
+    "링크 하나에서 시작한 활동과 협업의 기록이 쌓일수록, KNIL은 크리에이터 한 명이 아니라 크리에이터 산업 전체를 읽을 수 있게 됩니다.",
+  questions: [
+    { before: "누가 어떤 ", key: "브랜드와 협업", after: "해 왔는지" },
+    { before: "어떤 분야에서 ", key: "영향력", after: "을 가졌는지" },
+    { before: "어떤 ", key: "비즈니스", after: "를 만들어 왔는지" },
+  ],
+  close: ["크리에이터 산업을", "가장 깊이 이해하는 플랫폼."],
 };

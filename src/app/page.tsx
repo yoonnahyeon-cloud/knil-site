@@ -7,6 +7,7 @@ import { AutoDm } from "@/components/sections/AutoDm";
 import { Expansion } from "@/components/sections/Expansion";
 import { Sides } from "@/components/sections/Sides";
 import { Network } from "@/components/sections/Network";
+import { Vision } from "@/components/sections/Vision";
 import { Finale } from "@/components/sections/Finale";
 import { Footer } from "@/components/sections/Footer";
 
@@ -23,6 +24,7 @@ export default function Home() {
         <Expansion />
         <Sides />
         <Network />
+        <Vision />
         <Finale />
       </main>
       <Footer />

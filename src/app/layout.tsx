@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   title,
   description: site.description,
   applicationName: "KNIL",
-  keywords: ["KNIL", "크닐", "멀티링크", "크리에이터", "링크인바이오", "크리에이터 데이터", "주식회사 크닐", "크리에이터 멀티링크 플랫폼", "크리에이터 마케팅", "인플루언서 데이터"],
+  keywords: ["KNIL", "크닐", "멀티 링크", "멀티링크", "크리에이터", "링크인바이오", "크리에이터 데이터", "주식회사 크닐", "크리에이터 멀티 링크 플랫폼", "크리에이터 마케팅", "인플루언서 데이터"],
   authors: [{ name: site.company }],
   alternates: { canonical: `${base}/` },
   openGraph: {
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     siteName: "KNIL",
     title,
     description: site.description,
-    images: [{ url: `${base}/og.png`, width: 1200, height: 630, alt: "KNIL 크리에이터 멀티링크 플랫폼" }],
+    images: [{ url: `${base}/og.png`, width: 1200, height: 630, alt: "KNIL 크리에이터 멀티 링크 플랫폼" }],
   },
   twitter: {
     card: "summary_large_image",

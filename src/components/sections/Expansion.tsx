@@ -2,130 +2,53 @@
 
 import { useRef } from "react";
 import { Lines } from "@/components/brand/Lines";
-import { gsap, useGSAP, ScrollTrigger, MOTION_OK, MOTION_REDUCED } from "@/lib/gsap";
+import { gsap, useGSAP, MOTION_OK, MOTION_REDUCED } from "@/lib/gsap";
 import { expansion } from "@/lib/content";
 
-type Pt = { x: number; y: number };
-
-// Every position on the stage is derived from its size, so the same
-// choreography holds from a phone held upright to a wide desktop.
-function layout(stage: HTMLElement) {
-  const w = stage.clientWidth;
-  const h = stage.clientHeight;
-  const wide = w >= 768 && w / h > 0.9;
-  const m = Math.min(72, Math.max(20, w * 0.042));
-
-  const bigFont = wide ? Math.min(w * 0.135, h * 0.25) : w * 0.165;
-  const stackFont = wide ? Math.min(w * 0.042, h * 0.072) : w * 0.078;
-  const bizFont = wide ? stackFont : stackFont * 0.9;
-  const step = stackFont * 1.32;
-  const top = h * (wide ? 0.15 : 0.13);
-
-  const big: Pt = { x: m, y: h * 0.6 - bigFont * 0.5 };
-  const stack: Pt[] = [0, 1, 2, 3].map((i) => ({ x: m, y: top + i * step }));
-  // Wide: the businesses open as a second column beside "비즈니스".
-  // Narrow: they hang under it, indented, so nothing has to shrink to fit.
-  const colX = wide ? w * 0.5 : m + w * 0.18;
-  const colY = wide ? stack[3].y : stack[3].y + step * 1.35;
-  const biz: Pt[] = expansion.businesses.map((_, j) => ({
-    x: colX,
-    y: colY + (stackFont - bizFont) * 0.8 + j * bizFont * 1.36,
-  }));
-  const note: Pt = { x: m, y: big.y + bigFont * 1.22 };
-
-  return { w, h, wide, bigFont, stackFont, bizFont, big, stack, biz, note };
-}
-
+// One stage at a time. A running line at the top shows where the reader is in
+// the chain; the current stage is set large with a sentence that says what it
+// means; at the last stage the businesses it opens are listed underneath.
 export function Expansion() {
   const root = useRef<HTMLElement>(null);
+  const { stages, businesses } = expansion;
 
   useGSAP(
     () => {
-      const stage = root.current!.querySelector<HTMLElement>("[data-stage]")!;
-      const words = gsap.utils.toArray<HTMLElement>("[data-w]", stage);
-      const biz = gsap.utils.toArray<HTMLElement>("[data-b]", stage);
-      const notes = gsap.utils.toArray<HTMLElement>("[data-n]", stage);
-
-      const L = () => layout(stage);
-      const applyType = () => {
-        const l = L();
-        gsap.set(words, { fontSize: l.bigFont });
-        gsap.set(biz, { fontSize: l.bizFont });
-        gsap.set(notes, { x: l.note.x, y: l.note.y, maxWidth: l.wide ? l.w * 0.34 : l.w - l.note.x * 2 });
-      };
-      applyType();
-      ScrollTrigger.addEventListener("refreshInit", applyType);
-
-      const atBig = () => ({ x: L().big.x, y: L().big.y, scale: 1 });
-      const below = () => ({ x: L().big.x, y: L().big.y + L().bigFont * 0.38, scale: 1 });
-      const inStack = (i: number) => () => ({
-        x: L().stack[i].x,
-        y: L().stack[i].y,
-        scale: L().stackFont / L().bigFont,
-      });
-      const fromData = () => ({ x: L().stack[2].x, y: L().stack[2].y, scale: L().stackFont / L().bizFont });
-      const inColumn = (j: number) => () => ({ x: L().biz[j].x, y: L().biz[j].y, scale: 1 });
-
-      const v = <T extends object>(fn: () => T, key: keyof T) => () => fn()[key] as number;
-      const pos = (fn: () => { x: number; y: number; scale: number }) => ({
-        x: v(fn, "x"),
-        y: v(fn, "y"),
-        scale: v(fn, "scale"),
-      });
-
-      const build = () => {
-        const tl = gsap.timeline({ defaults: { ease: "power3.inOut", duration: 1 } });
-        tl.set(words[0], { ...pos(atBig), autoAlpha: 1 }, 0);
-        words.slice(1).forEach((el) => tl.set(el, { ...pos(below), autoAlpha: 0 }, 0));
-        biz.forEach((el) => tl.set(el, { ...pos(fromData), autoAlpha: 0 }, 0));
-        tl.set(notes, { autoAlpha: 0 }, 0).set(notes[0], { autoAlpha: 1 }, 0);
-        tl.to({}, { duration: 0.5 });
-
-        // Each stage steps back into the line it builds, and the next one takes its place.
-        for (let k = 1; k < words.length; k++) {
-          const at = tl.duration();
-          tl.to(words[k - 1], pos(inStack(k - 1)), at)
-            .to(words[k], { ...pos(atBig), autoAlpha: 1 }, at + 0.18)
-            .to(notes[k - 1], { autoAlpha: 0, duration: 0.3, ease: "none" }, at)
-            .to(notes[k], { autoAlpha: 1, duration: 0.4, ease: "none" }, at + 0.55)
-            .to({}, { duration: 0.6 });
-        }
-
-        // Business closes the line, and the new businesses come out of data.
-        const at = tl.duration();
-        tl.to(words[3], pos(inStack(3)), at);
-        biz.forEach((el, j) => {
-          tl.to(el, { ...pos(inColumn(j)), autoAlpha: 1, duration: 1.1 }, at + 0.35 + j * 0.12);
-        });
-        tl.to({}, { duration: 0.8 });
-        return tl;
-      };
+      const words = gsap.utils.toArray<HTMLElement>("[data-stage-item]");
+      const trail = gsap.utils.toArray<HTMLElement>("[data-trail]");
+      const biz = gsap.utils.toArray<HTMLElement>("[data-biz]");
 
       const mm = gsap.matchMedia();
       mm.add(MOTION_OK, () => {
-        const tl = build();
-        ScrollTrigger.create({
-          animation: tl,
-          trigger: stage,
-          start: "top top",
-          end: "+=420%",
-          pin: true,
-          scrub: 0.7,
-          invalidateOnRefresh: true,
+        gsap.set(words.slice(1), { autoAlpha: 0, yPercent: 30 });
+        gsap.set(trail.slice(1), { opacity: 0.28 });
+        gsap.set(biz, { autoAlpha: 0, y: 18 });
+        gsap.set("[data-progress]", { scaleX: 1 / stages.length });
+
+        const tl = gsap.timeline({
+          defaults: { ease: "power3.inOut", duration: 0.7 },
+          scrollTrigger: {
+            trigger: "[data-expansion-stage]",
+            start: "top top",
+            end: "+=360%",
+            pin: true,
+            scrub: 0.6,
+          },
         });
+        tl.to({}, { duration: 0.4 });
+        for (let k = 1; k < words.length; k++) {
+          tl.to(words[k - 1], { autoAlpha: 0, yPercent: -30 })
+            .to(words[k], { autoAlpha: 1, yPercent: 0 }, "<0.15")
+            .to(trail[k], { opacity: 1, duration: 0.4, ease: "none" }, "<")
+            .to("[data-progress]", { scaleX: (k + 1) / stages.length, duration: 0.6 }, "<")
+            .to({}, { duration: 0.6 });
+        }
+        tl.to(biz, { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.14, ease: "power2.out" }).to({}, { duration: 0.8 });
       });
       mm.add(MOTION_REDUCED, () => {
-        const tl = build();
-        tl.progress(1);
-        const settle = () => tl.invalidate().progress(0).progress(1);
-        window.addEventListener("resize", settle);
-        return () => window.removeEventListener("resize", settle);
+        gsap.set(words.slice(0, -1), { autoAlpha: 0 });
       });
-
-      return () => {
-        ScrollTrigger.removeEventListener("refreshInit", applyType);
-        mm.revert();
-      };
+      return () => mm.revert();
     },
     { scope: root },
   );
@@ -140,45 +63,58 @@ export function Expansion() {
         />
       </div>
 
-      <div data-stage className="relative h-[100svh] overflow-hidden">
-        <ol className="sr-only">
-          {expansion.stages.map((s) => (
-            <li key={s.word}>
-              {s.word}: {s.note}
-            </li>
-          ))}
-          <li>데이터에서 이어지는 사업: {expansion.businesses.join(", ")}</li>
-        </ol>
-        <div aria-hidden="true">
-          {expansion.stages.map((s, i) => (
-            <span
-              key={s.word}
-              data-w
-              className={`invisible absolute top-0 left-0 origin-top-left leading-none font-bold tracking-[-0.055em] whitespace-nowrap ${
-                i === 2 ? "text-signal" : ""
-              }`}
-            >
-              {s.word}
-            </span>
-          ))}
-          {expansion.businesses.map((b) => (
-            <span
-              key={b}
-              data-b
-              className="invisible absolute top-0 left-0 origin-top-left leading-none font-semibold tracking-[-0.045em] whitespace-nowrap"
-            >
-              {b}
-            </span>
-          ))}
-          {expansion.stages.map((s) => (
-            <p
-              key={s.word}
-              data-n
-              className="invisible absolute top-0 left-0 text-[15px] leading-[1.6] text-mute md:text-[17px]"
-            >
-              {s.note}
-            </p>
-          ))}
+      <div data-expansion-stage className="relative flex h-[100svh] flex-col overflow-hidden pt-[clamp(72px,11svh,120px)]">
+        <div className="frame">
+          <ol className="flex flex-wrap gap-x-[clamp(14px,2.4vw,40px)] text-[15px] font-semibold tracking-[-0.03em] md:text-[19px]">
+            {stages.map((s, i) => (
+              <li key={s.word} data-trail className={i === 2 ? "text-signal" : ""}>
+                {s.word}
+              </li>
+            ))}
+          </ol>
+          <div className="mt-3 h-px bg-rule">
+            <div data-progress className="h-full origin-left bg-ink" />
+          </div>
+        </div>
+
+        <div className="grid-12 mt-[clamp(40px,8svh,96px)] flex-1 content-start">
+          <div className="relative col-span-6 md:col-span-6">
+            {stages.map((s, i) => (
+              <div
+                key={s.word}
+                data-stage-item
+                className={i === 0 ? "relative" : "absolute inset-x-0 top-0"}
+              >
+                <p
+                  className={`text-[clamp(56px,15vw,176px)] leading-[1] font-bold tracking-[-0.055em] whitespace-nowrap md:text-[min(11vw,19svh)] ${
+                    i === 2 ? "text-signal" : ""
+                  }`}
+                >
+                  {s.word}
+                </p>
+                <p className="mt-[clamp(14px,2svh,24px)] max-w-[22em] text-[17px] leading-[1.6] text-ink/75 md:text-[clamp(18px,1.5vw,24px)]">
+                  {s.note}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          <div className="col-span-6 mt-[clamp(28px,5svh,56px)] md:col-start-8 md:col-span-5 md:mt-0">
+          <p data-biz className="mb-2 text-[13px] text-mute md:text-[14px]">
+            <span className="text-signal">데이터</span>에서 이어지는 사업
+          </p>
+          <ul>
+            {businesses.map((b) => (
+              <li
+                key={b}
+                data-biz
+                className="border-b border-rule first:border-t first:border-t-ink py-[clamp(9px,1.5svh,16px)] text-[clamp(20px,5.6vw,24px)] font-semibold tracking-[-0.035em] md:text-[clamp(22px,2vw,32px)]"
+              >
+                {b}
+              </li>
+            ))}
+          </ul>
+          </div>
         </div>
       </div>
 
@@ -217,7 +153,7 @@ function Purpose() {
     <p ref={root} className="t-display col-span-6 text-[7.2vw] md:col-span-11 md:text-[clamp(30px,4.6vw,84px)]">
       <span className="text-mute">
         <span className="relative inline-block">
-          멀티링크 구독료
+          멀티 링크 구독료
           <span
             data-strike
             aria-hidden="true"

@@ -56,7 +56,7 @@ export function Sides() {
         <h2 className="t-head col-span-6 text-[clamp(26px,3.4vw,60px)] md:col-start-5 md:col-span-8">
           <Latin>KNIL</Latin>은 이 세 주체가 만나는
           <br />
-          크리에이터 멀티링크 플랫폼입니다.
+          크리에이터 멀티 링크 플랫폼입니다.
         </h2>
       </div>
     </section>
