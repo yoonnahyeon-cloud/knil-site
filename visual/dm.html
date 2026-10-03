@@ -1,0 +1,39 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="screen.css">
+<style>
+.top { height:58px; display:flex; align-items:center; gap:12px; padding:0 18px; border-bottom:1px solid #efefed; }
+.back { width:11px; height:11px; border-left:2px solid var(--ink); border-bottom:2px solid var(--ink); transform:rotate(45deg); margin-right:4px; }
+.top .avatar { width:34px; height:34px; font-size:13px; }
+.top b { display:block; font-size:15px; font-weight:700; }
+.top span { font-size:12px; color:var(--mute); }
+.prof { text-align:center; padding:28px 0 22px; }
+.prof .avatar { width:76px; height:76px; font-size:28px; margin:0 auto 10px; }
+.prof b { font-size:17px; font-weight:700; display:block; }
+.prof span { font-size:13px; color:var(--mute); }
+.time { text-align:center; font-size:12px; color:var(--mute); margin:6px 0 14px; }
+.ctx { margin:0 18px 6px 58px; font-size:12px; color:var(--mute); }
+.ctx q { display:inline-block; margin-top:6px; padding:6px 12px; border-left:2px solid var(--rule); color:var(--ink); quotes:none; font-size:13.5px; }
+.msg { display:flex; align-items:flex-end; gap:10px; padding:4px 18px; }
+.msg .avatar { width:30px; height:30px; font-size:11px; }
+.bub { max-width:250px; background:#efefed; border-radius:20px; padding:11px 15px; font-size:15px; line-height:1.45; }
+.card { width:250px; border:1px solid #e3e3e0; border-radius:16px; overflow:hidden; background:#fff; }
+.card .img { height:150px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:2px; }
+.card .img i { display:block; }
+.card .t { padding:10px 13px 12px; }
+.card .t b { display:block; font-size:14.5px; font-weight:600; }
+.card .t span { font-size:13px; font-weight:600; position:relative; }
+.card .t span i { position:absolute; left:0; right:0; bottom:-3px; height:2px; background:var(--signal); }
+.spacer { width:30px; flex:none; }
+.input { position:absolute; left:0; right:0; bottom:0; height:70px; display:flex; align-items:center; padding:0 14px 14px; }
+.input span { flex:1; height:42px; border-radius:21px; background:#f3f3f1; display:flex; align-items:center; padding:0 16px; font-size:14px; color:var(--mute); }
+</style></head><body><div class="screen">
+<div class="status"><span>9:41</span><span class="r"><span class="bars"><i style="height:5px"></i><i style="height:7px"></i><i style="height:9px"></i><i style="height:11px"></i></span><span class="bat"><i></i></span></span></div>
+<div class="top"><span class="back"></span><div class="avatar">H</div><div><b>HARU</b><span>haru</span></div></div>
+<div class="prof"><div class="avatar">H</div><b>HARU</b><span>haru · Instagram</span></div>
+<div class="time">오늘 오후 9:41</div>
+<div class="ctx">회원님의 댓글에 답장했습니다<br><q>정보</q></div>
+<div class="msg"><div class="avatar">H</div><div class="bub">요청하신 HARU의 착장 정보를 보내드릴게요.</div></div>
+<div class="msg"><span class="spacer"></span><div class="card">
+  <div class="img"><i style="background:var(--t2)"></i><i style="background:var(--t5)"></i><i style="background:var(--t1)"></i></div>
+  <div class="t"><b>HARU의 가을 데일리룩 3가지</b><span>knil.com/@haru/look<i></i></span></div></div></div>
+<div class="input"><span>메시지 보내기...</span></div>
+</div></body></html>

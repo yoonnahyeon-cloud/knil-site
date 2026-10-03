@@ -76,3 +76,29 @@ export const finale = {
   first: ["링크는", "시작일 뿐입니다."],
   second: ["크리에이터에게는 하나의 링크.", "KNIL에게는 새로운 데이터의 시작."],
 };
+
+// Comment-keyword auto DM. Numbers are illustrative sample data.
+export const autoDm = {
+  heading: ["댓글 하나에,", "링크가 도착합니다."],
+  intro:
+    "크리에이터가 게시물이나 릴스에 댓글 키워드를 정해 두면, 그 키워드로 댓글을 남긴 팔로워에게 KNIL이 DM과 링크를 자동으로 보냅니다.",
+  setup: [
+    { label: "키워드", value: "정보" },
+    { label: "콘텐츠", value: "릴스 · 가을 데일리룩 3가지" },
+    { label: "메시지", value: "요청하신 HARU의 착장 정보를 보내드릴게요." },
+    { label: "링크", value: "knil.com/@haru/look" },
+  ],
+  totals: [
+    { label: "댓글", value: "1,248" },
+    { label: "DM 발송", value: "1,231" },
+    { label: "링크 클릭", value: "864" },
+    { label: "클릭률", value: "70.2%" },
+  ],
+  byContent: [
+    { kind: "릴스", title: "가을 데일리룩 3가지", keyword: "정보", comments: "812", clicks: "590" },
+    { kind: "릴스", title: "10분 메이크업 루틴", keyword: "제품", comments: "296", clicks: "171" },
+    { kind: "게시물", title: "니트 공동구매 오픈", keyword: "구매", comments: "140", clicks: "103" },
+  ],
+  note:
+    "자동 DM은 Instagram 프로페셔널 계정을 KNIL에 연결해 Meta 공식 API로 동작합니다. 팔로워가 남긴 댓글에 대한 답장으로만 발송되며, 댓글 하나에 메시지 한 번, 댓글 작성 후 7일 이내라는 Meta의 정책 범위 안에서 운영됩니다. 수치는 예시입니다.",
+};

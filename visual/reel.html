@@ -1,0 +1,36 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="screen.css">
+<style>
+.video { position:absolute; inset:0 0 auto 0; height:400px; background:var(--t5); color:#fff; }
+.video .status { color:#fff; }
+.video .status .bars i, .video .status .bat i { background:#fff; }
+.video .status .bat { border-color:#fff; }
+.vtop { padding:6px 18px; font-weight:700; font-size:20px; }
+.cap { position:absolute; left:18px; right:40px; bottom:56px; }
+.who { display:flex; align-items:center; gap:9px; font-weight:600; font-size:14px; }
+.who .avatar { width:30px; height:30px; font-size:12px; background:#fff; color:var(--ink); }
+.cap p { margin-top:10px; font-size:14.5px; line-height:1.5; }
+.sheet { position:absolute; left:0; right:0; top:372px; bottom:0; background:#fff; border-radius:14px 14px 0 0; }
+.grab { width:38px; height:4px; border-radius:2px; background:#d4d4d1; margin:9px auto 0; }
+.sheet h5 { text-align:center; font-size:15px; font-weight:700; padding:12px 0 12px; border-bottom:1px solid #efefed; }
+.c { display:grid; grid-template-columns:34px 1fr; gap:12px; padding:13px 18px 3px; }
+.c i { display:block; width:34px; height:34px; border-radius:50%; }
+.c .n { font-size:13px; font-weight:600; }
+.c .n span { font-weight:400; color:var(--mute); margin-left:5px; }
+.c p { font-size:15px; margin-top:2px; }
+.c p b { font-weight:700; position:relative; }
+.c p b i { position:absolute; left:0; right:0; bottom:-3px; height:2px; width:auto; border-radius:0; background:var(--signal); }
+.c .meta { font-size:12px; color:var(--mute); margin-top:4px; }
+.input { position:absolute; left:0; right:0; bottom:0; height:64px; border-top:1px solid #efefed; display:flex; align-items:center; gap:12px; padding:0 18px 10px; }
+.input i { width:32px; height:32px; border-radius:50%; background:var(--t2); }
+.input span { flex:1; height:38px; border:1px solid #e3e3e0; border-radius:19px; display:flex; align-items:center; padding:0 14px; font-size:14px; color:var(--mute); }
+</style></head><body><div class="screen">
+<div class="video"><div class="status"><span>9:41</span><span class="r"><span class="bars"><i style="height:5px"></i><i style="height:7px"></i><i style="height:9px"></i><i style="height:11px"></i></span><span class="bat"><i></i></span></span></div><div class="vtop">릴스</div>
+  <div class="cap"><div class="who"><div class="avatar">H</div>haru</div>
+  <p>가을 데일리룩 3가지.<br><b style="font-weight:600">착장 정보가 궁금하면 댓글에 ‘정보’라고 남겨주세요.</b></p></div></div>
+<div class="sheet"><div class="grab"></div><h5>댓글</h5>
+  <div class="c"><i style="background:var(--t1)"></i><div><div class="n">jiwoo.k<span>방금</span></div><p><b>정보<i></i></b></p><div class="meta">답글 달기</div></div></div>
+  <div class="c"><i style="background:var(--t4)"></i><div><div class="n">seoa_<span>2분</span></div><p><b>정보<i></i></b></p><div class="meta">답글 달기</div></div></div>
+  <div class="c"><i style="background:var(--t2)"></i><div><div class="n">dahye.log<span>4분</span></div><p>두 번째 니트 너무 예뻐요</p><div class="meta">답글 달기</div></div></div>
+  <div class="c"><i style="background:var(--t3)"></i><div><div class="n">minseo<span>5분</span></div><p><b>정보<i></i></b></p><div class="meta">답글 달기</div></div></div>
+  <div class="input"><i></i><span>댓글 달기...</span></div>
+</div></div></body></html>

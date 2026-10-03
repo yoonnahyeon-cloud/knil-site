@@ -3,6 +3,7 @@ import { Hero } from "@/components/sections/Hero";
 import { Reverse } from "@/components/sections/Reverse";
 import { Channels } from "@/components/sections/Channels";
 import { Screens } from "@/components/sections/Screens";
+import { AutoDm } from "@/components/sections/AutoDm";
 import { Expansion } from "@/components/sections/Expansion";
 import { Sides } from "@/components/sections/Sides";
 import { Network } from "@/components/sections/Network";
@@ -18,6 +19,7 @@ export default function Home() {
         <Reverse />
         <Channels />
         <Screens />
+        <AutoDm />
         <Expansion />
         <Sides />
         <Network />
