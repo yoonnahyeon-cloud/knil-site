@@ -1,0 +1,61 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><link rel="stylesheet" href="screen.css">
+<style>
+.browser { height:48px; display:grid; grid-template-columns:40px 1fr 40px; align-items:center; padding:0 12px; border-bottom:1px solid var(--rule); }
+.x { position:relative; width:16px; height:16px; margin-left:6px; }
+.x i { position:absolute; left:-2px; top:7px; width:20px; height:1.6px; background:var(--ink); transform:rotate(45deg); }
+.x i + i { transform:rotate(-45deg); }
+.addr { text-align:center; font-size:14px; font-weight:700; letter-spacing:-0.01em; }
+.addr span { position:relative; }
+.addr span i { position:absolute; left:0; right:0; bottom:-3px; height:2px; background:var(--signal); }
+.page { padding:0 20px; }
+.prof { display:flex; align-items:center; gap:14px; padding:18px 0 16px; }
+.prof .avatar { width:54px; height:54px; font-size:21px; }
+.prof h3 { font-family:A,sans-serif; font-weight:800; font-size:25px; letter-spacing:-0.04em; line-height:1; }
+.prof p { margin-top:5px; font-size:13px; color:var(--mute); }
+.ch { display:grid; grid-template-columns:1fr 1fr; border-top:1px solid var(--ink); }
+.ch div { display:flex; justify-content:space-between; align-items:baseline; padding:10px 0; border-bottom:1px solid var(--rule); }
+.ch div:nth-child(odd) { padding-right:12px; border-right:1px solid var(--rule); }
+.ch div:nth-child(even) { padding-left:12px; }
+.ch b { font-size:14px; font-weight:600; }
+.ch span { font-size:12px; color:var(--mute); font-variant-numeric:tabular-nums; }
+.grp { padding:13px 0 13px; border-bottom:1px solid var(--rule); }
+.h { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:9px; font-size:12px; color:var(--mute); }
+.h b { color:var(--ink); font-size:14.5px; font-weight:600; }
+.vid { display:grid; grid-template-columns:148px 1fr; gap:12px; align-items:center; }
+.thumb { position:relative; aspect-ratio:16/9; background:var(--t5); }
+.thumb s { position:absolute; left:50%; top:50%; transform:translate(-40%,-50%); border-left:12px solid #fff; border-top:7.5px solid transparent; border-bottom:7.5px solid transparent; }
+.thumb em { position:absolute; right:4px; bottom:4px; font-style:normal; font-size:10px; color:#fff; background:rgba(0,0,0,.55); padding:0 4px; }
+.vid h4 { font-size:14.5px; font-weight:600; line-height:1.4; letter-spacing:-0.03em; }
+.vid p { margin-top:3px; font-size:12px; color:var(--mute); }
+.looks { display:flex; gap:6px; margin-right:-20px; }
+.looks div { flex:none; width:104px; }
+.looks i { display:block; aspect-ratio:1; }
+.looks span { display:block; margin-top:5px; font-size:11.5px; color:var(--mute); }
+.picks { display:grid; gap:8px; }
+.pick { display:grid; grid-template-columns:40px 1fr auto; gap:10px; align-items:center; }
+.pick i { display:block; aspect-ratio:1; }
+.pick b { font-size:13.5px; font-weight:600; }
+.pick span { font-size:12.5px; color:var(--mute); font-variant-numeric:tabular-nums; }
+.row { display:flex; justify-content:space-between; align-items:baseline; }
+.row b { font-size:14.5px; font-weight:600; }
+.row .sub { margin-top:2px; font-size:12.5px; color:var(--mute); }
+.row > span { font-size:12px; color:var(--mute); }
+</style></head><body><div class="screen">
+<div class="status"><span>9:41</span><span class="r"><span class="bars"><i style="height:5px"></i><i style="height:7px"></i><i style="height:9px"></i><i style="height:11px"></i></span><span class="bat"><i></i></span></span></div>
+<div class="browser"><span class="x"><i></i><i></i></span><div class="addr"><span>knil.com/@haru<i></i></span></div><span></span></div>
+<div class="page">
+  <div class="prof"><div class="avatar">H</div><div><h3>HARU</h3><p>@haru · beauty, fashion, daily life</p></div></div>
+  <div class="ch">
+    <div><b class="latin">Instagram</b><span>28.6만</span></div><div><b class="latin">YouTube</b><span>12.4만</span></div>
+    <div><b class="latin">TikTok</b><span>19.8만</span></div><div><b class="latin">Xiaohongshu</b><span>4.2만</span></div>
+  </div>
+  <div class="grp"><div class="h"><b class="latin">New Video</b><span>YouTube</span></div>
+    <div class="vid"><div class="thumb"><s></s><em>12:48</em></div><div><h4>가을 데일리 메이크업,<br>10분 루틴</h4><p>새 영상 · 2일 전</p></div></div></div>
+  <div class="grp"><div class="h"><b class="latin">Daily Look</b><span>4개의 룩</span></div>
+    <div class="looks"><div><i style="background:var(--t2)"></i><span>니트와 데님</span></div><div><i style="background:var(--t5)"></i><span>블랙 셋업</span></div><div><i style="background:var(--t1)"></i><span>트렌치 코트</span></div><div><i style="background:var(--t4)"></i><span>주말 외출</span></div></div></div>
+  <div class="grp"><div class="h"><b class="latin">Beauty Picks</b><span>HARU가 쓰는 제품</span></div>
+    <div class="picks"><div class="pick"><i style="background:var(--t1)"></i><b>립 틴트 03 로즈</b><span>18,000원</span></div><div class="pick"><i style="background:var(--t3)"></i><b>수분 쿠션 21호</b><span>32,000원</span></div></div></div>
+  <div class="grp"><div class="row"><div><b class="latin">Brand Collaboration</b><div class="sub">가을 스킨케어 협업 · 10.14 – 10.20</div></div><span>진행 중</span></div></div>
+  <div class="grp" style="border-bottom:0"><div class="row"><div><b class="latin">Shop</b><div class="sub">HARU SELECT · 상품 24개</div></div><span>바로 가기</span></div></div>
+</div>
+</div></body></html>

@@ -2,6 +2,7 @@ import { Masthead } from "@/components/sections/Masthead";
 import { Hero } from "@/components/sections/Hero";
 import { Reverse } from "@/components/sections/Reverse";
 import { Channels } from "@/components/sections/Channels";
+import { Screens } from "@/components/sections/Screens";
 import { Expansion } from "@/components/sections/Expansion";
 import { Sides } from "@/components/sections/Sides";
 import { Network } from "@/components/sections/Network";
@@ -16,6 +17,7 @@ export default function Home() {
         <Hero />
         <Reverse />
         <Channels />
+        <Screens />
         <Expansion />
         <Sides />
         <Network />

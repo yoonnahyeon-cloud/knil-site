@@ -2,7 +2,7 @@
 // KNIL service without touching layout components.
 
 export const reverse = {
-  outward: ["링크는 지금까지", "사람을 어디론가 보내는 데", "집중했습니다."],
+  outward: ["링크는 지금까지", "사람을 어디론가 보내는데", "집중했습니다."],
   inward: ["크닐은 링크를", "반대로 바라봅니다."],
   signals: [
     { kind: "유입", text: "누가 들어왔는지," },

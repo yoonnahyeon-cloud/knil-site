@@ -1,0 +1,21 @@
+@font-face { font-family: P; src: url(../src/app/fonts/Pretendard-Regular.subset.woff2); font-weight: 400; }
+@font-face { font-family: P; src: url(../src/app/fonts/Pretendard-Medium.subset.woff2); font-weight: 500; }
+@font-face { font-family: P; src: url(../src/app/fonts/Pretendard-SemiBold.subset.woff2); font-weight: 600; }
+@font-face { font-family: P; src: url(../src/app/fonts/Pretendard-Bold.subset.woff2); font-weight: 700; }
+@font-face { font-family: A; src: url(archivo-latin.woff2); font-weight: 100 900; font-stretch: 62% 125%; }
+:root { --paper:#f7f6f2; --ink:#0c0c0b; --mute:#8a8984; --rule:#e2e0da; --signal:#ff4b14; --white:#fff;
+  --t1:#d8d2c7; --t2:#c4bcae; --t3:#e7e2d9; --t4:#a9a195; --t5:#2b2926; }
+* { box-sizing:border-box; margin:0; padding:0; }
+html,body { width:390px; height:844px; background:var(--white); color:var(--ink); font-family:P,sans-serif;
+  -webkit-font-smoothing:antialiased; word-break:keep-all; overflow:hidden; }
+.screen { position:relative; width:390px; height:844px; overflow:hidden; border:1px solid var(--rule); }
+.latin { font-family:A,P,sans-serif; font-stretch:94%; letter-spacing:-0.03em; }
+.status { height:47px; display:flex; align-items:center; justify-content:space-between; padding:0 26px 0 30px;
+  font-weight:600; font-size:16px; letter-spacing:-0.01em; }
+.status .r { display:flex; align-items:center; gap:6px; }
+.status .bars { display:flex; align-items:flex-end; gap:2px; }
+.status .bars i { width:3px; background:var(--ink); border-radius:1px; }
+.status .bat { width:25px; height:12px; border:1.2px solid var(--ink); border-radius:3.5px; padding:1.5px; }
+.status .bat i { display:block; width:75%; height:100%; background:var(--ink); border-radius:1.5px; }
+.avatar { border-radius:50%; background:var(--ink); color:var(--paper); display:grid; place-items:center;
+  font-family:A,sans-serif; font-weight:800; letter-spacing:-0.04em; flex:none; }
