@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<title>KNIL HARU visual</title>
+<style>
+  @font-face { font-family: P; src: url(../src/app/fonts/Pretendard-Regular.subset.woff2); font-weight: 400; }
+  @font-face { font-family: P; src: url(../src/app/fonts/Pretendard-Medium.subset.woff2); font-weight: 500; }
+  @font-face { font-family: P; src: url(../src/app/fonts/Pretendard-SemiBold.subset.woff2); font-weight: 600; }
+  @font-face { font-family: P; src: url(../src/app/fonts/Pretendard-Bold.subset.woff2); font-weight: 700; }
+  @font-face { font-family: A; src: url(archivo-latin.woff2); font-weight: 100 900; font-stretch: 62% 125%; }
+
+  :root {
+    --paper: #f7f6f2; --ink: #0c0c0b; --mute: #8a8984; --rule: #d9d7d0; --signal: #ff4b14;
+    --white: #ffffff;
+    --t1: #d8d2c7; --t2: #c4bcae; --t3: #e7e2d9; --t4: #a9a195; --t5: #2b2926;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1600px; height: 1270px; background: var(--paper); color: var(--ink); font-family: P, sans-serif;
+    -webkit-font-smoothing: antialiased; word-break: keep-all; }
+  .stage { position: relative; width: 1600px; height: 1270px; overflow: hidden; }
+
+  .cap { position: absolute; font-size: 15px; color: var(--mute); letter-spacing: -0.02em; }
+  .cap b { color: var(--ink); font-weight: 600; }
+  .latin { font-family: A, P, sans-serif; font-stretch: 94%; letter-spacing: -0.03em; }
+
+  /* ---------- Instagram profile ---------- */
+  .ig { position: absolute; left: 96px; top: 136px; width: 470px; height: 700px; background: var(--white);
+    border: 1px solid var(--rule); overflow: hidden; }
+  .ig-bar { display: flex; align-items: center; justify-content: space-between; height: 58px; padding: 0 22px;
+    font-weight: 700; font-size: 20px; letter-spacing: -0.02em; }
+  .ig-bar .menu { display: grid; gap: 4px; }
+  .ig-bar .menu i { display: block; width: 20px; height: 2px; background: var(--ink); }
+  .ig-head { display: flex; align-items: center; gap: 30px; padding: 8px 22px 0; }
+  .avatar { width: 92px; height: 92px; border-radius: 50%; background: var(--ink); color: var(--paper);
+    display: grid; place-items: center; font-family: A, sans-serif; font-weight: 800; font-size: 34px; letter-spacing: -0.04em;
+    flex: none; }
+  .stats { display: flex; flex: 1; justify-content: space-around; text-align: center; }
+  .stats b { display: block; font-size: 19px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .stats span { font-size: 14px; color: #3a3a38; }
+  .ig-bio { padding: 16px 22px 0; font-size: 15.5px; line-height: 1.5; }
+  .ig-bio .name { font-weight: 700; }
+  .ig-bio .cat { color: var(--mute); }
+  .ig-link { display: inline-flex; align-items: center; gap: 7px; margin-top: 4px; font-weight: 700; font-size: 16px; position: relative; }
+  .ig-link svg { width: 15px; height: 15px; }
+  .ig-link .u { position: absolute; left: 22px; right: 0; bottom: -3px; height: 2px; background: var(--signal); }
+  .ig-btns { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 18px 22px 0; }
+  .ig-btns div { height: 36px; border-radius: 8px; display: grid; place-items: center; font-size: 14.5px; font-weight: 600; background: #efefed; }
+  .ig-btns div:first-child { background: var(--ink); color: var(--white); }
+  .hl { display: flex; gap: 20px; padding: 22px 22px 0; }
+  .hl div { text-align: center; font-size: 12.5px; color: #3a3a38; }
+  .hl i { display: block; width: 64px; height: 64px; border-radius: 50%; border: 1px solid var(--rule); margin-bottom: 6px;
+    background: var(--t3); background-clip: content-box; padding: 3px; }
+  .tabs { display: grid; grid-template-columns: 1fr 1fr 1fr; margin-top: 22px; border-top: 1px solid #ececea; }
+  .tabs i { height: 46px; display: grid; place-items: center; }
+  .tabs i:first-child { border-bottom: 1.5px solid var(--ink); }
+  .tabs i b { width: 18px; height: 18px; border: 1.5px solid var(--ink); }
+  .tabs i:not(:first-child) b { border-color: #b5b5b2; }
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+  .grid i { aspect-ratio: 4 / 5; }
+
+  /* ---------- the one link, carried across ---------- */
+  .wire { position: absolute; height: 2px; background: var(--signal); }
+
+  /* ---------- KNIL page ---------- */
+  .kn { position: absolute; left: 856px; top: 120px; width: 600px; background: var(--white);
+    border: 1px solid var(--rule); overflow: hidden; }
+  .kn-url { display: flex; align-items: center; justify-content: space-between; height: 58px; padding: 0 30px;
+    border-bottom: 1px solid var(--ink); font-size: 15.5px; }
+  .kn-url .u { font-weight: 700; position: relative; }
+  .kn-url .mark { font-family: A, sans-serif; font-weight: 750; font-size: 19px; letter-spacing: -0.05em; }
+  .kn-body { padding: 0 30px 6px; }
+  .kn-prof { display: flex; align-items: center; gap: 18px; padding: 22px 0 20px; }
+  .kn-prof .avatar { width: 64px; height: 64px; font-size: 24px; }
+  .kn-prof h3 { font-family: A, sans-serif; font-weight: 800; font-size: 28px; letter-spacing: -0.04em; line-height: 1; }
+  .kn-prof p { margin-top: 6px; font-size: 14.5px; color: var(--mute); }
+
+  .grp { border-top: 1px solid var(--rule); padding: 14px 0 16px; }
+  .grp-h { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px;
+    font-size: 13px; color: var(--mute); }
+  .grp-h b { color: var(--ink); font-weight: 600; font-size: 15px; letter-spacing: -0.02em; }
+  .ch { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--ink); }
+  .ch div { padding: 12px 0 2px; border-left: 1px solid var(--rule); padding-left: 12px; }
+  .ch div:first-child { border-left: 0; padding-left: 0; }
+  .ch b { display: block; font-size: 15px; font-weight: 600; letter-spacing: -0.02em; }
+  .ch span { font-size: 13px; color: var(--mute); font-variant-numeric: tabular-nums; }
+
+  .vid { display: grid; grid-template-columns: 172px 1fr; gap: 18px; align-items: center; }
+  .thumb { position: relative; background: var(--t5); }
+  .vid .thumb { aspect-ratio: 16 / 9; }
+  .vid .thumb em { position: absolute; right: 6px; bottom: 6px; font-style: normal; font-size: 11px; color: var(--white);
+    background: rgba(0,0,0,.55); padding: 1px 5px; font-variant-numeric: tabular-nums; }
+  .vid .thumb s { position: absolute; left: 50%; top: 50%; width: 0; height: 0; transform: translate(-40%, -50%);
+    border-left: 16px solid var(--white); border-top: 10px solid transparent; border-bottom: 10px solid transparent; }
+  .vid h4 { font-size: 17px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.4; }
+  .vid p { margin-top: 4px; font-size: 13.5px; color: var(--mute); }
+
+  .looks { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .looks i { display: block; aspect-ratio: 1; }
+  .looks span { display: block; margin-top: 6px; font-size: 12.5px; color: var(--mute); }
+
+  .picks { display: grid; grid-template-columns: 1fr 1fr; gap: 0 22px; }
+  .pick { display: grid; grid-template-columns: 52px 1fr; gap: 12px; align-items: center; }
+  .pick i { display: block; aspect-ratio: 1; }
+  .pick b { display: block; font-size: 14.5px; font-weight: 600; letter-spacing: -0.02em; }
+  .pick span { font-size: 13px; color: var(--mute); font-variant-numeric: tabular-nums; }
+
+  .row { display: flex; justify-content: space-between; align-items: baseline; }
+  .row b { font-size: 16px; font-weight: 600; letter-spacing: -0.03em; }
+  .row span { font-size: 13.5px; color: var(--mute); }
+  .row .sub { margin-top: 3px; font-size: 13.5px; color: var(--mute); }
+
+  /* ---------- headline ---------- */
+  .headline { position: absolute; left: 96px; bottom: 96px; font-weight: 700; font-size: 38px; line-height: 1.22; letter-spacing: -0.045em; }
+  .headline .m { color: var(--mute); }
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <p class="headline">
+    <span class="m">프로필에는 링크 하나,</span><br />
+    그 안에는 <span class="latin" style="font-weight:800">HARU</span>의 모든 활동.
+  </p>
+
+  <p class="cap" style="left:96px; top:106px;"><b>Instagram</b> 프로필</p>
+  <section class="ig">
+    <div class="ig-bar"><span>haru</span><span class="menu"><i></i><i></i><i></i></span></div>
+    <div class="ig-head">
+      <div class="avatar">H</div>
+      <div class="stats">
+        <div><b>1,284</b><span>게시물</span></div>
+        <div><b>28.6만</b><span>팔로워</span></div>
+        <div><b>312</b><span>팔로잉</span></div>
+      </div>
+    </div>
+    <div class="ig-bio">
+      <div class="name">HARU <span class="cat" style="font-weight:400">@haru</span></div>
+      <div>beauty, fashion, daily life</div>
+      <div class="ig-link" id="iglink">
+        <svg viewBox="0 0 16 16" fill="none" stroke="#0c0c0b" stroke-width="1.6" stroke-linecap="round">
+          <path d="M6.6 9.4a3 3 0 0 0 4.2 0l2.1-2.1a3 3 0 0 0-4.2-4.2l-.9.9" />
+          <path d="M9.4 6.6a3 3 0 0 0-4.2 0L3.1 8.7a3 3 0 0 0 4.2 4.2l.9-.9" />
+        </svg>
+        <span id="igtext">knil.com/@haru</span>
+        <i class="u"></i>
+      </div>
+    </div>
+    <div class="ig-btns"><div>팔로우</div><div>메시지</div></div>
+    <div class="hl">
+      <div><i></i>Daily</div>
+      <div><i style="background-color:var(--t1)"></i>Beauty</div>
+      <div><i style="background-color:var(--t2)"></i>Look</div>
+      <div><i style="background-color:var(--t4)"></i>Shop</div>
+    </div>
+    <div class="tabs"><i><b></b></i><i><b></b></i><i><b></b></i></div>
+    <div class="grid">
+      <i style="background:var(--t2)"></i><i style="background:var(--t5)"></i><i style="background:var(--t3)"></i>
+      <i style="background:var(--t1)"></i><i style="background:var(--t4)"></i><i style="background:var(--t2)"></i>
+    </div>
+  </section>
+
+  <i class="wire" id="wire"></i>
+  <p class="cap" id="wirecap">링크를 누르면</p>
+
+  <p class="cap" id="kncap" style="left:856px;"><b>KNIL</b> 페이지</p>
+  <section class="kn">
+    <div class="kn-url" id="knurl">
+      <span class="u" id="kntext">knil.com/@haru</span>
+      <span class="mark">knil</span>
+    </div>
+    <div class="kn-body">
+      <div class="kn-prof">
+        <div class="avatar">H</div>
+        <div>
+          <h3>HARU</h3>
+          <p>@haru · beauty, fashion, daily life</p>
+        </div>
+      </div>
+
+      <div class="ch">
+        <div><b class="latin">Instagram</b><span>28.6만</span></div>
+        <div><b class="latin">YouTube</b><span>12.4만</span></div>
+        <div><b class="latin">TikTok</b><span>19.8만</span></div>
+        <div><b class="latin">Xiaohongshu</b><span>4.2만</span></div>
+      </div>
+
+      <div class="grp" style="margin-top:16px">
+        <div class="grp-h"><b class="latin">New Video</b><span>YouTube</span></div>
+        <div class="vid">
+          <div class="thumb"><s></s><em>12:48</em></div>
+          <div><h4>가을 데일리 메이크업,<br />10분 루틴</h4><p>새 영상 · 2일 전</p></div>
+        </div>
+      </div>
+
+      <div class="grp">
+        <div class="grp-h"><b class="latin">Daily Look</b><span>4개의 룩</span></div>
+        <div class="looks">
+          <div><i style="background:var(--t2)"></i><span>니트와 데님</span></div>
+          <div><i style="background:var(--t5)"></i><span>블랙 셋업</span></div>
+          <div><i style="background:var(--t1)"></i><span>트렌치 코트</span></div>
+          <div><i style="background:var(--t4)"></i><span>주말 외출</span></div>
+        </div>
+      </div>
+
+      <div class="grp">
+        <div class="grp-h"><b class="latin">Beauty Picks</b><span>HARU가 쓰는 제품</span></div>
+        <div class="picks">
+          <div class="pick"><i style="background:var(--t1)"></i><div><b>립 틴트 03 로즈</b><span>18,000원</span></div></div>
+          <div class="pick"><i style="background:var(--t3)"></i><div><b>수분 쿠션 21호</b><span>32,000원</span></div></div>
+        </div>
+      </div>
+
+      <div class="grp">
+        <div class="row">
+          <div><b class="latin">Brand Collaboration</b><div class="sub">가을 스킨케어 협업 · 10.14 – 10.20</div></div>
+          <span>진행 중</span>
+        </div>
+      </div>
+
+      <div class="grp">
+        <div class="row">
+          <div><b class="latin">Shop</b><div class="sub">HARU SELECT · 상품 24개</div></div>
+          <span>바로 가기</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+<script>
+  // Draw the single link from the profile to the KNIL page address bar.
+  addEventListener("load", () => document.fonts.ready.then(() => {
+    const s = document.querySelector(".stage").getBoundingClientRect();
+    const a = document.getElementById("igtext").getBoundingClientRect();
+    const k = document.getElementById("kntext").getBoundingClientRect();
+    const igLine = document.querySelector(".ig-link .u").getBoundingClientRect();
+    const knPanel = document.querySelector(".kn").getBoundingClientRect();
+    // Align the KNIL address with the profile link's underline height.
+    const y = igLine.top + igLine.height / 2 - s.top;
+    const kn = document.querySelector(".kn");
+    const urlY = k.bottom + 3 - knPanel.top;
+    kn.style.top = (y - urlY) + "px";
+    const k2 = document.getElementById("kntext").getBoundingClientRect();
+    const w = document.getElementById("wire");
+    w.style.left = (a.right - s.left) + "px";
+    w.style.top = (y - 1) + "px";
+    w.style.width = (k2.right - a.right) + "px";
+    const c = document.getElementById("wirecap");
+    c.style.left = (document.querySelector(".ig").getBoundingClientRect().right - s.left + 28) + "px";
+    c.style.top = (y - 30) + "px";
+    const cap = document.getElementById("kncap");
+    cap.style.top = (parseFloat(kn.style.top) - 28) + "px";
+    document.body.dataset.ready = "1";
+  }));
+</script>
+</body>
+</html>
