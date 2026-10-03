@@ -40,7 +40,7 @@ export function Expansion() {
           tl.to(words[k - 1], { autoAlpha: 0, yPercent: -30 })
             .to(words[k], { autoAlpha: 1, yPercent: 0 }, "<0.15")
             .to(trail[k], { opacity: 1, duration: 0.4, ease: "none" }, "<")
-            .to("[data-progress]", { width: `${((k + 1) / stages.length) * 100}%`, duration: 0.6 }, "<")
+            .to("[data-progress]", { width: `${((k + 1) / stages.length) * 100}%`, duration: 0.7, ease: "power3.out" }, "<")
             .to({}, { duration: 0.6 });
         }
         tl.to(biz, { autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.14, ease: "power2.out" }).to({}, { duration: 0.8 });
@@ -72,12 +72,25 @@ export function Expansion() {
               </li>
             ))}
           </ol>
-          <div className="mt-3 h-px bg-rule">
+          {/* The rule runs off the right edge of the screen; its head is a
+              long swept arrow that is pushed forward one stage at a time. */}
+          <div className="-mr-[var(--margin)] mt-4 h-[1.5px] bg-rule">
             <div data-progress className="relative h-full w-full bg-ink">
-              <span
+              <svg
                 aria-hidden="true"
-                className="absolute top-1/2 right-0 size-[7px] -translate-y-1/2 rotate-45 border-t border-r border-ink"
-              />
+                viewBox="0 0 48 26"
+                className="absolute top-1/2 right-0 h-[26px] w-[48px] -translate-y-1/2 overflow-visible md:h-[32px] md:w-[60px]"
+              >
+                <path
+                  d="M3 1.5 C18 8 34 11.5 47 13 C34 14.5 18 18 3 24.5"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  vectorEffect="non-scaling-stroke"
+                />
+              </svg>
             </div>
           </div>
         </div>
