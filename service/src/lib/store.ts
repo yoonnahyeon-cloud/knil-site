@@ -6,6 +6,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { BASE } from "./base";
+import { toKorean } from "./errors";
 import { demoPage } from "./demo";
 import { local, localProposals } from "./local";
 import { remote } from "./remote";
@@ -52,7 +53,11 @@ export async function getPage(handle: string): Promise<Page | null> {
 export async function handleProblem(handle: string): Promise<string | null> {
   if (!HANDLE_RE.test(handle)) return "영문 소문자, 숫자, 마침표, 밑줄로 3~20자";
   if (RESERVED.has(handle)) return "사용할 수 없는 아이디입니다";
-  if (server ? await server.taken(handle) : local.taken(handle)) return "이미 사용 중인 아이디입니다";
+  try {
+    if (server ? await server.taken(handle) : local.taken(handle)) return "이미 사용 중인 아이디입니다";
+  } catch (e) {
+    return toKorean(e);
+  }
   return null;
 }
 

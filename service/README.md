@@ -22,7 +22,7 @@ Next.js 16 (App Router), TypeScript, Tailwind CSS 4. 모바일 우선.
 
 ## 데이터
 
-지금은 미리보기 단계라 모든 데이터가 브라우저(localStorage)에 저장됩니다. 화면은 `src/lib/store.ts` 만 거치므로 Supabase 연결 시 이 파일만 바꿉니다. 스키마는 `supabase/schema.sql`, 그다음 `supabase/002_collab.sql` (협업 프로필, 제안함), `supabase/003_chat.sql` (채팅, 번역 캐시).
+지금은 미리보기 단계라 모든 데이터가 브라우저(localStorage)에 저장됩니다. 화면은 `src/lib/store.ts` 만 거치므로 Supabase 연결 시 이 파일만 바꿉니다. 처음 한 번은 `supabase/setup.sql` 만 실행하면 돼요(아래 세 파일을 합친 것, 다시 실행해도 안전). 스키마는 `supabase/schema.sql`, 그다음 `supabase/002_collab.sql` (협업 프로필, 제안함), `supabase/003_chat.sql` (채팅, 번역 캐시).
 
 번역과 AI 답변은 Edge Function `supabase/functions/knil` 이 Claude API로 처리해요. Supabase 대시보드의 Edge Functions에서 `knil` 이름으로 붙여 넣어 배포하고 Verify JWT를 끄고, Secrets에 `ANTHROPIC_API_KEY` 를 넣어요.
 

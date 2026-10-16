@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { AtSign, ChevronLeft } from "lucide-react";
 import { IconTile } from "@/components/ui";
 
+import { toKorean } from "@/lib/errors";
 import { takePendingHandle } from "@/lib/pending";
 import { LIVE, createPage, getSession, handleProblem } from "@/lib/store";
 
@@ -49,7 +50,7 @@ export default function Start() {
       await createPage(handle, name.trim());
       router.replace("/edit");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "만들지 못했어요");
+      setError(toKorean(err));
       setBusy(false);
     }
   };

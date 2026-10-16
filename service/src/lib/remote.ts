@@ -1,6 +1,7 @@
 // Supabase backend. Tables and access rules: supabase/schema.sql.
 
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { KoreanError } from "./errors";
 import type { Block, ChatSettings, KnilEvent, Page, Portfolio, Proposal, ProposalStatus, Source } from "./types";
 
 type Row = {
@@ -41,14 +42,15 @@ export function remote(db: SupabaseClient) {
       return data ? toPage(data as Row) : null;
     },
     async taken(handle: string) {
-      const { count } = await db.from("pages").select("handle", { count: "exact", head: true }).eq("handle", handle);
+      const { count, error } = await db.from("pages").select("handle", { count: "exact", head: true }).eq("handle", handle);
+      if (error) throw new KoreanError(error);
       return (count ?? 0) > 0;
     },
     async createPage(handle: string, name: string, blocks: Block[]) {
       const uid = await this.userId();
-      if (!uid) throw new Error("로그인이 필요해요");
+      if (!uid) throw new Error("로그인이 필요해요. 다시 로그인해 주세요.");
       const { error } = await db.from("pages").insert({ handle, name, owner: uid, blocks });
-      if (error) throw new Error(error.code === "23505" ? "이미 사용 중인 아이디입니다" : error.message);
+      if (error) throw new KoreanError(error);
     },
     async savePage(page: Page) {
       const { profile, blocks } = page;
@@ -56,15 +58,15 @@ export function remote(db: SupabaseClient) {
         .from("pages")
         .update({ name: profile.name, bio: profile.bio, avatar_url: profile.avatar ?? null, blocks, updated_at: new Date().toISOString() })
         .eq("handle", profile.handle);
-      if (error) throw new Error(error.message);
+      if (error) throw new KoreanError(error);
     },
     async upload(dataUrl: string): Promise<string> {
       const uid = await this.userId();
-      if (!uid) throw new Error("로그인이 필요해요");
+      if (!uid) throw new Error("로그인이 필요해요. 다시 로그인해 주세요.");
       const blob = await (await fetch(dataUrl)).blob();
       const path = `${uid}/${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}.jpg`;
       const { error } = await db.storage.from("media").upload(path, blob, { contentType: "image/jpeg" });
-      if (error) throw new Error(error.message);
+      if (error) throw new KoreanError(error);
       return db.storage.from("media").getPublicUrl(path).data.publicUrl;
     },
     async events(handle: string, since: number): Promise<KnilEvent[]> {
@@ -93,11 +95,11 @@ export function remote(db: SupabaseClient) {
     // portfolio column exists (supabase/002_collab.sql).
     async savePortfolio(handle: string, portfolio: Portfolio) {
       const { error } = await db.from("pages").update({ portfolio }).eq("handle", handle);
-      if (error) throw new Error(error.message);
+      if (error) throw new KoreanError(error);
     },
     async sendProposal(p: Omit<Proposal, "id" | "status" | "at">) {
       const { error } = await db.from("proposals").insert(p);
-      if (error) throw new Error(error.message);
+      if (error) throw new KoreanError(error);
     },
     async proposals(handle: string): Promise<Proposal[]> {
       const { data, error } = await db.from("proposals").select("*").eq("handle", handle).order("created_at", { ascending: false });
@@ -106,11 +108,11 @@ export function remote(db: SupabaseClient) {
     },
     async setProposalStatus(id: string, status: ProposalStatus) {
       const { error } = await db.from("proposals").update({ status }).eq("id", Number(id));
-      if (error) throw new Error(error.message);
+      if (error) throw new KoreanError(error);
     },
     async sendLoginLink(email: string, redirectTo: string) {
       const { error } = await db.auth.signInWithOtp({ email, options: { emailRedirectTo: redirectTo } });
-      if (error) throw new Error(error.status === 429 ? "잠시 후 다시 시도해 주세요" : error.message);
+      if (error) throw new KoreanError(error);
     },
     async signOut() {
       await db.auth.signOut();

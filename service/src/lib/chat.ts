@@ -5,6 +5,7 @@
 // sample page and the storage-only preview keep everything in this browser.
 
 import { demoAiReply, demoDict, demoPage, demoThreads } from "./demo";
+import { KoreanError } from "./errors";
 import { supabase } from "./supabase";
 import type { ChatMessage, ChatSettings, ChatThread, Page } from "./types";
 
@@ -32,7 +33,7 @@ function write(key: string, value: unknown) {
 
 async function call<T>(body: Record<string, unknown>): Promise<T> {
   const { data, error } = await supabase!.functions.invoke("knil", { body });
-  if (error) throw new Error(error.message);
+  if (error) throw new KoreanError(error);
   return data as T;
 }
 
@@ -161,6 +162,6 @@ export async function saveChatSettings(page: Page, chat: ChatSettings) {
   const { savePage } = await import("./store");
   if (isLocal(page.profile.handle)) return savePage({ ...page, chat });
   const { error } = await supabase!.from("pages").update({ chat }).eq("handle", page.profile.handle);
-  if (error) throw new Error(error.message);
+  if (error) throw new KoreanError(error);
   changed();
 }

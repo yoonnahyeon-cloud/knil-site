@@ -46,7 +46,7 @@ export const local = {
   savePage(page: Page) {
     const all = read<Record<string, Page>>(K.pages, {});
     all[page.profile.handle] = { ...page, updatedAt: Date.now() };
-    if (!write(K.pages, all)) throw new Error("storage full");
+    if (!write(K.pages, all)) throw new Error("이 기기의 저장 공간이 가득 찼어요. 사진 수를 줄여 주세요.");
   },
   session(): string | null {
     const s = read<string | { handle: string } | null>(K.session, null);

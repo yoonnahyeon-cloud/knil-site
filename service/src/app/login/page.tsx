@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { ChevronLeft, Mail, MailCheck } from "lucide-react";
 import { IconTile } from "@/components/ui";
+import { toKorean } from "@/lib/errors";
 import { sendLoginLink } from "@/lib/store";
 
 // Email login: Supabase mails a one-tap link that brings the creator back
@@ -24,7 +25,7 @@ export default function Login() {
       await sendLoginLink(email.trim());
       setState("sent");
     } catch (err) {
-      setError(err instanceof Error ? err.message : "보내지 못했어요");
+      setError(toKorean(err));
       setState("idle");
     }
   };
