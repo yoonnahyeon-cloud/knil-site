@@ -25,6 +25,7 @@ import {
 import { Avatar } from "@/components/CreatorPage";
 import { activeBrand, getBrand, isClinic, setMode, useMode, type Mode } from "@/lib/brand";
 import { BrandSwitcher } from "@/components/BrandSwitcher";
+import { resetBrandIntro } from "@/components/BrandIntro";
 import { BASE, displayUrl, publicUrl } from "@/lib/base";
 import { getMyPage, getPage, useStore } from "@/lib/store";
 import type { Page } from "@/lib/types";
@@ -126,6 +127,7 @@ export function AppShell({ children, wide }: { children: (page: Page) => React.R
   const side = mode === "brand" ? (clinic ? CLINIC_SIDE : BRAND_SIDE) : SIDE;
   const switchTo = (m: Mode) => {
     if (m === mode) return;
+    if (m === "brand") resetBrandIntro();
     setMode(m);
     router.push(HOME[m]);
   };

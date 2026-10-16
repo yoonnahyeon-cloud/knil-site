@@ -10,6 +10,13 @@ const HIDE_UNTIL = "knil:brand:intro:until";
 const SHOWN = "knil:brand:intro:shown";
 const DAY = 24 * 60 * 60 * 1000;
 
+// Switching to the brand view shows the intro again.
+export function resetBrandIntro() {
+  try {
+    sessionStorage.removeItem(SHOWN);
+  } catch {}
+}
+
 const ITEMS: { icon: LucideIcon; tone: Tone; title: string; body: string; tags: string[] }[] = [
   {
     icon: Handshake,
