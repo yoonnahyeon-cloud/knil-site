@@ -95,6 +95,8 @@ export function tryDemo() {
 }
 
 export async function sendLoginLink(email: string) {
+  // Leave the sample account so the real one takes over after the link.
+  local.signOut();
   await server!.sendLoginLink(email, `${location.origin}${BASE}/`);
 }
 
