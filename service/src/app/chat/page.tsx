@@ -186,7 +186,7 @@ function Conversation({ page, id }: { page: Page; id: string }) {
   const t = all?.find((x) => x.id === id);
   const [text, setText] = useState("");
   const [state, setState] = useState<"idle" | "sending" | "error">("idle");
-  const [originals, setOriginals] = useState(false);
+  const [originals, setOriginals] = useState(true);
   const end = useRef<HTMLDivElement>(null);
   const l = langOf(t?.lang ?? "ko");
 
@@ -220,31 +220,45 @@ function Conversation({ page, id }: { page: Page; id: string }) {
           <p className="text-[12px] text-mute">{l.ko}로 대화 중</p>
         </div>
         {t?.lang !== "ko" && (
-          <button onClick={() => setOriginals(!originals)} className={`rounded-full px-3 py-1.5 text-[12px] font-bold ${originals ? "bg-ink text-white" : "bg-surface"}`}>
-            원문
+          <button onClick={() => setOriginals(!originals)} className="flex items-center gap-1.5 rounded-full bg-surface py-1.5 pr-1.5 pl-3 text-[12px] font-bold">
+            원문 함께 보기
+            <span className={`relative h-5 w-8 rounded-full transition-colors ${originals ? "bg-ink" : "bg-[#d4d4d4]"}`}>
+              <span className={`absolute top-0.5 size-4 rounded-full bg-white shadow-sm transition-all ${originals ? "left-3.5" : "left-0.5"}`} />
+            </span>
           </button>
         )}
       </div>
 
       <div className="flex-1 space-y-3 bg-surface/60 px-4 py-5">
-        {msgs?.map((m) =>
-          m.from === "owner" ? (
-            <div key={m.id} className="flex flex-col items-end">
-              <p className="max-w-[80%] whitespace-pre-wrap rounded-[20px] rounded-br-md bg-ink px-4 py-2.5 text-[15px] text-white">{m.ko}</p>
-              {originals && m.visitor !== m.ko && <p className="mt-1 max-w-[80%] text-right text-[12px] text-mute">{m.visitor}</p>}
-            </div>
-          ) : (
-            <div key={m.id} className="flex flex-col items-start">
+        {msgs?.map((m) => {
+          const both = originals && t?.lang !== "ko" && !!m.visitor && m.visitor !== m.ko;
+          const mine = m.from === "owner";
+          return (
+            <div key={m.id} className={`flex flex-col ${mine ? "items-end" : "items-start"}`}>
               {m.from === "ai" && (
                 <span className="mb-1 flex items-center gap-1 text-[11px] font-bold text-signal">
                   <Sparkles size={12} /> AI가 대신 답했어요
                 </span>
               )}
-              <p className={`max-w-[80%] whitespace-pre-wrap rounded-[20px] rounded-bl-md px-4 py-2.5 text-[15px] shadow-sm ${m.from === "ai" ? "bg-soft" : "bg-white"}`}>{m.ko}</p>
-              {originals && m.visitor !== m.ko && <p className="mt-1 max-w-[80%] text-[12px] text-mute">{m.visitor}</p>}
+              <div
+                className={`max-w-[85%] rounded-[20px] px-4 py-2.5 text-[15px] [overflow-wrap:anywhere] ${
+                  mine ? "rounded-br-md bg-ink text-white" : m.from === "ai" ? "rounded-bl-md bg-mist" : "rounded-bl-md bg-white shadow-sm"
+                }`}
+              >
+                {both && (
+                  <>
+                    <p className="whitespace-pre-wrap">{m.visitor}</p>
+                    <div className={`my-2.5 border-t ${mine ? "border-white/20" : "border-ink/10"}`} />
+                    <p className={`mb-0.5 flex items-center gap-1 text-[11px] font-bold ${mine ? "text-white/60" : "text-mute"}`}>
+                      <Languages size={12} /> 한국어
+                    </p>
+                  </>
+                )}
+                <p className={`whitespace-pre-wrap ${both ? (mine ? "text-white/85" : "text-ink/75") : ""}`}>{m.ko}</p>
+              </div>
             </div>
-          ),
-        )}
+          );
+        })}
         <div ref={end} />
       </div>
 

@@ -13,11 +13,11 @@ export function PhoneFrame({ width, children }: { width: number; children: React
   return (
     <div style={{ width, height: (SCREEN_H + BEZEL * 2) * scale }}>
       <div
-        className="relative origin-top-left rounded-[60px] bg-ink shadow-[0_30px_80px_-20px_rgba(60,30,140,0.45)]"
+        className="relative origin-top-left rounded-[60px] bg-ink shadow-[0_30px_80px_-24px_rgba(0,0,0,0.35)]"
         style={{ width: outerW, height: SCREEN_H + BEZEL * 2, padding: BEZEL, transform: `scale(${scale})` }}
       >
-        <div className="relative size-full overflow-hidden rounded-[48px] bg-white">
-          <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex h-[54px] items-center justify-between bg-white/90 px-8 pt-1 backdrop-blur">
+        <div className="relative isolate size-full overflow-hidden rounded-[48px] bg-white [clip-path:inset(0_round_48px)]">
+          <div className="pointer-events-none absolute inset-x-0 top-0 z-10 flex h-[54px] items-center justify-between rounded-t-[48px] bg-white/90 px-8 pt-1 backdrop-blur">
             <span className="w-14 text-center text-[16px] font-semibold tracking-normal">9:41</span>
             <span className="h-[34px] w-[124px] rounded-full bg-ink" />
             <span className="flex w-14 items-center justify-end gap-1">
