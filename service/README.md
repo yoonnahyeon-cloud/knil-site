@@ -8,18 +8,20 @@ Next.js 16 (App Router), TypeScript, Tailwind CSS 4. 모바일 우선.
 
 | 주소 | 내용 |
 | --- | --- |
-| `/` | 시작 화면 (가입, 예시 계정 둘러보기) |
-| `/start` | 주소(아이디)와 이름 정하기 |
-| `/edit` | 페이지 편집: 프로필, 블록 추가·수정·순서·숨김, 미리보기 |
-| `/stats` | 방문, 클릭, 클릭률, 일별 그래프, 많이 누른 링크, 유입 경로 |
-| `/dm` | 댓글 키워드 자동 DM (준비 중, `../docs/instagram-auto-dm.md`) |
-| `/@아이디` | 공개 크리에이터 페이지 |
+| `/` | 시작 화면 (주소 바로 정하기, 예시 페이지, 기능 소개) |
+| `/login`, `/start` | 이메일 로그인, 주소(아이디)와 이름 정하기 |
+| `/home` | 대시보드: 오늘 방문·클릭, 시작하기 체크리스트, 도구, 협업 요약 |
+| `/edit`, `/stats` | 링크(블록) 편집과 미리보기, 통계 |
+| `/dm` | 댓글 키워드 자동 DM 소개와 템플릿 (준비 중, `../docs/instagram-auto-dm.md`) |
+| `/collab` | 캠페인, 제안함(브랜드가 보낸 협업 제안), 협업 프로필 |
+| `/menu`, `/invite`, `/membership`, `/settings` | 전체 메뉴, 친구 초대, 멤버십, 설정 |
+| `/@아이디` | 공개 크리에이터 페이지 (협업 제안하기 버튼 포함) |
 
 블록 종류: 채널, 링크, 영상, 룩·사진, 상품 (`src/lib/types.ts`).
 
 ## 데이터
 
-지금은 미리보기 단계라 모든 데이터가 브라우저(localStorage)에 저장됩니다. 화면은 `src/lib/store.ts` 만 거치므로 Supabase 연결 시 이 파일만 바꿉니다. 스키마는 `supabase/schema.sql`.
+지금은 미리보기 단계라 모든 데이터가 브라우저(localStorage)에 저장됩니다. 화면은 `src/lib/store.ts` 만 거치므로 Supabase 연결 시 이 파일만 바꿉니다. 스키마는 `supabase/schema.sql`, 그다음 `supabase/002_collab.sql` (협업 프로필, 제안함).
 
 예시 계정 `rosie` 의 페이지와 통계는 설명용 예시 데이터입니다 (`src/lib/demo.ts`).
 

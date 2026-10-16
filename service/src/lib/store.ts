@@ -7,10 +7,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { BASE } from "./base";
 import { demoPage } from "./demo";
-import { local } from "./local";
+import { local, localProposals } from "./local";
 import { remote } from "./remote";
 import { supabase } from "./supabase";
-import type { Block, KnilEvent, Page, Source } from "./types";
+import type { Block, KnilEvent, Page, Portfolio, Proposal, ProposalStatus, Source } from "./types";
 
 export const LIVE = !!supabase;
 const server = supabase ? remote(supabase) : null;
@@ -70,6 +70,27 @@ export async function createPage(handle: string, name: string) {
 export async function savePage(page: Page) {
   if (isDemo(page.profile.handle)) local.savePage(page);
   else await server!.savePage(page);
+  changed();
+}
+
+export async function savePortfolio(page: Page, portfolio: Portfolio) {
+  if (isDemo(page.profile.handle)) local.savePage({ ...page, portfolio });
+  else await server!.savePortfolio(page.profile.handle, portfolio);
+  changed();
+}
+
+export async function sendProposal(p: Omit<Proposal, "id" | "status" | "at">) {
+  if (isDemo(p.handle)) localProposals.add({ ...p, id: uid(), status: "new", at: Date.now() });
+  else await server!.sendProposal(p);
+}
+
+export async function proposals(handle: string): Promise<Proposal[]> {
+  return isDemo(handle) ? localProposals.list(handle) : server!.proposals(handle);
+}
+
+export async function setProposalStatus(handle: string, id: string, status: ProposalStatus) {
+  if (isDemo(handle)) localProposals.setStatus(id, status);
+  else await server!.setProposalStatus(id, status);
   changed();
 }
 

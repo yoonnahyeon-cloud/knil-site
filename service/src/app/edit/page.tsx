@@ -6,7 +6,8 @@ import { Avatar, CreatorPage } from "@/components/CreatorPage";
 import { BLOCK_INFO, BlockForm, ImagePick, SmallBtn, UploadContext, blockTitle, newBlock } from "@/components/BlockForm";
 import { Field, Sheet } from "@/components/Sheet";
 import { normalizeUrl } from "@/lib/image";
-import { savePage, storeImage } from "@/lib/store";
+import Link from "next/link";
+import { events, savePage, storeImage, useStore } from "@/lib/store";
 import type { Block, BlockType, Page, Profile } from "@/lib/types";
 
 export default function EditPage() {
@@ -59,6 +60,8 @@ function Editor({ page }: { page: Page }) {
             </div>
             <span className="shrink-0 text-[13px] text-mute">수정</span>
           </button>
+
+          <VisitStrip handle={page.profile.handle} />
 
           <ul className="border-t border-ink">
             {page.blocks.map((b, i) => (
@@ -162,4 +165,29 @@ function cleanUrls(b: Block): Block {
   if ("url" in b) b = { ...b, url: normalizeUrl(b.url) };
   if ("items" in b) b = { ...b, items: b.items.map((it: { url: string }) => ({ ...it, url: normalizeUrl(it.url) })) } as Block;
   return b;
+}
+
+const DAY = 86400000;
+
+// "오늘 · 7일 · 30일" visits at a glance, linking to the full statistics.
+function VisitStrip({ handle }: { handle: string }) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const since = today.getTime() - 29 * DAY;
+  const list = useStore(() => events(handle, since), [handle, since]);
+  const views = (from: number) => (list ? list.filter((e) => e.kind === "view" && e.at >= from).length.toLocaleString("ko-KR") : "–");
+  return (
+    <Link href="/stats" className="mb-5 flex items-center gap-4 bg-white px-4 py-3 text-[14px]">
+      <span>
+        오늘 <b>{views(today.getTime())}</b>
+      </span>
+      <span>
+        7일 <b>{views(today.getTime() - 6 * DAY)}</b>
+      </span>
+      <span>
+        30일 <b>{views(since)}</b>
+      </span>
+      <span className="ml-auto text-mute">통계 ›</span>
+    </Link>
+  );
 }

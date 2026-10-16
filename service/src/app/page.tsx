@@ -24,7 +24,7 @@ export default function Home() {
   // Signed in already (or just back from the login email): go straight on.
   useEffect(() => {
     getSession().then((s) => {
-      if (s?.handle) router.replace("/edit");
+      if (s?.handle) router.replace("/home");
       else if (s) router.replace("/start");
       else setChecked(true);
     });
@@ -32,7 +32,7 @@ export default function Home() {
 
   const demo = () => {
     tryDemo();
-    router.push("/edit");
+    router.push("/home");
   };
   const begin = LIVE ? "/login" : "/start";
 

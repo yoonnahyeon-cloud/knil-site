@@ -26,7 +26,33 @@ export type Profile = {
   avatar?: string;
 };
 
-export type Page = { profile: Profile; blocks: Block[]; updatedAt: number };
+export type Page = { profile: Profile; blocks: Block[]; updatedAt: number; portfolio?: Portfolio };
+
+// What brands see when choosing creators: the data side of a creator.
+export type Portfolio = {
+  intro: string;
+  categories: string[];
+  tags: string[];
+  region: string;
+  audience: string;
+  collabs: string;
+};
+
+export const CATEGORIES = ["뷰티", "패션", "푸드", "여행", "리빙", "육아", "운동", "테크", "반려동물", "교육", "게임", "음악"];
+
+export type ProposalStatus = "new" | "progress" | "done";
+
+// A collaboration request a brand sends from a creator's public page.
+export type Proposal = {
+  id: string;
+  handle: string;
+  brand: string;
+  contact: string;
+  budget: string;
+  message: string;
+  status: ProposalStatus;
+  at: number;
+};
 
 // One row per visit or click. `target` is the block id (and item id, joined
 // with ":") that was clicked; `source` is where the visitor came from.

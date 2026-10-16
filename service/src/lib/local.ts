@@ -2,7 +2,7 @@
 // and always for the sample account so visitors can try the editor freely.
 
 import { demoEvents, demoPage } from "./demo";
-import type { KnilEvent, Page } from "./types";
+import type { KnilEvent, Page, Proposal, ProposalStatus } from "./types";
 
 const K = {
   pages: "knil:pages",
@@ -66,5 +66,19 @@ export const local = {
     const all = read<KnilEvent[]>(K.events, []);
     all.push(e);
     write(K.events, all.slice(-5000));
+  },
+};
+
+const PROPOSALS = "knil:proposals";
+
+export const localProposals = {
+  list(handle: string): Proposal[] {
+    return read<Proposal[]>(PROPOSALS, []).filter((p) => p.handle === handle).sort((a, b) => b.at - a.at);
+  },
+  add(p: Proposal) {
+    write(PROPOSALS, [...read<Proposal[]>(PROPOSALS, []), p]);
+  },
+  setStatus(id: string, status: ProposalStatus) {
+    write(PROPOSALS, read<Proposal[]>(PROPOSALS, []).map((p) => (p.id === id ? { ...p, status } : p)));
   },
 };

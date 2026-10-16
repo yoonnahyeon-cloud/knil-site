@@ -1,15 +1,18 @@
 // Supabase backend. Tables and access rules: supabase/schema.sql.
 
 import type { SupabaseClient } from "@supabase/supabase-js";
-import type { Block, KnilEvent, Page, Source } from "./types";
+import type { Block, KnilEvent, Page, Portfolio, Proposal, ProposalStatus, Source } from "./types";
 
-type Row = { handle: string; name: string; bio: string; avatar_url: string | null; blocks: Block[]; updated_at: string };
+type Row = { handle: string; name: string; bio: string; avatar_url: string | null; blocks: Block[]; updated_at: string; portfolio?: Portfolio | null };
 
 const toPage = (r: Row): Page => ({
   profile: { handle: r.handle, name: r.name, bio: r.bio, avatar: r.avatar_url ?? undefined },
   blocks: r.blocks ?? [],
   updatedAt: Date.parse(r.updated_at),
+  portfolio: r.portfolio ?? undefined,
 });
+
+type ProposalRow = { id: number; handle: string; brand: string; contact: string; budget: string; message: string; status: ProposalStatus; created_at: string };
 
 export function remote(db: SupabaseClient) {
   return {
@@ -75,6 +78,25 @@ export function remote(db: SupabaseClient) {
     },
     record(e: KnilEvent) {
       void db.from("events").insert({ handle: e.handle, kind: e.kind, target: e.target ?? null, source: e.source });
+    },
+    // Kept apart from savePage so pages keep saving even before the
+    // portfolio column exists (supabase/002_collab.sql).
+    async savePortfolio(handle: string, portfolio: Portfolio) {
+      const { error } = await db.from("pages").update({ portfolio }).eq("handle", handle);
+      if (error) throw new Error(error.message);
+    },
+    async sendProposal(p: Omit<Proposal, "id" | "status" | "at">) {
+      const { error } = await db.from("proposals").insert(p);
+      if (error) throw new Error(error.message);
+    },
+    async proposals(handle: string): Promise<Proposal[]> {
+      const { data, error } = await db.from("proposals").select("*").eq("handle", handle).order("created_at", { ascending: false });
+      if (error || !data) return [];
+      return (data as ProposalRow[]).map((r) => ({ ...r, id: String(r.id), at: Date.parse(r.created_at) }));
+    },
+    async setProposalStatus(id: string, status: ProposalStatus) {
+      const { error } = await db.from("proposals").update({ status }).eq("id", Number(id));
+      if (error) throw new Error(error.message);
     },
     async sendLoginLink(email: string, redirectTo: string) {
       const { error } = await db.auth.signInWithOtp({ email, options: { emailRedirectTo: redirectTo } });

@@ -20,7 +20,7 @@ export default function Start() {
     if (LIVE)
       getSession().then((s) => {
         if (!s || s.demo) router.replace("/login");
-        else if (s.handle) router.replace("/edit");
+        else if (s.handle) router.replace("/home");
       });
   }, [router]);
 

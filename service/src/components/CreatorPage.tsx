@@ -1,6 +1,8 @@
 "use client";
 
-import { record } from "@/lib/store";
+import { useState } from "react";
+import { Field, Sheet } from "@/components/Sheet";
+import { record, sendProposal } from "@/lib/store";
 import type { Block, Page } from "@/lib/types";
 
 const TONES = ["bg-tone-1", "bg-tone-2", "bg-tone-3", "bg-tone-4"];
@@ -9,6 +11,7 @@ const TONES = ["bg-tone-1", "bg-tone-2", "bg-tone-3", "bg-tone-4"];
 // tracking and navigation, for the live preview inside the editor.
 export function CreatorPage({ page, preview = false }: { page: Page; preview?: boolean }) {
   const { profile } = page;
+  const [proposing, setProposing] = useState(false);
   const blocks = page.blocks.filter((b) => !b.hidden);
 
   const go = (target: string, url: string) => (e: React.MouseEvent) => {
@@ -38,6 +41,13 @@ export function CreatorPage({ page, preview = false }: { page: Page; preview?: b
           </div>
         </section>
 
+        <button
+          onClick={() => !preview && setProposing(true)}
+          className="mb-6 h-11 w-full border border-ink text-[14px] font-semibold active:bg-ink/5"
+        >
+          협업 제안하기
+        </button>
+
         {blocks.map((b, i) => (
           <BlockView key={b.id} block={b} first={i === 0} go={go} name={profile.name} />
         ))}
@@ -46,6 +56,7 @@ export function CreatorPage({ page, preview = false }: { page: Page; preview?: b
 
         <p className="mt-14 text-center font-display text-[13px] font-bold tracking-tight text-mute">knil</p>
       </div>
+      {proposing && <ProposalSheet handle={profile.handle} name={profile.name} onClose={() => setProposing(false)} />}
     </div>
   );
 }
@@ -169,4 +180,48 @@ function platformOf(url: string) {
   if (/instagram/.test(url)) return "Instagram";
   if (/tiktok/.test(url)) return "TikTok";
   return undefined;
+}
+
+// A brand's collaboration request; lands in the creator's 제안함.
+function ProposalSheet({ handle, name, onClose }: { handle: string; name: string; onClose: () => void }) {
+  const [f, setF] = useState({ brand: "", contact: "", budget: "", message: "" });
+  const [state, setState] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const ok = f.brand.trim() && f.contact.trim().length >= 3 && f.message.trim();
+  const set = (k: keyof typeof f) => (v: string) => setF({ ...f, [k]: v });
+
+  const send = async () => {
+    if (!ok || state === "sending") return;
+    setState("sending");
+    try {
+      await sendProposal({ handle, brand: f.brand.trim(), contact: f.contact.trim(), budget: f.budget.trim(), message: f.message.trim() });
+      setState("sent");
+    } catch {
+      setState("error");
+    }
+  };
+
+  return (
+    <Sheet title={`${name}에게 협업 제안`} onClose={onClose}>
+      {state === "sent" ? (
+        <div className="py-16 text-center">
+          <p className="text-[20px] font-bold">제안을 보냈어요.</p>
+          <p className="mt-2 text-mute">{name}님이 확인하면 남겨주신 연락처로 답할 거예요.</p>
+          <button onClick={onClose} className="btn-ghost mt-8 px-8">
+            닫기
+          </button>
+        </div>
+      ) : (
+        <>
+          <Field label="브랜드 · 회사명" value={f.brand} onChange={set("brand")} placeholder="KNIL 코스메틱" />
+          <Field label="연락처" value={f.contact} onChange={set("contact")} placeholder="이메일 또는 전화번호" />
+          <Field label="예산 (선택)" value={f.budget} onChange={set("budget")} placeholder="50만원, 제품 제공 등" />
+          <Field label="제안 내용" value={f.message} onChange={set("message")} placeholder="협업 형태, 일정, 원하는 콘텐츠를 적어주세요" multiline />
+          {state === "error" && <p className="mt-3 text-[13px] text-signal">보내지 못했어요. 잠시 후 다시 시도해 주세요.</p>}
+          <button onClick={send} disabled={!ok || state === "sending"} className="btn mt-8 w-full">
+            {state === "sending" ? "보내는 중…" : "제안 보내기"}
+          </button>
+        </>
+      )}
+    </Sheet>
+  );
 }
