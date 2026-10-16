@@ -1,0 +1,32 @@
+1:"$Sreact.fragment"
+2:"/knil-site/app/_next/static/chunks/303l-mksm4yne.js"
+3:I[73483,["$2"],"default"]
+4:I[83608,["$2"],"default"]
+5:"/knil-site/app/_next/static/chunks/3vz9p2lmmoq7d.js"
+6:"/knil-site/app/_next/static/chunks/2q9kdawe593by.js"
+7:"/knil-site/app/_next/static/chunks/33g133t98q397.js"
+8:I[8816,["$2","$5","$6","$7"],"default"]
+c:I[51784,["$2"],"ClientPageRoot"]
+d:"/knil-site/app/_next/static/chunks/0-uwc7jqpmps_.js"
+e:"/knil-site/app/_next/static/chunks/1m7mzvc424eld.js"
+f:I[9615,["$2","$d","$7","$e","$6"],"default"]
+12:I[84847,["$2"],"OutletBoundary"]
+13:"$Sreact.suspense"
+15:"ViewportBoundary"
+16:I[84847,["$2"],"$15"]
+18:"MetadataBoundary"
+19:I[84847,["$2"],"$18"]
+1b:I[4845,["$2"],"default",1]
+:HL["/knil-site/app/_next/static/chunks/0k8ma89h42t_7.css","style"]
+:HL["/knil-site/app/_next/static/media/21ca8f3f56c22ca2-s.p.1cp9-4nby68jc.woff2","font",{"crossOrigin":"","type":"font/woff2"}]
+:HL["https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css","style"]
+a:X
+b:[["children",{"s":"__PAGE__","h":512,"d":{"r":["$","$1","c",{"children":[["$","$Lc",null,{"Component":"$f","serverProvidedParams":{"searchParams":{},"params":{},"promises":["$@10","$@11"]}}],[["$","script","script-0",{"src":"/knil-site/app/_next/static/chunks/0-uwc7jqpmps_.js","async":true,"nonce":"$undefined"}],["$","script","script-1",{"src":"/knil-site/app/_next/static/chunks/33g133t98q397.js","async":true,"nonce":"$undefined"}],["$","script","script-2",{"src":"/knil-site/app/_next/static/chunks/1m7mzvc424eld.js","async":true,"nonce":"$undefined"}],["$","script","script-3",{"src":"/knil-site/app/_next/static/chunks/2q9kdawe593by.js","async":true,"nonce":"$undefined"}]],["$","$L12",null,{"children":["$","$13",null,{"name":"Next.MetadataOutlet","children":"$@14"}]}]]}],"p":false,"v":null}}]]
+9:[["children",{"s":"invite","h":512,"d":{"r":["$","$1","c",{"children":[null,["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":"$undefined","forbidden":"$undefined","unauthorized":"$undefined"}]]}],"p":false,"v":"$a"},"c":"$Qb"}]]
+0:{"P":null,"c":["","invite",""],"q":"","i":false,"t":{"t":{"s":"","h":528,"d":{"r":["$","$1","c",{"children":[[["$","link","0",{"rel":"stylesheet","href":"/knil-site/app/_next/static/chunks/0k8ma89h42t_7.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}],["$","script","script-0",{"src":"/knil-site/app/_next/static/chunks/303l-mksm4yne.js","async":true,"nonce":"$undefined"}]],["$","html",null,{"lang":"ko","className":"Nn6UMa_variable","children":[["$","head",null,{"children":["$","link",null,{"rel":"stylesheet","href":"https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"}]}],["$","body",null,{"children":["$","$L3",null,{"parallelRouterKey":"children","error":"$undefined","errorStyles":"$undefined","errorScripts":"$undefined","template":["$","$L4",null,{}],"templateStyles":"$undefined","templateScripts":"$undefined","notFound":[["$","$L8",null,{}],[]],"forbidden":"$undefined","unauthorized":"$undefined"}]}]]}]]}],"p":false,"v":null},"c":"$Q9"},"h":{"r":["$","$1","h",{"children":[null,["$","$L16",null,{"children":"$L17"}],["$","$L19",null,{"children":[["$","div",null,{"hidden":true,"children":["$","$13",null,{"name":"Next.Metadata","children":"$L1a"}]}],null]}],["$","meta",null,{"name":"next-size-adjust","content":""}]]}],"p":false,"v":null}},"m":"$undefined","G":["$1b",[["$","link","0",{"rel":"stylesheet","href":"/knil-site/app/_next/static/chunks/0k8ma89h42t_7.css","precedence":"next","crossOrigin":"$undefined","nonce":"$undefined"}]]],"S":true,"r":"$undefined","s":"$undefined","a":"$undefined","l":"$undefined","p":"$undefined","d":"$undefined","b":"5fOOf3JdHKpJYXMaMpXVw"}
+a:C
+10:{}
+11:"$b:0:1:d:r:props:children:0:props:serverProvidedParams:params"
+17:[["$","meta","0",{"charSet":"utf-8"}],["$","meta","1",{"name":"viewport","content":"width=device-width, initial-scale=1, viewport-fit=cover"}],["$","meta","2",{"name":"theme-color","content":"#ffffff"}]]
+14:null
+1a:[["$","title","0",{"children":"KNIL"}],["$","meta","1",{"name":"description","content":"크리에이터의 모든 활동을 하나의 KNIL로."}],["$","meta","2",{"name":"robots","content":"noindex, nofollow"}]]
