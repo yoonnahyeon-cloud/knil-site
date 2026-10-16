@@ -47,14 +47,14 @@ const CLINIC_TABS: Nav[] = [
   { href: "/brand/link", label: "페이지", icon: Link2 },
   { href: "/chat", label: "상담", icon: MessageCircleMore },
   { href: "/brand/creators", label: "크리에이터", icon: Search, also: ["/brand/proposals", "/brand/campaigns"] },
-  { href: "/menu", label: "전체", icon: Menu, also: ["/settings", "/brand/profile"] },
+  { href: "/menu", label: "전체", icon: Menu, also: ["/settings", "/brand/profile", "/brand/membership"] },
 ];
 const BRAND_TABS: Nav[] = [
   { href: "/brand", label: "홈", icon: House },
   { href: "/brand/campaigns", label: "캠페인", icon: Megaphone },
   { href: "/brand/creators", label: "크리에이터", icon: Search, also: ["/brand/proposals"] },
   { href: "/chat", label: "채팅", icon: MessageCircleMore },
-  { href: "/menu", label: "전체", icon: Menu, also: ["/settings", "/brand/profile", "/brand/link"] },
+  { href: "/menu", label: "전체", icon: Menu, also: ["/settings", "/brand/profile", "/brand/link", "/brand/membership"] },
 ];
 
 const CLINIC_SIDE: Nav[] = [
@@ -65,6 +65,7 @@ const CLINIC_SIDE: Nav[] = [
   { href: "/brand/proposals", label: "보낸 제안", icon: Send },
   { href: "/brand/campaigns", label: "캠페인", icon: Megaphone },
   { href: "/brand/profile", label: "계정 정보", icon: Building2 },
+  { href: "/brand/membership", label: "멤버십", icon: Crown },
   { href: "/settings", label: "설정", icon: Settings },
 ];
 const BRAND_SIDE: Nav[] = [
@@ -75,6 +76,7 @@ const BRAND_SIDE: Nav[] = [
   { href: "/brand/link", label: "브랜드 페이지", icon: Link2 },
   { href: "/chat", label: "AI 해외 고객 상담", icon: MessageCircleMore },
   { href: "/brand/profile", label: "계정 정보", icon: Building2 },
+  { href: "/brand/membership", label: "멤버십", icon: Crown },
   { href: "/settings", label: "설정", icon: Settings },
 ];
 

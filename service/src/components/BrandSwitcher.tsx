@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Check, ChevronDown, Plus } from "lucide-react";
+import { Check, ChevronDown, Crown, Plus } from "lucide-react";
 import { Avatar } from "@/components/CreatorPage";
 import { BRAND_ACCOUNTS, activeBrand, getBrand, setActiveBrand } from "@/lib/brand";
 import { getPage, useStore } from "@/lib/store";
@@ -50,13 +50,18 @@ export function BrandSwitcher({ className = "", compact }: { className?: string;
                 {a.handle === active && <Check size={17} />}
               </button>
             ))}
-            <div className="mt-1 flex items-center gap-3 rounded-xl px-2.5 py-2 text-mute">
+            <button onClick={() => (setOpen(false), router.push("/brand/membership"))} className="mt-1 flex w-full items-center gap-3 rounded-xl px-2.5 py-2 text-left hover:bg-surface">
               <span className="grid size-[34px] place-items-center rounded-full bg-surface">
                 <Plus size={16} />
               </span>
-              <span className="flex-1 text-[14px]">계정 추가</span>
-              <span className="rounded-full bg-surface px-2 py-0.5 text-[11px] font-bold">준비 중</span>
-            </div>
+              <span className="min-w-0 flex-1">
+                <span className="block text-[14px] font-bold">계정 추가</span>
+                <span className="block text-[12px] text-mute">2개부터는 멤버십이 필요해요</span>
+              </span>
+              <span className="flex items-center gap-1 rounded-full bg-ink px-2.5 py-1 text-[11px] font-bold text-white">
+                <Crown size={12} /> 멤버십
+              </span>
+            </button>
           </div>
         </>
       )}

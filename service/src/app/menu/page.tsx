@@ -23,9 +23,11 @@ import { Avatar } from "@/components/CreatorPage";
 import { Card, Row } from "@/components/ui";
 import { displayUrl } from "@/lib/base";
 import { signOut } from "@/lib/store";
+import { useMode } from "@/lib/brand";
 
 export default function MenuPage() {
   const router = useRouter();
+  const brand = useMode() === "brand";
   return (
     <AppShell>
       {(page) => (
@@ -38,11 +40,31 @@ export default function MenuPage() {
             </div>
           </section>
 
-          <Card>
-            <Row href="/membership" icon={Crown} tone="amber" label="멤버십" note="무료 플랜" />
-            <Row href="/invite" icon={Gift} tone="pink" label="친구 초대" note="함께 쓰면 혜택" />
-          </Card>
+          {brand ? (
+            <Card>
+              <Row href="/brand/membership" icon={Crown} tone="amber" label="멤버십" note="프로 체험 중" />
+              <Row href="/brand/profile" icon={IdCard} tone="soft" label="계정 정보" />
+            </Card>
+          ) : null}
+          {brand ? (
+            <>
+              <h2 className="mt-8 mb-2 px-1 text-[13px] font-bold text-mute">전체 서비스</h2>
+              <Card>
+                <Row href="/brand/link" icon={Link2} tone="purple" label="브랜드 페이지" />
+                <Row href="/brand/campaigns" icon={Megaphone} tone="mint" label="캠페인" />
+                <Row href="/brand/creators" icon={Handshake} tone="sky" label="크리에이터 찾기" />
+                <Row href="/brand/proposals" icon={Send} tone="soft" label="협업 관리" />
+                <Row href="/chat" icon={MessageCircleMore} tone="ink" label="AI 해외 고객 상담" note="AI 번역" />
+              </Card>
+            </>
+          ) : (
+            <Card>
+              <Row href="/membership" icon={Crown} tone="amber" label="멤버십" note="무료 플랜" />
+              <Row href="/invite" icon={Gift} tone="pink" label="친구 초대" note="함께 쓰면 혜택" />
+            </Card>
+          )}
 
+          {!brand && <>
           <h2 className="mt-8 mb-2 px-1 text-[13px] font-bold text-mute">전체 서비스</h2>
           <Card>
             <Row href="/edit" icon={Link2} tone="purple" label="프로필 링크" />
@@ -55,6 +77,7 @@ export default function MenuPage() {
             <Row icon={ShoppingBag} label="공동구매" soon />
             <Row icon={Bot} label="AI 콘텐츠 도우미" soon />
           </Card>
+          </>}
 
           <h2 className="mt-8 mb-2 px-1 text-[13px] font-bold text-mute">계정</h2>
           <Card>
