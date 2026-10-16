@@ -1,17 +1,19 @@
 "use client";
 
 import { createContext, useContext, useState } from "react";
+import { Images, Link2, Play, ShoppingBag, Users, type LucideIcon } from "lucide-react";
 import { Field } from "@/components/Sheet";
+import type { Tone } from "@/components/ui";
 import { resizeImage } from "@/lib/image";
 import { uid } from "@/lib/store";
 import { PLATFORMS, type Block, type BlockType, type GalleryItem, type Platform, type ProductItem } from "@/lib/types";
 
-export const BLOCK_INFO: Record<BlockType, { name: string; desc: string }> = {
-  channels: { name: "채널", desc: "Instagram, YouTube 등 내 채널과 팔로워 수" },
-  link: { name: "링크", desc: "쇼핑몰, 협업, 공동구매 등 바로 가기 한 줄" },
-  video: { name: "영상", desc: "새 영상 하나를 크게 보여주기" },
-  gallery: { name: "룩 · 사진", desc: "옆으로 넘겨 보는 사진 모음" },
-  products: { name: "상품", desc: "내가 쓰는 제품과 가격" },
+export const BLOCK_INFO: Record<BlockType, { name: string; desc: string; icon: LucideIcon; tone: Tone }> = {
+  channels: { name: "채널", desc: "Instagram, YouTube 등 내 채널과 팔로워 수", icon: Users, tone: "purple" },
+  link: { name: "링크", desc: "쇼핑몰, 협업, 공동구매 등 바로 가기 한 줄", icon: Link2, tone: "ink" },
+  video: { name: "영상", desc: "새 영상 하나를 크게 보여주기", icon: Play, tone: "pink" },
+  gallery: { name: "룩 · 사진", desc: "옆으로 넘겨 보는 사진 모음", icon: Images, tone: "sky" },
+  products: { name: "상품", desc: "내가 쓰는 제품과 가격", icon: ShoppingBag, tone: "mint" },
 };
 
 export function newBlock(type: BlockType): Block {
@@ -79,7 +81,7 @@ export function BlockForm({ block, onChange }: { block: Block; onChange: (b: Blo
           render={(c, upd) => (
             <>
               <label className="mt-2 block">
-                <span className="text-[13px] text-mute">채널</span>
+                <span className="text-[13px] font-semibold text-ink/70">채널</span>
                 <select value={c.platform} onChange={(e) => upd({ ...c, platform: e.target.value as Platform })} className="field">
                   {PLATFORMS.map((p) => (
                     <option key={p}>{p}</option>
@@ -158,7 +160,7 @@ function Items<T extends { id: string }>({
   return (
     <div className="mt-6 space-y-4">
       {items.map((item, i) => (
-        <div key={item.id} className="border border-rule bg-white px-4 pt-3 pb-4">
+        <div key={item.id} className="rounded-2xl bg-white px-4 pt-3 pb-4 ring-1 ring-rule">
           <div className="flex items-center justify-between text-[13px] text-mute">
             <span>{i + 1}</span>
             <span className="flex gap-1">
@@ -174,7 +176,7 @@ function Items<T extends { id: string }>({
           {render(item, update(i))}
         </div>
       ))}
-      <button onClick={() => onChange([...items, make()])} className="btn-ghost w-full border-dashed border-mute text-mute">
+      <button onClick={() => onChange([...items, make()])} className="btn-ghost w-full border-dashed border-signal/50 text-signal">
         + {addLabel}
       </button>
     </div>
@@ -198,9 +200,9 @@ export function ImagePick({ label, value, onChange, wide }: { label: string; val
   const [busy, setBusy] = useState(false);
   return (
     <div className="mt-3">
-      <span className="text-[13px] text-mute">{label}</span>
+      <span className="text-[13px] font-semibold text-ink/70">{label}</span>
       <div className="mt-1.5 flex items-end gap-3">
-        <label className={`relative grid cursor-pointer place-items-center overflow-hidden border border-dashed border-mute bg-white ${wide ? "aspect-video w-40" : "size-20"}`}>
+        <label className={`relative grid cursor-pointer place-items-center overflow-hidden rounded-xl border border-dashed border-mute bg-surface ${wide ? "aspect-video w-40" : "size-20"}`}>
           {value ? <img src={value} alt="" className="absolute inset-0 size-full object-cover" /> : <span className="text-[22px] text-mute">{busy ? "…" : "+"}</span>}
           <input
             type="file"

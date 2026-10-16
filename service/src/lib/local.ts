@@ -30,7 +30,9 @@ function write(key: string, value: unknown) {
 
 function pages(): Record<string, Page> {
   const stored = read<Record<string, Page>>(K.pages, {});
-  if (!stored[demoPage.profile.handle]) stored[demoPage.profile.handle] = demoPage;
+  const d = demoPage.profile.handle;
+  if (!stored[d]) stored[d] = demoPage;
+  else if (!stored[d].chat) stored[d] = { ...stored[d], chat: demoPage.chat };
   return stored;
 }
 

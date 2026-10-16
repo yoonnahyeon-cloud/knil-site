@@ -17,7 +17,7 @@ const server = supabase ? remote(supabase) : null;
 const DEMO = demoPage.profile.handle;
 
 export const HANDLE_RE = /^[a-z0-9._]{3,20}$/;
-const RESERVED = new Set(["edit", "stats", "start", "login", "admin", "api", "app", "knil", "settings", "help", "dm", DEMO]);
+const RESERVED = new Set(["edit", "stats", "start", "login", "admin", "api", "app", "knil", "settings", "help", "dm", "chat", "home", "collab", "menu", "invite", "membership", DEMO]);
 
 function changed() {
   window.dispatchEvent(new Event("knil:change"));

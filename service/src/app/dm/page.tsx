@@ -3,10 +3,11 @@
 import { useState } from "react";
 import { AppShell } from "@/components/AppShell";
 import { Sheet } from "@/components/Sheet";
-import { PageTitle, SectionHead, Soon } from "@/components/ui";
+import { Gift, Info, PartyPopper, PencilLine, Send, type LucideIcon } from "lucide-react";
+import { IconTile, PageTitle, SectionHead, Soon, type Tone } from "@/components/ui";
 import { displayUrl } from "@/lib/base";
 
-type Template = { key: string; title: string; when: string; keyword: string; message: string; link: string };
+type Template = { key: string; title: string; when: string; keyword: string; message: string; link: string; icon: LucideIcon; tone: Tone };
 
 const TEMPLATES: Template[] = [
   {
@@ -16,6 +17,8 @@ const TEMPLATES: Template[] = [
     keyword: "정보",
     message: "요청하신 제품 정보예요. 아래 링크에서 확인해 보세요!",
     link: "/look",
+    icon: Info,
+    tone: "purple",
   },
   {
     key: "event",
@@ -24,6 +27,8 @@ const TEMPLATES: Template[] = [
     keyword: "참여",
     message: "이벤트 참여 고마워요! 쿠폰과 참여 방법을 보내드려요.",
     link: "/event",
+    icon: PartyPopper,
+    tone: "pink",
   },
   {
     key: "review",
@@ -32,8 +37,10 @@ const TEMPLATES: Template[] = [
     keyword: "구매완료",
     message: "구매해 주셔서 감사해요. 후기를 남겨주시면 다음 공동구매 소식을 먼저 알려드릴게요.",
     link: "/review",
+    icon: Gift,
+    tone: "mint",
   },
-  { key: "custom", title: "직접 만들기", when: "키워드, 메시지, 링크를 내 마음대로", keyword: "", message: "", link: "" },
+  { key: "custom", title: "직접 만들기", when: "키워드, 메시지, 링크를 내 마음대로", keyword: "", message: "", link: "", icon: PencilLine, tone: "ink" },
 ];
 
 export default function DmPage() {
@@ -45,7 +52,7 @@ function Dm({ handle }: { handle: string }) {
 
   return (
     <main className="px-5 pb-12">
-      <PageTitle sub="Instagram 프로페셔널 계정을 연결하면 켤 수 있어요.">
+      <PageTitle icon={Send} sub="Instagram 프로페셔널 계정을 연결하면 켤 수 있어요.">
         자동 DM <Soon className="align-middle" />
       </PageTitle>
 
@@ -54,22 +61,23 @@ function Dm({ handle }: { handle: string }) {
       <SectionHead title="템플릿으로 시작하기" />
       <div className="grid grid-cols-2 gap-2">
         {TEMPLATES.map((t) => (
-          <button key={t.key} onClick={() => setOpen(t)} className="flex min-h-28 flex-col justify-between border border-rule bg-white p-4 text-left">
-            <span className="text-[16px] font-bold tracking-tight">{t.title}</span>
-            <span className="mt-2 text-[13px] leading-snug text-mute">{t.when}</span>
+          <button key={t.key} onClick={() => setOpen(t)} className="flex min-h-36 flex-col rounded-[22px] bg-surface p-4 text-left">
+            <IconTile icon={t.icon} tone={t.tone} size={40} />
+              <span className="mt-3 text-[16px] font-extrabold tracking-tight">{t.title}</span>
+            <span className="mt-1 text-[12px] leading-snug text-mute">{t.when}</span>
           </button>
         ))}
       </div>
 
       <SectionHead title="이렇게 동작해요" />
-      <ol className="border-t border-ink">
+      <ol>
         {[
           ["키워드 정하기", "게시물이나 릴스마다 댓글 키워드를 정해요."],
           ["자동 답장", "키워드로 댓글을 단 팔로워에게 DM과 링크가 바로 가요."],
           ["반응 확인", "콘텐츠별 댓글 수, 발송 수, 링크 클릭을 통계에서 봐요."],
         ].map(([k, v], i) => (
           <li key={k} className="flex gap-4 border-b border-rule py-4">
-            <span className="font-display text-[15px] font-bold text-mute">{String(i + 1).padStart(2, "0")}</span>
+            <span className="grid size-8 shrink-0 place-items-center rounded-full bg-soft font-display text-[14px] font-extrabold text-signal">{i + 1}</span>
             <div>
               <p className="font-semibold">{k}</p>
               <p className="text-[14px] text-mute">{v}</p>
@@ -95,7 +103,7 @@ function Dm({ handle }: { handle: string }) {
               </div>
             ))}
           </dl>
-          <button disabled className="btn mt-8 w-full">
+          <button disabled className="btn-accent mt-8 w-full">
             Instagram 연결하고 켜기
           </button>
           <p className="mt-3 text-center text-[13px] text-mute">Meta 앱 검수가 끝나면 바로 켤 수 있어요.</p>
@@ -109,7 +117,7 @@ function Dm({ handle }: { handle: string }) {
 // phone screenshot.
 function Conversation({ handle }: { handle: string }) {
   return (
-    <div className="bg-white px-5 py-5">
+    <div className="rounded-[24px] bg-surface px-5 py-5">
       <p className="text-[12px] text-mute">릴스 댓글</p>
       <p className="mt-1 text-[15px]">
         <b>minji.k</b> 정보 알려주세요!

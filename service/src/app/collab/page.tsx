@@ -1,19 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { BellRing, CircleCheck, IdCard, Inbox as InboxIcon, Megaphone, Send, Trophy } from "lucide-react";
 import { BASE } from "@/lib/base";
 import { AppShell } from "@/components/AppShell";
 import { Avatar } from "@/components/CreatorPage";
 import { Field } from "@/components/Sheet";
-import { Chips, Empty, PageTitle, SectionHead } from "@/components/ui";
+import { Chips, Empty, IconTile, PageTitle, SectionHead, Toggle } from "@/components/ui";
 import { proposals, savePortfolio, setProposalStatus, useStore } from "@/lib/store";
 import { CATEGORIES, type Page, type Portfolio, type Proposal, type ProposalStatus } from "@/lib/types";
 
 type Tab = "campaigns" | "inbox" | "portfolio";
-const TABS: { key: Tab; label: string }[] = [
-  { key: "campaigns", label: "캠페인" },
-  { key: "inbox", label: "제안함" },
-  { key: "portfolio", label: "협업 프로필" },
+const TABS: { key: Tab; label: string; icon: typeof Megaphone }[] = [
+  { key: "campaigns", label: "캠페인", icon: Megaphone },
+  { key: "inbox", label: "제안함", icon: InboxIcon },
+  { key: "portfolio", label: "협업 프로필", icon: IdCard },
 ];
 
 export default function CollabPage() {
@@ -35,12 +36,14 @@ function Collab({ page }: { page: Page }) {
 
   return (
     <main className="pb-12">
-      <div className="sticky top-14 z-20 grid grid-cols-3 border-b border-rule bg-paper">
-        {TABS.map((t) => (
-          <button key={t.key} onClick={() => go(t.key)} className={`h-11 text-[14px] ${tab === t.key ? "border-b-2 border-ink font-bold" : "text-mute"}`}>
-            {t.label}
-          </button>
-        ))}
+      <div className="sticky top-14 z-20 bg-white/95 px-5 py-2 backdrop-blur lg:top-0">
+        <div className="grid grid-cols-3 rounded-full bg-surface p-1">
+          {TABS.map((t) => (
+            <button key={t.key} onClick={() => go(t.key)} className={`flex h-9 items-center justify-center gap-1 rounded-full text-[13px] font-bold ${tab === t.key ? "bg-white shadow-sm" : "text-mute"}`}>
+              <t.icon size={15} /> {t.label}
+            </button>
+          ))}
+        </div>
       </div>
       <div className="px-5">
         {tab === "campaigns" && <Campaigns onPortfolio={() => go("portfolio")} />}
@@ -68,32 +71,32 @@ function Campaigns({ onPortfolio }: { onPortfolio: () => void }) {
 
   return (
     <>
-      <PageTitle sub="브랜드가 여는 협업 캠페인에 지원하고 리워드를 받아요.">브랜드 캠페인</PageTitle>
-      <div className="grid grid-cols-3 border-y border-ink py-4 text-center">
+      <PageTitle icon={Megaphone} sub="브랜드가 여는 협업 캠페인에 지원하고 리워드를 받아요.">브랜드 캠페인</PageTitle>
+      <div className="grid grid-cols-3 gap-2">
         {[
-          ["지원", 0],
-          ["선정", 0],
-          ["제출 필요", 0],
-        ].map(([k, v]) => (
-          <div key={k} className="border-r border-rule last:border-0">
-            <p className="text-[13px] text-mute">{k}</p>
-            <p className="text-[20px] font-bold">{v}건</p>
+          { k: "지원", icon: Send, tone: "soft" as const },
+          { k: "선정", icon: Trophy, tone: "amber" as const },
+          { k: "제출 필요", icon: CircleCheck, tone: "mint" as const },
+        ].map((x) => (
+          <div key={x.k} className="rounded-[20px] bg-surface p-3">
+            <IconTile icon={x.icon} tone={x.tone} size={32} />
+            <p className="mt-2 text-[12px] text-mute">{x.k}</p>
+            <p className="text-[20px] font-extrabold">0건</p>
           </div>
         ))}
       </div>
 
-      <button onClick={toggle} className="mt-4 flex w-full items-center justify-between bg-white px-4 py-3.5 text-left">
-        <span>
-          <span className="block font-semibold">새 캠페인 알림</span>
-          <span className="text-[13px] text-mute">캠페인이 열리면 먼저 알려드려요</span>
+      <div className="mt-3 flex w-full items-center gap-3 rounded-[20px] bg-ink px-4 py-3.5 text-white">
+        <IconTile icon={BellRing} tone="purple" size={36} />
+        <span className="flex-1">
+          <span className="block font-bold">새 캠페인 알림</span>
+          <span className="text-[12px] text-white/60">캠페인이 열리면 먼저 알려드려요</span>
         </span>
-        <span className={`relative h-7 w-12 rounded-full transition-colors ${notify ? "bg-ink" : "bg-rule"}`}>
-          <span className={`absolute top-1 size-5 rounded-full bg-white transition-all ${notify ? "left-6" : "left-1"}`} />
-        </span>
-      </button>
+        <Toggle on={notify} onChange={toggle} label="새 캠페인 알림" />
+      </div>
 
       <SectionHead title="모집 중인 캠페인" />
-      <Empty title="아직 모집 중인 캠페인이 없어요" body="협업 프로필을 채워 두면 나와 맞는 캠페인을 먼저 추천해 드려요.">
+      <Empty icon={Megaphone} title="아직 모집 중인 캠페인이 없어요" body="협업 프로필을 채워 두면 나와 맞는 캠페인을 먼저 추천해 드려요.">
         <button onClick={onPortfolio} className="btn-ghost px-6">
           협업 프로필 채우기
         </button>
@@ -118,13 +121,13 @@ function Inbox({ handle }: { handle: string }) {
 
   return (
     <>
-      <PageTitle sub="브랜드가 내 페이지의 ‘협업 제안하기’로 보낸 제안이에요.">제안함</PageTitle>
+      <PageTitle icon={InboxIcon} sub="브랜드가 내 페이지의 ‘협업 제안하기’로 보낸 제안이에요.">제안함</PageTitle>
       <Chips value={filter} options={STATUS} onChange={setFilter} label={(k) => `${STATUS.find((s) => s.key === k)!.label} ${count(k)}`} />
 
       <div className="mt-4">
         {!list && <p className="py-10 text-center text-mute">불러오는 중…</p>}
         {list && shown.length === 0 && (
-          <Empty title="아직 받은 제안이 없어요" body="내 페이지 맨 위의 ‘협업 제안하기’ 버튼으로 브랜드가 바로 제안을 보낼 수 있어요.">
+          <Empty icon={InboxIcon} title="아직 받은 제안이 없어요" body="내 페이지 맨 위의 ‘협업 제안하기’ 버튼으로 브랜드가 바로 제안을 보낼 수 있어요.">
             <a href={`${BASE}/@${handle}`} target="_blank" rel="noopener" className="btn-ghost px-6">
               내 페이지에서 확인
             </a>
@@ -153,7 +156,7 @@ function ProposalItem({ p, open, onToggle }: { p: Proposal; open: boolean; onTog
       </button>
       {open && (
         <div className="pb-5">
-          <p className="whitespace-pre-wrap bg-white p-4 text-[15px]">{p.message}</p>
+          <p className="whitespace-pre-wrap rounded-2xl bg-surface p-4 text-[15px]">{p.message}</p>
           <dl className="mt-3 space-y-1 text-[14px]">
             {p.budget && (
               <div className="flex gap-3">
@@ -172,7 +175,7 @@ function ProposalItem({ p, open, onToggle }: { p: Proposal; open: boolean; onTog
           </dl>
           <div className="mt-4 grid grid-cols-3 gap-2 text-[14px]">
             {STATUS.slice(1).map((s) => (
-              <button key={s.key} onClick={() => set(s.key as ProposalStatus)} className={`h-10 border ${p.status === s.key ? "border-ink bg-ink text-paper" : "border-rule"}`}>
+              <button key={s.key} onClick={() => set(s.key as ProposalStatus)} className={`h-10 rounded-full font-semibold ${p.status === s.key ? "bg-ink text-white" : "bg-surface"}`}>
                 {s.label}
               </button>
             ))}
@@ -211,9 +214,9 @@ function PortfolioForm({ page }: { page: Page }) {
 
   return (
     <>
-      <PageTitle sub="브랜드가 크리에이터를 고를 때 보는 정보예요. 채울수록 나와 맞는 협업이 들어와요.">협업 프로필</PageTitle>
+      <PageTitle icon={IdCard} sub="브랜드가 크리에이터를 고를 때 보는 정보예요. 채울수록 나와 맞는 협업이 들어와요.">협업 프로필</PageTitle>
 
-      <div className="bg-white p-4">
+      <div className="rounded-2xl bg-surface p-4">
         <div className="flex items-center gap-3">
           <Avatar name={page.profile.name} src={page.profile.avatar} size={44} />
           <div className="min-w-0">
@@ -236,10 +239,10 @@ function PortfolioForm({ page }: { page: Page }) {
       <Field label="소개" value={f.intro} onChange={(v) => set("intro", v)} placeholder="협찬 릴스를 꾸준히 찍는 뷰티 크리에이터예요" multiline />
 
       <div className="mt-5">
-        <span className="text-[13px] text-mute">카테고리 (최대 3개)</span>
+        <span className="text-[13px] font-semibold text-ink/70">카테고리 (최대 3개)</span>
         <div className="mt-2 flex flex-wrap gap-2">
           {CATEGORIES.map((c) => (
-            <button key={c} onClick={() => toggleCat(c)} className={`border px-3 py-1.5 text-[14px] ${f.categories.includes(c) ? "border-ink bg-ink text-paper" : "border-rule"}`}>
+            <button key={c} onClick={() => toggleCat(c)} className={`rounded-full px-3.5 py-1.5 text-[14px] font-semibold ${f.categories.includes(c) ? "bg-signal text-white" : "bg-surface"}`}>
               {c}
             </button>
           ))}
@@ -251,10 +254,10 @@ function PortfolioForm({ page }: { page: Page }) {
       <Field label="주 시청층" value={f.audience} onChange={(v) => set("audience", v)} placeholder="20대 후반 여성" />
       <Field label="광고 · 협찬 경험" value={f.collabs} onChange={(v) => set("collabs", v)} placeholder="스킨케어 A사 릴스 3회, 패션 B사 공동구매" multiline />
 
-      <button onClick={save} disabled={state === "saving"} className="btn mt-8 w-full">
+      <button onClick={save} disabled={state === "saving"} className="btn-accent mt-8 w-full">
         {state === "saving" ? "저장하는 중…" : state === "saved" ? "저장했어요" : "저장하기"}
       </button>
-      {state === "error" && <p className="mt-2 text-center text-[13px] text-signal">저장하지 못했어요. 잠시 후 다시 시도해 주세요.</p>}
+      {state === "error" && <p className="mt-2 text-center text-[13px] text-danger">저장하지 못했어요. 잠시 후 다시 시도해 주세요.</p>}
     </>
   );
 }

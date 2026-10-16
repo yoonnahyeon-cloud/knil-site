@@ -1,15 +1,25 @@
 // Supabase backend. Tables and access rules: supabase/schema.sql.
 
 import type { SupabaseClient } from "@supabase/supabase-js";
-import type { Block, KnilEvent, Page, Portfolio, Proposal, ProposalStatus, Source } from "./types";
+import type { Block, ChatSettings, KnilEvent, Page, Portfolio, Proposal, ProposalStatus, Source } from "./types";
 
-type Row = { handle: string; name: string; bio: string; avatar_url: string | null; blocks: Block[]; updated_at: string; portfolio?: Portfolio | null };
+type Row = {
+  handle: string;
+  name: string;
+  bio: string;
+  avatar_url: string | null;
+  blocks: Block[];
+  updated_at: string;
+  portfolio?: Portfolio | null;
+  chat?: Partial<ChatSettings> | null;
+};
 
 const toPage = (r: Row): Page => ({
   profile: { handle: r.handle, name: r.name, bio: r.bio, avatar: r.avatar_url ?? undefined },
   blocks: r.blocks ?? [],
   updatedAt: Date.parse(r.updated_at),
   portfolio: r.portfolio ?? undefined,
+  chat: r.chat && "on" in r.chat ? { on: !!r.chat.on, ai: r.chat.ai !== false, guide: r.chat.guide ?? "" } : undefined,
 });
 
 type ProposalRow = { id: number; handle: string; brand: string; contact: string; budget: string; message: string; status: ProposalStatus; created_at: string };

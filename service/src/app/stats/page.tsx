@@ -1,7 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { ChartColumn, Eye, Link2, MousePointerClick, Percent, Route } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
+import { IconTile } from "@/components/ui";
 import { BLOCK_INFO } from "@/components/BlockForm";
 import { events, useStore } from "@/lib/store";
 import type { Block, Page } from "@/lib/types";
@@ -56,10 +58,12 @@ function Stats({ page }: { page: Page }) {
   return (
     <main className="px-5 pb-10">
       <div className="flex items-center justify-between pt-6">
-        <h1 className="text-[22px] font-bold tracking-tight">통계</h1>
-        <div className="flex border border-ink text-[13px]">
+        <h1 className="flex items-center gap-3 text-[24px] font-extrabold tracking-[-0.04em]">
+          <IconTile icon={ChartColumn} tone="sky" size={40} /> 통계
+        </h1>
+        <div className="flex rounded-full bg-surface p-1 text-[13px] font-bold">
           {([7, 30] as const).map((r) => (
-            <button key={r} onClick={() => setRange(r)} className={`px-3 py-1.5 ${range === r ? "bg-ink text-paper" : ""}`}>
+            <button key={r} onClick={() => setRange(r)} className={`rounded-full px-3.5 py-1.5 ${range === r ? "bg-ink text-white" : "text-mute"}`}>
               {r}일
             </button>
           ))}
@@ -67,54 +71,61 @@ function Stats({ page }: { page: Page }) {
       </div>
       {handle === "rosie" && <p className="mt-1 text-[12px] text-mute">예시 계정의 수치는 설명용 예시 데이터예요.</p>}
 
-      <dl className="mt-5 grid grid-cols-3 border-t border-ink">
+      <dl className="mt-5 grid grid-cols-3 gap-2">
         {[
-          ["방문", fmt(s.views)],
-          ["클릭", fmt(s.clicks)],
-          ["클릭률", `${rate}%`],
-        ].map(([k, v], i) => (
-          <div key={k} className={`py-4 ${i ? "border-l border-rule pl-3" : ""}`}>
-            <dt className="text-[13px] text-mute">{k}</dt>
-            <dd className={`mt-0.5 text-[24px] font-bold tracking-tight ${k === "클릭" ? "text-signal" : ""}`}>{v}</dd>
+          { k: "방문", v: fmt(s.views), icon: Eye, cls: "bg-surface" },
+          { k: "클릭", v: fmt(s.clicks), icon: MousePointerClick, cls: "bg-signal text-white" },
+          { k: "클릭률", v: `${rate}%`, icon: Percent, cls: "bg-surface" },
+        ].map((x) => (
+          <div key={x.k} className={`rounded-[20px] p-3.5 ${x.cls}`}>
+            <dt className="flex items-center gap-1 text-[12px] opacity-70">
+              <x.icon size={13} /> {x.k}
+            </dt>
+            <dd className="mt-1 text-[22px] font-extrabold tracking-tight">{x.v}</dd>
           </div>
         ))}
       </dl>
 
-      <section className="border-t border-rule pt-5">
+      <section className="mt-3 rounded-[24px] bg-surface p-4">
         <div className="flex h-36 items-end gap-[3px]">
           {s.days.map((d) => (
             <div key={d.at} className="relative flex-1" style={{ height: `${(d.views / max) * 100}%` }}>
-              <div className="absolute inset-0 bg-rule" />
-              <div className="absolute inset-x-0 bottom-0 bg-signal" style={{ height: d.views ? `${(d.clicks / d.views) * 100}%` : 0 }} />
+              <div className="absolute inset-0 rounded-t-md bg-tone-1" />
+              <div className="absolute inset-x-0 bottom-0 rounded-t-md bg-signal" style={{ height: d.views ? `${(d.clicks / d.views) * 100}%` : 0 }} />
             </div>
           ))}
         </div>
         <div className="mt-2 flex justify-between text-[12px] text-mute">
           <span>{new Date(s.days[0].at).toLocaleDateString("ko-KR", { month: "numeric", day: "numeric" })}</span>
           <span className="flex gap-3">
-            <span><i className="mr-1 inline-block size-2 bg-rule" />방문</span>
-            <span><i className="mr-1 inline-block size-2 bg-signal" />클릭</span>
+            <span><i className="mr-1 inline-block size-2 rounded-full bg-tone-1" />방문</span>
+            <span><i className="mr-1 inline-block size-2 rounded-full bg-signal" />클릭</span>
           </span>
           <span>오늘</span>
         </div>
       </section>
 
       <section className="mt-8">
-        <h2 className="border-b border-ink pb-2 text-[16px] font-bold">많이 누른 링크</h2>
+        <h2 className="mb-2 flex items-center gap-1.5 text-[18px] font-extrabold tracking-tight">
+          <Link2 size={19} className="text-signal" /> 많이 누른 링크
+        </h2>
         {s.targets.length === 0 && <Empty />}
-        {s.targets.slice(0, 10).map((t) => (
+        {s.targets.slice(0, 10).map((t, i) => (
           <div key={t.key} className="flex items-center gap-3 border-b border-rule py-3">
+            <span className={`grid size-7 shrink-0 place-items-center rounded-full text-[12px] font-extrabold ${i < 3 ? "bg-signal text-white" : "bg-surface text-mute"}`}>{i + 1}</span>
             <div className="min-w-0 flex-1">
               <p className="truncate text-[15px] font-semibold">{t.name}</p>
               <p className="text-[12px] text-mute">{t.kind}</p>
             </div>
-            <span className="shrink-0 text-[15px] font-semibold">{fmt(t.n)}</span>
+            <span className="shrink-0 text-[15px] font-extrabold">{fmt(t.n)}</span>
           </div>
         ))}
       </section>
 
       <section className="mt-8">
-        <h2 className="border-b border-ink pb-2 text-[16px] font-bold">어디서 들어왔나요</h2>
+        <h2 className="mb-2 flex items-center gap-1.5 text-[18px] font-extrabold tracking-tight">
+          <Route size={19} className="text-signal" /> 어디서 들어왔나요
+        </h2>
         {s.sources.length === 0 && <Empty />}
         {s.sources.map(([src, n]) => (
           <div key={src} className="border-b border-rule py-3">
@@ -124,8 +135,8 @@ function Stats({ page }: { page: Page }) {
                 {fmt(n)} <span className="text-mute">· {Math.round((n / s.views) * 100)}%</span>
               </span>
             </div>
-            <div className="mt-2 h-1 bg-rule">
-              <div className="h-full bg-ink" style={{ width: `${(n / s.views) * 100}%` }} />
+            <div className="mt-2 h-2 overflow-hidden rounded-full bg-surface">
+              <div className="h-full rounded-full bg-signal" style={{ width: `${(n / s.views) * 100}%` }} />
             </div>
           </div>
         ))}

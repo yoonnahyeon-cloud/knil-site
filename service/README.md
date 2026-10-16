@@ -14,6 +14,7 @@ Next.js 16 (App Router), TypeScript, Tailwind CSS 4. 모바일 우선.
 | `/edit`, `/stats` | 링크(블록) 편집과 미리보기, 통계 |
 | `/dm` | 댓글 키워드 자동 DM 소개와 템플릿 (준비 중, `../docs/instagram-auto-dm.md`) |
 | `/collab` | 캠페인, 제안함(브랜드가 보낸 협업 제안), 협업 프로필 |
+| `/chat` | 해외 팬 채팅: 받은 대화, 메시지 버튼과 AI 답변 설정, 언어별 페이지 |
 | `/menu`, `/invite`, `/membership`, `/settings` | 전체 메뉴, 친구 초대, 멤버십, 설정 |
 | `/@아이디` | 공개 크리에이터 페이지 (협업 제안하기 버튼 포함) |
 
@@ -21,7 +22,9 @@ Next.js 16 (App Router), TypeScript, Tailwind CSS 4. 모바일 우선.
 
 ## 데이터
 
-지금은 미리보기 단계라 모든 데이터가 브라우저(localStorage)에 저장됩니다. 화면은 `src/lib/store.ts` 만 거치므로 Supabase 연결 시 이 파일만 바꿉니다. 스키마는 `supabase/schema.sql`, 그다음 `supabase/002_collab.sql` (협업 프로필, 제안함).
+지금은 미리보기 단계라 모든 데이터가 브라우저(localStorage)에 저장됩니다. 화면은 `src/lib/store.ts` 만 거치므로 Supabase 연결 시 이 파일만 바꿉니다. 스키마는 `supabase/schema.sql`, 그다음 `supabase/002_collab.sql` (협업 프로필, 제안함), `supabase/003_chat.sql` (채팅, 번역 캐시).
+
+번역과 AI 답변은 Edge Function `supabase/functions/knil` 이 Claude API로 처리해요. Supabase 대시보드의 Edge Functions에서 `knil` 이름으로 붙여 넣어 배포하고 Verify JWT를 끄고, Secrets에 `ANTHROPIC_API_KEY` 를 넣어요.
 
 예시 계정 `rosie` 의 페이지와 통계는 설명용 예시 데이터입니다 (`src/lib/demo.ts`).
 

@@ -1,11 +1,12 @@
 // ROSIE is a fictional sample creator, the same one used on the brand site.
 // Her page and statistics are illustrative only.
 
-import type { KnilEvent, Page, Source } from "./types";
+import type { ChatMessage, ChatThread, KnilEvent, Page, Source } from "./types";
 
 export const demoPage: Page = {
   profile: { handle: "rosie", name: "ROSIE", bio: "beauty, fashion, daily life" },
   updatedAt: 0,
+  chat: { on: true, ai: true, guide: "립 틴트 03 로즈는 18,000원, 수분 쿠션 21호는 32,000원. 해외 배송은 SHOP 링크에서 가능. 협찬 문의는 '협업 제안하기'로." },
   blocks: [
     {
       id: "ch",
@@ -146,3 +147,102 @@ export const showcase: Page[] = [
     ],
   },
 ];
+
+// The sample page in a few languages, standing in for the AI translation
+// that real pages get from the server.
+const DEMO_DICT: Record<string, Record<string, string>> = {
+  en: {
+    "가을 데일리 메이크업, 10분 루틴": "Fall daily makeup, a 10-minute routine",
+    "새 영상 · 2일 전": "New video · 2 days ago",
+    "4개의 룩": "4 looks",
+    "니트와 데님": "Knit and denim",
+    "블랙 셋업": "Black set",
+    "트렌치 코트": "Trench coat",
+    "주말 외출": "Weekend out",
+    "ROSIE가 쓰는 제품": "What ROSIE uses",
+    "립 틴트 03 로즈": "Lip tint 03 Rose",
+    "수분 쿠션 21호": "Hydrating cushion No. 21",
+    "가을 스킨케어 협업 · 10.14 – 10.20": "Fall skincare collab · Oct 14 – 20",
+    "진행 중": "Live now",
+    "ROSIE SELECT · 상품 24개": "ROSIE SELECT · 24 items",
+    "바로 가기": "Open",
+  },
+  ja: {
+    "beauty, fashion, daily life": "ビューティー、ファッション、日常",
+    "가을 데일리 메이크업, 10분 루틴": "秋のデイリーメイク、10分ルーティン",
+    "새 영상 · 2일 전": "新着動画 · 2日前",
+    "4개의 룩": "4つのルック",
+    "니트와 데님": "ニットとデニム",
+    "블랙 셋업": "ブラックのセットアップ",
+    "트렌치 코트": "トレンチコート",
+    "주말 외출": "週末のおでかけ",
+    "ROSIE가 쓰는 제품": "ROSIEの愛用品",
+    "립 틴트 03 로즈": "リップティント 03 ローズ",
+    "수분 쿠션 21호": "うるおいクッション 21号",
+    "가을 스킨케어 협업 · 10.14 – 10.20": "秋のスキンケアコラボ · 10/14 – 10/20",
+    "진행 중": "開催中",
+    "ROSIE SELECT · 상품 24개": "ROSIE SELECT · 24商品",
+    "바로 가기": "見る",
+  },
+  "zh-CN": {
+    "beauty, fashion, daily life": "美妆、时尚、日常",
+    "가을 데일리 메이크업, 10분 루틴": "秋季日常妆容，10分钟流程",
+    "새 영상 · 2일 전": "新视频 · 2天前",
+    "4개의 룩": "4套穿搭",
+    "니트와 데님": "针织衫和牛仔",
+    "블랙 셋업": "黑色套装",
+    "트렌치 코트": "风衣",
+    "주말 외출": "周末出门",
+    "ROSIE가 쓰는 제품": "ROSIE 在用的产品",
+    "립 틴트 03 로즈": "唇釉 03 玫瑰",
+    "수분 쿠션 21호": "保湿气垫 21号",
+    "가을 스킨케어 협업 · 10.14 – 10.20": "秋季护肤合作 · 10.14 – 10.20",
+    "진행 중": "进行中",
+    "ROSIE SELECT · 상품 24개": "ROSIE SELECT · 24件商品",
+    "바로 가기": "前往",
+  },
+};
+
+export const demoDict = (lang: string) => DEMO_DICT[lang] ?? null;
+
+const now = Date.now();
+const min = 60000;
+
+// Sample conversations in ROSIE's inbox.
+export const demoThreads: { thread: ChatThread; messages: ChatMessage[] }[] = [
+  {
+    thread: { id: "d1", handle: "rosie", lang: "ja", name: "Yuki", last: "", unread: 1, at: now - 6 * min },
+    messages: [
+      { id: "a", from: "visitor", visitor: "動画で使っていたリップは何番ですか？", ko: "영상에서 쓰신 립은 몇 번인가요?", at: now - 8 * min },
+      { id: "b", from: "ai", visitor: "リップティント 03 ローズです！18,000ウォンで、SHOPリンクから海外配送もできます。", ko: "립 틴트 03 로즈예요! 18,000원이고 SHOP 링크에서 해외 배송도 돼요.", at: now - 8 * min + 5000 },
+      { id: "c", from: "visitor", visitor: "ありがとうございます！日本にも届きますか？", ko: "감사합니다! 일본에도 배송되나요?", at: now - 6 * min },
+    ],
+  },
+  {
+    thread: { id: "d2", handle: "rosie", lang: "en", name: "Glow Lab (LA)", last: "", unread: 0, at: now - 3 * 60 * min },
+    messages: [
+      { id: "a", from: "visitor", visitor: "Hi ROSIE! We're a clean skincare brand from LA. Would you be open to a reels collab next month?", ko: "안녕하세요 ROSIE님! LA의 클린 스킨케어 브랜드예요. 다음 달 릴스 협업 가능하실까요?", at: now - 4 * 60 * min },
+      { id: "b", from: "owner", ko: "안녕하세요! 좋아요. 제품 정보와 일정 보내주시면 검토해 볼게요.", visitor: "Hi! Sounds great. Send me the product details and timeline and I'll take a look.", at: now - 3 * 60 * min },
+    ],
+  },
+  {
+    thread: { id: "d3", handle: "rosie", lang: "zh-CN", name: "小林", last: "", unread: 0, at: now - 26 * 60 * min },
+    messages: [
+      { id: "a", from: "visitor", visitor: "这件风衣在哪里买的？", ko: "이 트렌치 코트 어디서 사셨어요?", at: now - 26 * 60 * min },
+      { id: "b", from: "ai", visitor: "这件风衣在 ROSIE SELECT 里可以找到哦！点页面上的 Shop 就能看到。", ko: "ROSIE SELECT에서 찾을 수 있어요! 페이지의 Shop을 누르면 보여요.", at: now - 26 * 60 * min + 5000 },
+    ],
+  },
+];
+
+// What the sample page's AI says back to a new visitor message.
+export function demoAiReply(lang: string): { visitor: string; ko: string } {
+  const ko = "메시지 고마워요! ROSIE가 확인하고 곧 답장할게요.";
+  const visitor: Record<string, string> = {
+    ko,
+    en: "Thanks for your message! ROSIE will read it and reply soon.",
+    ja: "メッセージありがとうございます！ROSIEが確認して、すぐにお返事しますね。",
+    "zh-CN": "谢谢你的留言！ROSIE 看到后会尽快回复你。",
+    "zh-TW": "謝謝你的留言！ROSIE 看到後會盡快回覆你。",
+  };
+  return { ko, visitor: visitor[lang] ?? visitor.en };
+}

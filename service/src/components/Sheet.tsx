@@ -7,11 +7,14 @@ export function Sheet({
   title,
   onClose,
   onSave,
+  aside,
   children,
 }: {
   title: string;
   onClose: () => void;
   onSave?: () => void;
+  // On a computer, sit on the left so the phone preview stays visible.
+  aside?: boolean;
   children: React.ReactNode;
 }) {
   useEffect(() => {
@@ -23,25 +26,25 @@ export function Sheet({
   }, []);
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-ink/40" onClick={onClose}>
+    <div className={`fixed inset-0 z-50 flex flex-col bg-ink/40 backdrop-blur-[2px] lg:items-center lg:justify-center lg:p-8 ${aside ? "lg:items-start lg:pl-[calc(248px+40px)]" : ""}`} onClick={onClose}>
       <div
-        className="mx-auto mt-[max(16px,env(safe-area-inset-top))] flex w-full max-w-[480px] flex-1 flex-col overflow-hidden bg-paper"
+        className="mx-auto mt-[max(16px,env(safe-area-inset-top))] flex w-full max-w-[480px] flex-1 flex-col overflow-hidden rounded-t-[28px] bg-white lg:mx-0 lg:mt-0 lg:max-h-[86dvh] lg:flex-none lg:rounded-[28px]"
         onClick={(e) => e.stopPropagation()}
       >
-        <header className="flex h-14 shrink-0 items-center justify-between border-b border-rule px-4">
+        <header className="flex h-14 shrink-0 items-center justify-between px-4">
           <button onClick={onClose} className="h-10 px-2 text-mute">
             취소
           </button>
-          <span className="font-semibold">{title}</span>
+          <span className="font-bold">{title}</span>
           {onSave ? (
-            <button onClick={onSave} className="h-10 px-2 font-semibold text-signal">
+            <button onClick={onSave} className="h-9 rounded-full bg-signal px-4 text-[14px] font-bold text-white">
               저장
             </button>
           ) : (
             <span className="w-12" />
           )}
         </header>
-        <div className="flex-1 overflow-y-auto px-5 pt-2 pb-[max(32px,env(safe-area-inset-bottom))]">{children}</div>
+        <div className="min-h-0 flex-1 overflow-y-auto px-5 pt-2 pb-[max(32px,env(safe-area-inset-bottom))]">{children}</div>
       </div>
     </div>
   );
@@ -64,7 +67,7 @@ export function Field({
 }) {
   return (
     <label className="mt-4 block">
-      <span className="text-[13px] text-mute">{label}</span>
+      <span className="text-[13px] font-semibold text-ink/70">{label}</span>
       {multiline ? (
         <textarea value={value} onChange={(e) => onChange(e.target.value)} placeholder={placeholder} rows={2} className="field resize-none" />
       ) : (

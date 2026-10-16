@@ -26,7 +26,17 @@ export type Profile = {
   avatar?: string;
 };
 
-export type Page = { profile: Profile; blocks: Block[]; updatedAt: number; portfolio?: Portfolio };
+export type Page = { profile: Profile; blocks: Block[]; updatedAt: number; portfolio?: Portfolio; chat?: ChatSettings };
+
+// Chat with visitors in their own language. `guide` is what the AI may use
+// to answer first: prices, hours, how to book, frequent questions.
+export type ChatSettings = { on: boolean; ai: boolean; guide: string };
+
+// Every message is kept twice: in Korean for the creator and in the
+// visitor's language for the visitor.
+export type ChatMessage = { id: string; from: "visitor" | "owner" | "ai"; ko: string; visitor: string; at: number };
+
+export type ChatThread = { id: string; handle: string; lang: string; name: string; last: string; unread: number; at: number };
 
 // What brands see when choosing creators: the data side of a creator.
 export type Portfolio = {

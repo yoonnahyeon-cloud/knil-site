@@ -1,15 +1,19 @@
 @import "tailwindcss";
 
 @theme {
-  --color-paper: #f7f6f2;
-  --color-ink: #0c0c0b;
-  --color-mute: #8a8984;
-  --color-rule: #d9d7d0;
-  --color-signal: #ff4b14;
-  --color-tone-1: #c4bcb0;
-  --color-tone-2: #2b2a27;
-  --color-tone-3: #dcd5ca;
-  --color-tone-4: #aaa196;
+  /* Black, white and one purple. `signal` is the purple accent. */
+  --color-paper: #ffffff;
+  --color-surface: #f4f4f7;
+  --color-ink: #0b0b0f;
+  --color-mute: #8d8d98;
+  --color-rule: #e8e8ee;
+  --color-signal: #7c4dff;
+  --color-soft: #efe9ff;
+  --color-danger: #e5484d;
+  --color-tone-1: #e4dcff;
+  --color-tone-2: #17131f;
+  --color-tone-3: #f0eff4;
+  --color-tone-4: #b9a6ff;
 
   --font-sans: "Pretendard Variable", Pretendard, system-ui, sans-serif;
   --font-display: var(--font-archivo), "Pretendard Variable", Pretendard, sans-serif;
@@ -40,13 +44,16 @@ select {
 
 @layer components {
   .field {
-    @apply w-full rounded-none border-0 border-b border-rule bg-transparent py-2.5 outline-none placeholder:text-mute/70 focus:border-ink;
+    @apply mt-1.5 w-full rounded-xl border border-rule bg-surface px-3.5 py-2.5 outline-none placeholder:text-mute/70 focus:border-signal focus:bg-white;
   }
   .btn {
-    @apply inline-flex h-12 items-center justify-center bg-ink px-5 font-semibold text-paper active:opacity-80 disabled:opacity-30;
+    @apply inline-flex h-12 items-center justify-center rounded-full bg-ink px-5 font-semibold text-white active:opacity-80 disabled:opacity-30;
   }
   .btn-ghost {
-    @apply inline-flex h-12 items-center justify-center border border-ink px-5 font-semibold active:bg-ink/5;
+    @apply inline-flex h-12 items-center justify-center rounded-full border border-ink px-5 font-semibold active:bg-ink/5;
+  }
+  .btn-accent {
+    @apply inline-flex h-12 items-center justify-center rounded-full bg-signal px-5 font-semibold text-white active:opacity-80 disabled:opacity-30;
   }
   .no-scrollbar {
     scrollbar-width: none;

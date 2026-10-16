@@ -26,7 +26,7 @@ export default function MembershipPage() {
 
           <div className="space-y-3">
             {PLANS.map((p) => (
-              <section key={p.name} className={`border p-5 ${p.current ? "border-ink bg-white" : "border-rule"}`}>
+              <section key={p.name} className={`rounded-2xl border p-5 ${p.current ? "border-signal bg-soft" : "border-rule"}`}>
                 <div className="flex items-baseline justify-between">
                   <h2 className="text-[20px] font-bold">{p.name}</h2>
                   {p.current ? <span className="text-[13px] font-semibold">이용 중</span> : <Soon />}

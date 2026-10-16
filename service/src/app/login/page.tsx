@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { ChevronLeft, Mail, MailCheck } from "lucide-react";
+import { IconTile } from "@/components/ui";
 import { sendLoginLink } from "@/lib/store";
 
 // Email login: Supabase mails a one-tap link that brings the creator back
@@ -29,13 +31,16 @@ export default function Login() {
 
   return (
     <main className="mx-auto flex min-h-dvh max-w-[480px] flex-col px-6 pt-[max(24px,env(safe-area-inset-top))] pb-[max(24px,env(safe-area-inset-bottom))]">
-      <button onClick={() => router.back()} className="-ml-1 self-start p-1 text-[22px] leading-none" aria-label="뒤로">
-        ←
+      <button onClick={() => router.back()} className="-ml-2 grid size-10 place-items-center self-start rounded-full" aria-label="뒤로">
+        <ChevronLeft size={24} />
       </button>
 
       {state === "sent" ? (
         <div className="flex flex-1 flex-col">
-          <h1 className="mt-8 text-[26px] font-bold leading-snug tracking-[-0.04em]">
+          <div className="mt-8">
+            <IconTile icon={MailCheck} tone="purple" size={56} />
+          </div>
+          <h1 className="mt-5 text-[26px] font-bold leading-snug tracking-[-0.04em]">
             메일함을
             <br />
             확인해 주세요.
@@ -50,14 +55,17 @@ export default function Login() {
         </div>
       ) : (
         <form onSubmit={submit} className="flex flex-1 flex-col">
-          <h1 className="mt-8 text-[26px] font-bold leading-snug tracking-[-0.04em]">
+          <div className="mt-8">
+            <IconTile icon={Mail} tone="ink" size={56} />
+          </div>
+          <h1 className="mt-5 text-[26px] font-bold leading-snug tracking-[-0.04em]">
             이메일로
             <br />
             시작해요.
           </h1>
           <p className="mt-2 text-mute">처음이면 가입, 이미 있으면 로그인돼요.</p>
           <label className="mt-10 block">
-            <span className="text-[13px] text-mute">이메일</span>
+            <span className="text-[13px] font-semibold text-ink/70">이메일</span>
             <input
               type="email"
               inputMode="email"
@@ -70,9 +78,9 @@ export default function Login() {
               autoFocus
             />
           </label>
-          {error && <p className="mt-2 text-[13px] text-signal">{error}</p>}
+          {error && <p className="mt-2 text-[13px] text-danger">{error}</p>}
           <div className="flex-1" />
-          <button className="btn w-full" disabled={!valid || state === "sending"}>
+          <button className="btn-accent w-full" disabled={!valid || state === "sending"}>
             {state === "sending" ? "보내는 중…" : "로그인 링크 받기"}
           </button>
         </form>

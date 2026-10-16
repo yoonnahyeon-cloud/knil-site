@@ -1,17 +1,50 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { ArrowUpRight, Check, Globe, Mail, MessageCircle, Play, Share } from "lucide-react";
+import { PlatformMark } from "@/components/Platform";
 import { Field, Sheet } from "@/components/Sheet";
+import { VisitorChat } from "@/components/VisitorChat";
+import { BASE, publicUrl } from "@/lib/base";
+import { pageTranslation } from "@/lib/chat";
+import { LANGS, detectLang, langOf, makeYours, translatePage, ui } from "@/lib/i18n";
 import { record, sendProposal } from "@/lib/store";
 import type { Block, Page } from "@/lib/types";
 
 const TONES = ["bg-tone-1", "bg-tone-2", "bg-tone-3", "bg-tone-4"];
 
 // What a visitor sees at knil.com/@handle. `preview` turns off click
-// tracking and navigation, for the live preview inside the editor.
-export function CreatorPage({ page, preview = false }: { page: Page; preview?: boolean }) {
+// tracking and navigation, for the live preview inside the editor; `lang`
+// then fixes the language shown.
+export function CreatorPage({ page: original, preview = false, lang: fixedLang }: { page: Page; preview?: boolean; lang?: string }) {
+  const [lang, setLang] = useState(fixedLang ?? "ko");
+  const [dict, setDict] = useState<Record<string, string> | null>(null);
+  const [showOriginal, setShowOriginal] = useState(false);
+  const [sheet, setSheet] = useState<"propose" | "chat" | "lang" | null>(null);
+  const [shared, setShared] = useState(false);
+  const handle = original.profile.handle;
+
+  // A visitor sees the page in their phone's language unless ?lang= says otherwise.
+  useEffect(() => {
+    if (fixedLang) return setLang(fixedLang);
+    const q = new URLSearchParams(location.search).get("lang");
+    setLang(q && LANGS.some((l) => l.code === q) ? q : detectLang());
+  }, [fixedLang]);
+
+  useEffect(() => {
+    let alive = true;
+    setDict(null);
+    if (lang !== "ko") pageTranslation(handle, lang).then((d) => alive && setDict(d), () => {});
+    return () => {
+      alive = false;
+    };
+  }, [handle, lang, original.updatedAt]);
+
+  const translated = !!dict && !showOriginal && Object.keys(dict).length > 0;
+  const page = translated ? translatePage(original, dict) : original;
   const { profile } = page;
-  const [proposing, setProposing] = useState(false);
+  const t = ui(lang);
+  const chatOn = !!original.chat?.on;
   const blocks = page.blocks.filter((b) => !b.hidden);
 
   const go = (target: string, url: string) => (e: React.MouseEvent) => {
@@ -19,44 +52,119 @@ export function CreatorPage({ page, preview = false }: { page: Page; preview?: b
       e.preventDefault();
       return;
     }
-    record({ kind: "click", handle: profile.handle, target });
+    record({ kind: "click", handle, target });
   };
 
+  const share = async () => {
+    if (preview) return;
+    try {
+      if (navigator.share) await navigator.share({ title: profile.name, url: publicUrl(handle) });
+      else {
+        await navigator.clipboard.writeText(publicUrl(handle));
+        setShared(true);
+        setTimeout(() => setShared(false), 1500);
+      }
+    } catch {}
+  };
+
+  const open = (s: "propose" | "chat" | "lang") => !preview && setSheet(s);
+
   return (
-    <div className="mx-auto min-h-dvh max-w-[480px] bg-white">
-      <header className="flex items-center justify-between border-b border-ink px-6 py-4">
-        <span className="text-[15px] font-semibold">knil.com/@{profile.handle}</span>
-        <span className="font-display text-[20px] font-bold tracking-tight">knil</span>
-      </header>
-
-      <div className="px-6 pb-14">
-        <section className="flex items-center gap-4 py-7">
-          <Avatar name={profile.name} src={profile.avatar} />
-          <div className="min-w-0">
-            <h1 className="truncate font-display text-[30px] font-extrabold leading-tight tracking-tight">{profile.name}</h1>
-            <p className="truncate text-[14px] text-mute">
-              @{profile.handle}
-              {profile.bio && ` · ${profile.bio}`}
-            </p>
-          </div>
-        </section>
-
-        <button
-          onClick={() => !preview && setProposing(true)}
-          className="mb-6 h-11 w-full border border-ink text-[14px] font-semibold active:bg-ink/5"
-        >
-          협업 제안하기
-        </button>
-
-        {blocks.map((b, i) => (
-          <BlockView key={b.id} block={b} first={i === 0} go={go} name={profile.name} />
-        ))}
-
-        {blocks.length === 0 && <p className="border-t border-rule py-10 text-center text-mute">아직 추가된 링크가 없어요</p>}
-
-        <p className="mt-14 text-center font-display text-[13px] font-bold tracking-tight text-mute">knil</p>
+    <div className="relative mx-auto min-h-dvh max-w-[480px] bg-white">
+      <div className="relative h-[150px] overflow-hidden bg-ink">
+        {profile.avatar ? (
+          <img src={profile.avatar} alt="" className="absolute inset-0 size-full scale-125 object-cover opacity-70 blur-2xl" />
+        ) : (
+          <div className="absolute inset-0 bg-[radial-gradient(120%_120%_at_80%_0%,#9b7bff_0%,#7c4dff_35%,#1d1530_75%,#0b0b0f_100%)]" />
+        )}
+        <div className="absolute inset-x-0 top-0 flex items-center justify-between p-4">
+          <button onClick={share} aria-label="share" className="grid size-10 place-items-center rounded-full bg-white/20 text-white backdrop-blur">
+            {shared ? <Check size={18} /> : <Share size={18} />}
+          </button>
+          <button onClick={() => open("lang")} className="flex h-10 items-center gap-1.5 rounded-full bg-white/20 px-3.5 text-[13px] font-semibold text-white backdrop-blur">
+            <Globe size={16} />
+            {langOf(lang).name}
+          </button>
+        </div>
       </div>
-      {proposing && <ProposalSheet handle={profile.handle} name={profile.name} onClose={() => setProposing(false)} />}
+
+      <section className="relative z-10 -mt-12 flex flex-col items-center px-6 text-center">
+        <div className="rounded-full ring-4 ring-white">
+          <Avatar name={profile.name} src={profile.avatar} size={96} />
+        </div>
+        <h1 className="mt-3 font-display text-[26px] font-extrabold leading-tight tracking-tight">{profile.name}</h1>
+        <p className="mt-0.5 text-[14px] text-mute">@{handle}</p>
+        {profile.bio && <p className="mt-2 max-w-[320px] text-[15px] leading-snug">{profile.bio}</p>}
+
+        <div className="mt-5 flex w-full max-w-[340px] gap-2">
+          <button onClick={() => open("propose")} className="flex h-11 flex-1 items-center justify-center gap-1.5 rounded-full border border-rule text-[14px] font-bold">
+            <Mail size={17} /> {t.propose}
+          </button>
+          {chatOn && (
+            <button onClick={() => open("chat")} className="flex h-11 flex-1 items-center justify-center gap-1.5 rounded-full bg-ink text-[14px] font-bold text-white">
+              <MessageCircle size={17} /> {t.message}
+            </button>
+          )}
+        </div>
+
+        {lang !== "ko" && dict && Object.keys(dict).length > 0 && (
+          <button onClick={() => setShowOriginal(!showOriginal)} className="mt-4 flex items-center gap-1.5 rounded-full bg-soft px-3 py-1.5 text-[12px] font-semibold text-signal">
+            <Globe size={13} />
+            {showOriginal ? langOf(lang).name : `${t.translated} · ${t.original}`}
+          </button>
+        )}
+      </section>
+
+      <div className="space-y-3 px-5 pt-7 pb-6">
+        {blocks.map((b) => (
+          <BlockView key={b.id} block={b} go={go} name={profile.name} />
+        ))}
+        {blocks.length === 0 && <p className="rounded-2xl bg-surface py-10 text-center text-mute">{t.empty}</p>}
+      </div>
+
+      <div className="flex justify-center pt-4 pb-10">
+        <a href={preview ? undefined : `${BASE}/`} className="flex items-center gap-2 rounded-full border border-rule px-5 py-3 text-[13px] font-semibold">
+          <span className="font-display text-[15px] font-extrabold tracking-tight">
+            knil<span className="text-signal">.</span>
+          </span>
+          <span className="text-mute">{makeYours(lang)}</span>
+        </a>
+      </div>
+
+      {chatOn && (
+        <div className="pointer-events-none sticky bottom-0 flex justify-end px-5 pb-[max(20px,env(safe-area-inset-bottom))]">
+          <button
+            onClick={() => open("chat")}
+            aria-label={t.message}
+            className="pointer-events-auto grid size-14 place-items-center rounded-full bg-signal text-white shadow-[0_10px_30px_-6px_rgba(124,77,255,0.7)]"
+          >
+            <MessageCircle size={26} />
+          </button>
+        </div>
+      )}
+
+      {sheet === "propose" && <ProposalSheet handle={handle} name={profile.name} onClose={() => setSheet(null)} />}
+      {sheet === "chat" && <VisitorChat profile={original.profile} lang={lang} onClose={() => setSheet(null)} />}
+      {sheet === "lang" && (
+        <Sheet title={t.language} onClose={() => setSheet(null)}>
+          <div className="grid grid-cols-2 gap-2 pt-2">
+            {LANGS.map((l) => (
+              <button
+                key={l.code}
+                onClick={() => {
+                  setLang(l.code);
+                  setShowOriginal(false);
+                  setSheet(null);
+                }}
+                className={`flex items-center gap-2 rounded-2xl px-4 py-3.5 text-left text-[15px] ${lang === l.code ? "bg-ink font-bold text-white" : "bg-surface"}`}
+              >
+                <span className="text-[20px]">{l.flag}</span>
+                {l.name}
+              </button>
+            ))}
+          </div>
+        </Sheet>
+      )}
     </div>
   );
 }
@@ -64,7 +172,7 @@ export function CreatorPage({ page, preview = false }: { page: Page; preview?: b
 export function Avatar({ name, src, size = 64 }: { name: string; src?: string; size?: number }) {
   return (
     <div
-      className="grid shrink-0 place-items-center overflow-hidden rounded-full bg-ink font-display font-bold text-paper"
+      className="grid shrink-0 place-items-center overflow-hidden rounded-full bg-[linear-gradient(135deg,#7c4dff,#0b0b0f)] font-display font-bold text-white"
       style={{ width: size, height: size, fontSize: size * 0.4 }}
     >
       {src ? <img src={src} alt="" className="size-full object-cover" /> : (name.trim()[0] ?? "K").toUpperCase()}
@@ -76,33 +184,29 @@ type Go = (target: string, url: string) => (e: React.MouseEvent) => void;
 
 function Head({ title, note }: { title: string; note?: string }) {
   return (
-    <div className="mb-3 flex items-baseline justify-between gap-4">
-      <h2 className="text-[16px] font-bold tracking-tight">{title}</h2>
-      {note && <span className="shrink-0 text-[13px] text-mute">{note}</span>}
+    <div className="mb-2.5 flex items-baseline justify-between gap-4 px-1">
+      <h2 className="text-[16px] font-extrabold tracking-tight">{title}</h2>
+      {note && <span className="shrink-0 text-[12px] text-mute">{note}</span>}
     </div>
   );
 }
 
 const linkProps = (url: string) => ({ href: url || "#", target: "_blank", rel: "noopener" });
 
-function BlockView({ block: b, first, go, name }: { block: Block; first: boolean; go: Go; name: string }) {
-  const rule = first ? "border-t border-ink" : "border-t border-rule";
-
+function BlockView({ block: b, go, name }: { block: Block; go: Go; name: string }) {
   switch (b.type) {
     case "channels": {
       const items = b.items.filter((c) => c.url || c.followers);
       if (!items.length) return null;
       return (
-        <section className={`${rule} grid grid-cols-2`}>
-          {items.map((c, i) => (
-            <a
-              key={c.id}
-              {...linkProps(c.url)}
-              onClick={go(`${b.id}:${c.id}`, c.url)}
-              className={`flex items-baseline justify-between gap-2 border-b border-rule py-3.5 ${i % 2 ? "pl-4" : "border-r pr-4"}`}
-            >
-              <span className="truncate text-[15px] font-semibold">{c.platform}</span>
-              <span className="shrink-0 text-[13px] text-mute">{c.followers}</span>
+        <section className="grid grid-cols-2 gap-2">
+          {items.map((c) => (
+            <a key={c.id} {...linkProps(c.url)} onClick={go(`${b.id}:${c.id}`, c.url)} className="flex items-center gap-2.5 rounded-2xl bg-surface p-3">
+              <PlatformMark platform={c.platform} size={34} />
+              <span className="min-w-0">
+                <span className="block truncate text-[14px] font-bold">{c.platform}</span>
+                <span className="block text-[12px] text-mute">{c.followers}</span>
+              </span>
             </a>
           ))}
         </section>
@@ -110,36 +214,34 @@ function BlockView({ block: b, first, go, name }: { block: Block; first: boolean
     }
     case "video":
       return (
-        <section className={`${rule} py-5`}>
+        <section className="pt-3">
           <Head title={b.heading || "Video"} note={platformOf(b.url)} />
-          <a {...linkProps(b.url)} onClick={go(b.id, b.url)} className="flex gap-4">
-            <div className="relative aspect-video w-[46%] shrink-0 overflow-hidden bg-tone-2">
+          <a {...linkProps(b.url)} onClick={go(b.id, b.url)} className="block overflow-hidden rounded-3xl bg-surface">
+            <div className="relative aspect-video bg-tone-2">
               {b.image && <img src={b.image} alt="" className="absolute inset-0 size-full object-cover" />}
               <span className="absolute inset-0 grid place-items-center">
-                <svg width="20" height="22" viewBox="0 0 20 22" className="fill-white drop-shadow">
-                  <path d="M0 0l20 11L0 22z" />
-                </svg>
+                <span className="grid size-14 place-items-center rounded-full bg-white/25 text-white backdrop-blur">
+                  <Play size={24} fill="currentColor" strokeWidth={0} />
+                </span>
               </span>
-              {b.duration && <span className="absolute right-1 bottom-1 bg-ink/80 px-1 text-[11px] text-white">{b.duration}</span>}
+              {b.duration && <span className="absolute right-2.5 bottom-2.5 rounded-md bg-ink/80 px-1.5 py-0.5 text-[11px] font-semibold text-white">{b.duration}</span>}
             </div>
-            <div className="min-w-0 self-center">
-              <p className="line-clamp-3 text-[15px] font-semibold leading-snug">{b.title}</p>
-              {b.meta && <p className="mt-1 text-[13px] text-mute">{b.meta}</p>}
+            <div className="px-4 py-3.5">
+              <p className="line-clamp-2 text-[15px] font-bold leading-snug">{b.title}</p>
+              {b.meta && <p className="mt-0.5 text-[12px] text-mute">{b.meta}</p>}
             </div>
           </a>
         </section>
       );
     case "gallery":
       return (
-        <section className={`${rule} py-5`}>
+        <section className="pt-3">
           <Head title={b.title} note={b.note} />
-          <div className="no-scrollbar -mr-6 flex gap-2 overflow-x-auto pr-6">
+          <div className="no-scrollbar -mx-5 flex gap-2 overflow-x-auto px-5">
             {b.items.map((g, i) => (
-              <a key={g.id} {...linkProps(g.url)} onClick={go(`${b.id}:${g.id}`, g.url)} className="w-[38%] shrink-0">
-                <div className={`aspect-square overflow-hidden ${TONES[i % 4]}`}>
-                  {g.image && <img src={g.image} alt="" className="size-full object-cover" />}
-                </div>
-                <p className="mt-1.5 truncate text-[13px] text-mute">{g.label}</p>
+              <a key={g.id} {...linkProps(g.url)} onClick={go(`${b.id}:${g.id}`, g.url)} className="w-[40%] shrink-0">
+                <div className={`aspect-[4/5] overflow-hidden rounded-2xl ${TONES[i % 4]}`}>{g.image && <img src={g.image} alt="" className="size-full object-cover" />}</div>
+                <p className="mt-1.5 truncate px-1 text-[13px] font-semibold">{g.label}</p>
               </a>
             ))}
           </div>
@@ -147,16 +249,17 @@ function BlockView({ block: b, first, go, name }: { block: Block; first: boolean
       );
     case "products":
       return (
-        <section className={`${rule} py-5`}>
-          <Head title={b.title} note={b.note || `${name}가 쓰는 제품`} />
-          <div className="space-y-2">
+        <section className="pt-3">
+          <Head title={b.title} note={b.note || `${name}'s picks`} />
+          <div className="divide-y divide-rule overflow-hidden rounded-3xl bg-surface">
             {b.items.map((p, i) => (
-              <a key={p.id} {...linkProps(p.url)} onClick={go(`${b.id}:${p.id}`, p.url)} className="flex items-center gap-4">
-                <div className={`size-14 shrink-0 overflow-hidden ${TONES[(i + 2) % 4]} opacity-80`}>
-                  {p.image && <img src={p.image} alt="" className="size-full object-cover" />}
-                </div>
-                <span className="min-w-0 flex-1 truncate text-[15px] font-semibold">{p.name}</span>
-                <span className="shrink-0 text-[14px] text-mute">{p.price}</span>
+              <a key={p.id} {...linkProps(p.url)} onClick={go(`${b.id}:${p.id}`, p.url)} className="flex items-center gap-3 p-3">
+                <div className={`size-14 shrink-0 overflow-hidden rounded-xl ${TONES[(i + 1) % 4]}`}>{p.image && <img src={p.image} alt="" className="size-full object-cover" />}</div>
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-[15px] font-bold">{p.name}</span>
+                  <span className="text-[14px] font-extrabold text-signal">{p.price}</span>
+                </span>
+                <ArrowUpRight size={18} className="shrink-0 text-mute" />
               </a>
             ))}
           </div>
@@ -164,12 +267,15 @@ function BlockView({ block: b, first, go, name }: { block: Block; first: boolean
       );
     case "link":
       return (
-        <a {...linkProps(b.url)} onClick={go(b.id, b.url)} className={`${rule} flex items-start justify-between gap-4 py-5`}>
-          <div className="min-w-0">
-            <p className="text-[16px] font-bold tracking-tight">{b.title}</p>
-            {b.sub && <p className="mt-0.5 text-[13px] text-mute">{b.sub}</p>}
+        <a {...linkProps(b.url)} onClick={go(b.id, b.url)} className="flex items-center gap-3 rounded-3xl bg-white p-4 ring-1 ring-rule shadow-[0_6px_20px_-12px_rgba(20,10,60,0.25)]">
+          <div className="min-w-0 flex-1">
+            <p className="truncate text-[16px] font-extrabold tracking-tight">{b.title}</p>
+            {b.sub && <p className="mt-0.5 truncate text-[13px] text-mute">{b.sub}</p>}
           </div>
-          <span className="shrink-0 text-[13px] text-mute">{b.label || "바로 가기"}</span>
+          <span className="flex shrink-0 items-center gap-0.5 rounded-full bg-ink px-3 py-1.5 text-[12px] font-bold text-white">
+            {b.label || "Go"}
+            <ArrowUpRight size={14} />
+          </span>
         </a>
       );
   }
@@ -216,8 +322,8 @@ function ProposalSheet({ handle, name, onClose }: { handle: string; name: string
           <Field label="연락처" value={f.contact} onChange={set("contact")} placeholder="이메일 또는 전화번호" />
           <Field label="예산 (선택)" value={f.budget} onChange={set("budget")} placeholder="50만원, 제품 제공 등" />
           <Field label="제안 내용" value={f.message} onChange={set("message")} placeholder="협업 형태, 일정, 원하는 콘텐츠를 적어주세요" multiline />
-          {state === "error" && <p className="mt-3 text-[13px] text-signal">보내지 못했어요. 잠시 후 다시 시도해 주세요.</p>}
-          <button onClick={send} disabled={!ok || state === "sending"} className="btn mt-8 w-full">
+          {state === "error" && <p className="mt-3 text-[13px] text-danger">보내지 못했어요. 잠시 후 다시 시도해 주세요.</p>}
+          <button onClick={send} disabled={!ok || state === "sending"} className="btn-accent mt-8 w-full">
             {state === "sending" ? "보내는 중…" : "제안 보내기"}
           </button>
         </>
