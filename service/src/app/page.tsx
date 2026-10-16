@@ -122,7 +122,7 @@ export default function Home() {
       </section>
 
       <section className="mx-5 mt-12 rounded-[28px] bg-surface p-5">
-        <span className="rounded-full bg-ink px-2.5 py-1 text-[11px] font-bold text-white">해외 팬 채팅</span>
+        <span className="rounded-full bg-ink px-2.5 py-1 text-[11px] font-bold text-white">AI 해외 팬 채팅</span>
         <p className="mt-3 text-[22px] font-extrabold leading-tight tracking-tight">
           주소는 하나,
           <br />

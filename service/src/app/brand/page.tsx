@@ -40,7 +40,7 @@ type Tool = { href: string; label: string; icon: LucideIcon; tone: Tone };
 // A clinic's day is patient consultations; a brand's is creator campaigns.
 const CLINIC_TOOLS: Tool[] = [
   { href: "/brand/link", label: "병원 페이지", icon: Link2, tone: "ink" },
-  { href: "/chat", label: "해외 상담", icon: MessageCircleMore, tone: "sky" },
+  { href: "/chat", label: "AI 해외 상담", icon: MessageCircleMore, tone: "sky" },
   { href: "/brand/creators", label: "크리에이터", icon: Search, tone: "purple" },
   { href: "/brand/campaigns", label: "캠페인", icon: Megaphone, tone: "mint" },
 ];
@@ -135,7 +135,7 @@ function BrandHome({ page }: { page: Page }) {
 
       {clinic ? (
         <>
-          <SectionHead title="해외 고객 상담" icon={Languages} more={{ href: "/chat", label: "전체" }} />
+          <SectionHead title="AI 해외 고객 상담" icon={Languages} more={{ href: "/chat", label: "전체" }} />
           <div className="divide-y divide-rule rounded-[22px] bg-white ring-1 ring-rule">
             {(chats ?? []).slice(0, 3).map((t) => (
               <Link key={t.id} href={`/chat/?c=${t.id}`} className="flex items-center gap-3 p-3.5">
@@ -231,7 +231,7 @@ function BrandHome({ page }: { page: Page }) {
 
       {!clinic && (
         <>
-          <SectionHead title="해외 고객 채팅" icon={Languages} more={{ href: "/chat", label: "채팅" }} />
+          <SectionHead title="AI 해외 고객 상담" icon={Languages} more={{ href: "/chat", label: "채팅" }} />
           <Link href="/chat" className="flex items-center gap-3 rounded-[22px] bg-surface p-4">
             <IconTile icon={MessageCircleMore} tone="sky" size={44} />
             <span className="min-w-0 flex-1">

@@ -58,7 +58,7 @@ function Inbox({ page }: { page: Page }) {
   return (
     <main className="px-5 pb-12">
       <PageTitle icon={MessageCircleMore} sub={`${who}이 자기 언어로 보내면 한국어로 읽고, 한국어로 답하면 ${who}의 언어로 전해져요.`}>
-        {page.kind === "brand" ? "해외 고객 상담" : "해외 팬 채팅"}
+        {page.kind === "brand" ? "AI 해외 고객 상담" : "AI 해외 팬 채팅"}
       </PageTitle>
 
       <ChatSettingsCard page={page} settings={settings} />

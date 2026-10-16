@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Check, ChevronsUpDown, Plus } from "lucide-react";
+import { Check, ChevronDown, Plus } from "lucide-react";
 import { Avatar } from "@/components/CreatorPage";
 import { BRAND_ACCOUNTS, activeBrand, getBrand, setActiveBrand } from "@/lib/brand";
 import { getPage, useStore } from "@/lib/store";
@@ -31,7 +31,9 @@ export function BrandSwitcher({ className = "", compact }: { className?: string;
           <span className="block truncate text-[15px] font-bold">{current.brand.name}</span>
           <span className="block truncate text-[12px] text-mute">{current.brand.kind}</span>
         </span>
-        <ChevronsUpDown size={17} className="shrink-0 text-mute" />
+        <span className="flex h-8 shrink-0 items-center gap-0.5 rounded-full bg-ink pr-2 pl-3 text-[12px] font-bold text-white">
+          전환 <ChevronDown size={15} strokeWidth={2.6} className={`transition-transform ${open ? "rotate-180" : ""}`} />
+        </span>
       </button>
       {open && (
         <>

@@ -40,7 +40,7 @@ const fmt = (n: number) => n.toLocaleString("ko-KR");
 const TOOLS: { href: string; label: string; icon: LucideIcon; tone: Tone; soon?: boolean }[] = [
   { href: "/edit", label: "링크 편집", icon: Link2, tone: "purple" },
   { href: "/stats", label: "통계", icon: ChartColumn, tone: "sky" },
-  { href: "/chat", label: "해외 채팅", icon: MessageCircleMore, tone: "ink" },
+  { href: "/chat", label: "AI 해외 채팅", icon: MessageCircleMore, tone: "ink" },
   { href: "/dm", label: "자동 DM", icon: Send, tone: "pink", soon: true },
   { href: "/collab/?tab=inbox", label: "협업 제안", icon: Inbox, tone: "mint" },
   { href: "/collab/?tab=portfolio", label: "협업 프로필", icon: IdCard, tone: "amber" },
@@ -68,7 +68,7 @@ function Dashboard({ page }: { page: Page }) {
     { done: !!page.profile.avatar && !!page.profile.bio, label: "프로필 사진과 소개 채우기", href: "/edit" },
     { done: page.blocks.length >= 3, label: "블록 3개 이상 추가하기", href: "/edit" },
     { done: views(0) > 0, label: "Instagram 프로필에 내 주소 걸기", href: "/edit" },
-    { done: !!page.chat?.on, label: "해외 팬 채팅 켜기", href: "/chat" },
+    { done: !!page.chat?.on, label: "AI 해외 팬 채팅 켜기", href: "/chat" },
     { done: !!p && p.categories.length > 0 && !!p.intro, label: "협업 프로필 채우기", href: "/collab/?tab=portfolio" },
   ];
   const done = steps.filter((s) => s.done).length;

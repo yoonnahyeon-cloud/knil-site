@@ -59,7 +59,7 @@ const BRAND_TABS: Nav[] = [
 const CLINIC_SIDE: Nav[] = [
   { href: "/brand", label: "홈", icon: House },
   { href: "/brand/link", label: "병원 페이지", icon: Link2 },
-  { href: "/chat", label: "해외 고객 상담", icon: MessageCircleMore },
+  { href: "/chat", label: "AI 해외 고객 상담", icon: MessageCircleMore },
   { href: "/brand/creators", label: "크리에이터 찾기", icon: Search },
   { href: "/brand/proposals", label: "보낸 제안", icon: Send },
   { href: "/brand/campaigns", label: "캠페인", icon: Megaphone },
@@ -72,7 +72,7 @@ const BRAND_SIDE: Nav[] = [
   { href: "/brand/creators", label: "크리에이터 찾기", icon: Search },
   { href: "/brand/proposals", label: "협업 관리", icon: Send },
   { href: "/brand/link", label: "브랜드 페이지", icon: Link2 },
-  { href: "/chat", label: "해외 고객 채팅", icon: MessageCircleMore },
+  { href: "/chat", label: "AI 해외 고객 상담", icon: MessageCircleMore },
   { href: "/brand/profile", label: "계정 정보", icon: Building2 },
   { href: "/settings", label: "설정", icon: Settings },
 ];
@@ -85,7 +85,7 @@ const SIDE: Nav[] = [
   { href: "/home", label: "홈", icon: House },
   { href: "/edit", label: "프로필 링크", icon: Link2 },
   { href: "/stats", label: "통계", icon: ChartColumn },
-  { href: "/chat", label: "해외 팬 채팅", icon: MessageCircleMore },
+  { href: "/chat", label: "AI 해외 팬 채팅", icon: MessageCircleMore },
   { href: "/dm", label: "자동 DM", icon: Send },
   { href: "/collab", label: "브랜드 협업", icon: Handshake },
   { href: "/invite", label: "친구 초대", icon: Gift },

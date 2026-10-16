@@ -47,7 +47,7 @@ export default function MenuPage() {
           <Card>
             <Row href="/edit" icon={Link2} tone="purple" label="프로필 링크" />
             <Row href="/stats" icon={ChartColumn} tone="sky" label="통계" />
-            <Row href="/chat" icon={MessageCircleMore} tone="ink" label="해외 팬 채팅" note="AI 번역" />
+            <Row href="/chat" icon={MessageCircleMore} tone="ink" label="AI 해외 팬 채팅" note="AI 번역" />
             <Row href="/dm" icon={Send} tone="pink" label="자동 DM · 댓글" note="준비 중" />
             <Row href="/collab/?tab=campaigns" icon={Megaphone} tone="mint" label="브랜드 캠페인" />
             <Row href="/collab/?tab=inbox" icon={Inbox} tone="soft" label="제안함" />
