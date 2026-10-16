@@ -53,7 +53,7 @@ function today() {
 export function blockTitle(b: Block): string {
   switch (b.type) {
     case "channels":
-      return b.items.map((c) => c.platform).join(" · ") || "계정을 추가해 주세요";
+      return b.items.length ? `SNS 계정 ${b.items.length}개` : "계정을 추가해 주세요";
     case "calendar":
       return `${b.title || "캘린더"} · 일정 ${b.items.length}개`;
     case "link":
