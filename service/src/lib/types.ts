@@ -1,0 +1,96 @@
+// The shape of a creator's KNIL page. Everything a visitor sees is a list of
+// blocks; the order of the list is the order on the page.
+
+export type Platform = "Instagram" | "YouTube" | "TikTok" | "Xiaohongshu" | "X" | "Threads" | "Blog";
+export const PLATFORMS: Platform[] = ["Instagram", "YouTube", "TikTok", "Xiaohongshu", "X", "Threads", "Blog"];
+
+export type ChannelItem = { id: string; platform: Platform; url: string; followers: string };
+export type GalleryItem = { id: string; label: string; url: string; image?: string };
+export type ProductItem = { id: string; name: string; price: string; url: string; image?: string };
+
+// One schedule entry on a calendar block: a group buy, a sale, a live.
+// Dates are "YYYY-MM-DD"; `end` is empty for one-day entries.
+export const EVENT_KINDS = ["공구", "기획전", "라이브", "이벤트", "휴무"] as const;
+export type EventKind = (typeof EVENT_KINDS)[number];
+export type CalendarEvent = { id: string; title: string; start: string; end: string; kind: EventKind; url: string };
+
+// A treatment or service a clinic or brand takes bookings for.
+export type Treatment = { id: string; name: string; price: string; duration: string };
+
+type Base = { id: string; hidden?: boolean };
+
+export type Block =
+  | (Base & { type: "channels"; items: ChannelItem[]; showFollowers?: boolean })
+  | (Base & { type: "calendar"; title: string; note: string; items: CalendarEvent[] })
+  | (Base & { type: "link"; title: string; sub: string; label: string; url: string })
+  | (Base & { type: "video"; title: string; heading: string; meta: string; duration: string; url: string; image?: string })
+  | (Base & { type: "gallery"; title: string; note: string; items: GalleryItem[] })
+  | (Base & { type: "products"; title: string; note: string; items: ProductItem[] })
+  // Consultation booking: the request lands in the page's chat inbox.
+  | (Base & { type: "booking"; title: string; note: string; items: Treatment[] })
+  // Address, opening hours and phone, for clinics and shops.
+  | (Base & { type: "place"; title: string; address: string; hours: string; phone: string; map: string });
+
+export type BlockType = Block["type"];
+
+export type Profile = {
+  handle: string;
+  name: string;
+  bio: string;
+  avatar?: string;
+  // Wide photo at the top of the page, and the page's accent color.
+  cover?: string;
+  theme?: string;
+};
+
+// `kind` is "brand" for brands, companies and clinics; their page talks to
+// customers (booking, consultation) instead of to sponsors.
+export type Page = { profile: Profile; blocks: Block[]; updatedAt: number; portfolio?: Portfolio; chat?: ChatSettings; kind?: "creator" | "brand" };
+
+// Chat with visitors in their own language. `guide` is what the AI may use
+// to answer first: prices, hours, how to book, frequent questions.
+export type ChatSettings = { on: boolean; ai: boolean; guide: string };
+
+// Every message is kept twice: in Korean for the creator and in the
+// visitor's language for the visitor.
+export type ChatMessage = { id: string; from: "visitor" | "owner" | "ai"; ko: string; visitor: string; at: number };
+
+export type ChatThread = { id: string; handle: string; lang: string; name: string; last: string; unread: number; at: number };
+
+// What brands see when choosing creators: the data side of a creator.
+export type Portfolio = {
+  intro: string;
+  categories: string[];
+  tags: string[];
+  region: string;
+  audience: string;
+  collabs: string;
+};
+
+export const CATEGORIES = ["뷰티", "패션", "푸드", "여행", "리빙", "육아", "운동", "테크", "반려동물", "교육", "게임", "음악"];
+
+export type ProposalStatus = "new" | "progress" | "done";
+
+// A collaboration request a brand sends from a creator's public page.
+export type Proposal = {
+  id: string;
+  handle: string;
+  brand: string;
+  contact: string;
+  budget: string;
+  message: string;
+  status: ProposalStatus;
+  at: number;
+};
+
+// One row per visit or click. `target` is the block id (and item id, joined
+// with ":") that was clicked; `source` is where the visitor came from.
+export type KnilEvent = {
+  kind: "view" | "click";
+  handle: string;
+  at: number;
+  target?: string;
+  source: Source;
+};
+
+export type Source = "Instagram" | "YouTube" | "TikTok" | "검색" | "직접 방문" | "기타";

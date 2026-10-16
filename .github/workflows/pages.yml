@@ -23,11 +23,26 @@ jobs:
         with:
           node-version: 22
           cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            service/package-lock.json
       - run: npm ci
       - run: npm run build
         env:
           NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
           NEXT_PUBLIC_SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
+      # The KNIL service preview, served under /app next to the brand site.
+      - run: npm ci
+        working-directory: service
+      - run: npm run build
+        working-directory: service
+        env:
+          NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}/app
+      # GitHub Pages serves only the top-level 404.html for missing paths, so
+      # the service's 404 (which renders /app/@handle creator pages) goes there.
+      - run: |
+          cp -r service/out out/app
+          cp service/out/404.html out/404.html
       - name: Publish to gh-pages
         run: |
           cd out

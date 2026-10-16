@@ -86,7 +86,7 @@ export const autoDm = {
     { label: "키워드", value: "정보" },
     { label: "콘텐츠", value: "릴스 · 가을 데일리룩 3가지" },
     { label: "메시지", value: "요청하신 ROSIE의 착장 정보를 보내드릴게요." },
-    { label: "링크", value: "knil.com/@rosie/look" },
+    { label: "링크", value: "knil.kr/@rosie/look" },
   ],
   totals: [
     { label: "댓글", value: "1,248" },

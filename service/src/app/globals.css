@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+@theme {
+  /* Black and white, mostly white. `signal` is the accent (black here;
+     a page can set its own). The cool pastels below are the only other
+     colors (no warm tones): same lightness, black icons and text. */
+  --color-paper: #ffffff;
+  --color-surface: #f5f5f5;
+  --color-ink: #111111;
+  --color-mute: #8a8a8a;
+  --color-rule: #ececec;
+  --color-signal: #111111;
+  --color-soft: #f5f5f5;
+  --color-lilac: #dcd9ef;
+  --color-sage: #d3e5dc;
+  --color-sand: #d1e5eb;
+  --color-mist: #d6e0ee;
+  --color-blush: #e0deed;
+  --color-danger: #e5484d;
+  --color-tone-1: #d6e0ee;
+  --color-tone-2: #dcd9ef;
+  --color-tone-3: #d1e5eb;
+  --color-tone-4: #d3e5dc;
+
+  --font-sans: "Pretendard Variable", Pretendard, system-ui, sans-serif;
+  --font-display: var(--font-archivo), "Pretendard Variable", Pretendard, sans-serif;
+}
+
+html {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: var(--color-paper);
+  font-family: var(--font-sans);
+  word-break: keep-all;
+  letter-spacing: -0.02em;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Form controls at 16px so iOS does not zoom in on focus. */
+input,
+textarea,
+select {
+  font-size: 16px;
+}
+
+@layer components {
+  .field {
+    @apply mt-1.5 w-full rounded-xl border border-rule bg-surface px-3.5 py-2.5 outline-none placeholder:text-mute/70 focus:border-ink focus:bg-white;
+  }
+  .btn {
+    @apply inline-flex h-12 items-center justify-center rounded-[14px] bg-ink px-5 font-semibold text-white active:opacity-80 disabled:opacity-30;
+  }
+  .btn-ghost {
+    @apply inline-flex h-12 items-center justify-center rounded-[14px] bg-surface px-5 font-semibold active:bg-rule;
+  }
+  .btn-accent {
+    @apply inline-flex h-12 items-center justify-center rounded-[14px] bg-signal px-5 font-semibold text-white active:opacity-80 disabled:opacity-30;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}

@@ -1,0 +1,128 @@
+// Supabase backend. Tables and access rules: supabase/schema.sql.
+
+import type { SupabaseClient } from "@supabase/supabase-js";
+import { KoreanError } from "./errors";
+import type { Block, ChatSettings, KnilEvent, Page, Portfolio, Proposal, ProposalStatus, Source } from "./types";
+
+type Row = {
+  handle: string;
+  name: string;
+  bio: string;
+  avatar_url: string | null;
+  blocks: Block[];
+  updated_at: string;
+  portfolio?: Portfolio | null;
+  chat?: Partial<ChatSettings> | null;
+  look?: { cover?: string; theme?: string } | null;
+};
+
+const toPage = (r: Row): Page => ({
+  profile: { handle: r.handle, name: r.name, bio: r.bio, avatar: r.avatar_url ?? undefined, cover: r.look?.cover || undefined, theme: r.look?.theme || undefined },
+  blocks: r.blocks ?? [],
+  updatedAt: Date.parse(r.updated_at),
+  portfolio: r.portfolio ?? undefined,
+  chat: r.chat && "on" in r.chat ? { on: !!r.chat.on, ai: r.chat.ai !== false, guide: r.chat.guide ?? "" } : undefined,
+});
+
+type ProposalRow = { id: number; handle: string; brand: string; contact: string; budget: string; message: string; status: ProposalStatus; created_at: string };
+
+export function remote(db: SupabaseClient) {
+  return {
+    async userId() {
+      const { data } = await db.auth.getSession();
+      return data.session?.user.id ?? null;
+    },
+    async myPage(): Promise<Page | null> {
+      const uid = await this.userId();
+      if (!uid) return null;
+      const { data } = await db.from("pages").select("*").eq("owner", uid).maybeSingle();
+      return data ? toPage(data as Row) : null;
+    },
+    async getPage(handle: string): Promise<Page | null> {
+      const { data } = await db.from("pages").select("*").eq("handle", handle).maybeSingle();
+      return data ? toPage(data as Row) : null;
+    },
+    async listPages(limit: number): Promise<Page[]> {
+      const { data } = await db.from("pages").select("*").order("updated_at", { ascending: false }).limit(limit);
+      return ((data ?? []) as Row[]).map(toPage);
+    },
+    async taken(handle: string) {
+      const { count, error } = await db.from("pages").select("handle", { count: "exact", head: true }).eq("handle", handle);
+      if (error) throw new KoreanError(error);
+      return (count ?? 0) > 0;
+    },
+    async createPage(handle: string, name: string, blocks: Block[]) {
+      const uid = await this.userId();
+      if (!uid) throw new Error("로그인이 필요해요. 다시 로그인해 주세요.");
+      const { error } = await db.from("pages").insert({ handle, name, owner: uid, blocks });
+      if (error) throw new KoreanError(error);
+    },
+    async savePage(page: Page) {
+      const { profile, blocks } = page;
+      const { error } = await db
+        .from("pages")
+        .update({ name: profile.name, bio: profile.bio, avatar_url: profile.avatar ?? null, blocks, updated_at: new Date().toISOString() })
+        .eq("handle", profile.handle);
+      if (error) throw new KoreanError(error);
+      // Separate, so pages keep saving before the look column exists (setup.sql).
+      await db.from("pages").update({ look: { cover: profile.cover ?? "", theme: profile.theme ?? "" } }).eq("handle", profile.handle);
+    },
+    async upload(dataUrl: string): Promise<string> {
+      const uid = await this.userId();
+      if (!uid) throw new Error("로그인이 필요해요. 다시 로그인해 주세요.");
+      const blob = await (await fetch(dataUrl)).blob();
+      const path = `${uid}/${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}.jpg`;
+      const { error } = await db.storage.from("media").upload(path, blob, { contentType: "image/jpeg" });
+      if (error) throw new KoreanError(error);
+      return db.storage.from("media").getPublicUrl(path).data.publicUrl;
+    },
+    async events(handle: string, since: number): Promise<KnilEvent[]> {
+      // The API returns at most 1,000 rows per request, so page through.
+      const out: KnilEvent[] = [];
+      for (let from = 0; ; from += 1000) {
+        const { data, error } = await db
+          .from("events")
+          .select("kind, target, source, at")
+          .eq("handle", handle)
+          .gte("at", new Date(since).toISOString())
+          .order("at")
+          .range(from, from + 999);
+        if (error || !data) break;
+        for (const r of data) {
+          out.push({ handle, kind: r.kind, target: r.target ?? undefined, source: r.source as Source, at: Date.parse(r.at) });
+        }
+        if (data.length < 1000) break;
+      }
+      return out;
+    },
+    record(e: KnilEvent) {
+      void db.from("events").insert({ handle: e.handle, kind: e.kind, target: e.target ?? null, source: e.source });
+    },
+    // Kept apart from savePage so pages keep saving even before the
+    // portfolio column exists (supabase/002_collab.sql).
+    async savePortfolio(handle: string, portfolio: Portfolio) {
+      const { error } = await db.from("pages").update({ portfolio }).eq("handle", handle);
+      if (error) throw new KoreanError(error);
+    },
+    async sendProposal(p: Omit<Proposal, "id" | "status" | "at">) {
+      const { error } = await db.from("proposals").insert(p);
+      if (error) throw new KoreanError(error);
+    },
+    async proposals(handle: string): Promise<Proposal[]> {
+      const { data, error } = await db.from("proposals").select("*").eq("handle", handle).order("created_at", { ascending: false });
+      if (error || !data) return [];
+      return (data as ProposalRow[]).map((r) => ({ ...r, id: String(r.id), at: Date.parse(r.created_at) }));
+    },
+    async setProposalStatus(id: string, status: ProposalStatus) {
+      const { error } = await db.from("proposals").update({ status }).eq("id", Number(id));
+      if (error) throw new KoreanError(error);
+    },
+    async sendLoginLink(email: string, redirectTo: string) {
+      const { error } = await db.auth.signInWithOtp({ email, options: { emailRedirectTo: redirectTo } });
+      if (error) throw new KoreanError(error);
+    },
+    async signOut() {
+      await db.auth.signOut();
+    },
+  };
+}

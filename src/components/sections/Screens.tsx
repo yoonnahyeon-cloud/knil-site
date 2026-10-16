@@ -7,11 +7,11 @@ const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 const shots = [
   {
     src: `${base}/visuals/rosie-instagram.webp`,
-    alt: "가상의 크리에이터 ROSIE의 Instagram 프로필. 소개 아래에 knil.com/@rosie 링크가 있다.",
+    alt: "가상의 크리에이터 ROSIE의 Instagram 프로필. 소개 아래에 knil.kr/@rosie 링크가 있다.",
     step: "1",
     caption: (
       <>
-        Instagram 프로필에는 <span className="font-semibold text-ink">knil.com/@rosie</span> 링크 하나.
+        Instagram 프로필에는 <span className="font-semibold text-ink">knil.kr/@rosie</span> 링크 하나.
       </>
     ),
   },

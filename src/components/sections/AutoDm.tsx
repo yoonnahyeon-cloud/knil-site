@@ -59,7 +59,7 @@ export function AutoDm() {
           <Step n="3">KNIL이 DM과 링크를 자동으로 보냅니다.</Step>
           <img
             src={`${base}/visuals/rosie-dm.webp`}
-            alt="팔로워가 받은 ROSIE의 DM. '요청하신 ROSIE의 착장 정보를 보내드릴게요'라는 메시지와 knil.com/@rosie/look 링크가 와 있다."
+            alt="팔로워가 받은 ROSIE의 DM. '요청하신 ROSIE의 착장 정보를 보내드릴게요'라는 메시지와 knil.kr/@rosie/look 링크가 와 있다."
             width={1170}
             height={2532}
             loading="lazy"
