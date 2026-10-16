@@ -56,7 +56,7 @@ export const emptyBrand: BrandProfile = { name: "", kind: "브랜드", intro: ""
 
 export const BRAND_ACCOUNTS: { handle: string; sample: BrandProfile }[] = [
   { handle: "moliv", sample: { name: "모리브 MOLIV", kind: "병원 · 클리닉", intro: "리프팅 · 스킨부스터 · 안티에이징 클리닉", contact: "contact@moliv.example", site: "" } },
-  { handle: "ongyeol", sample: { name: "온결 ONGYEOL", kind: "브랜드", intro: "민감 피부를 위한 비건 스킨케어", contact: "collab@ongyeol.example", site: "" } },
+  { handle: "flowy", sample: { name: "플로위 FLOWY", kind: "브랜드", intro: "민감 피부를 위한 비건 스킨케어", contact: "collab@flowy.example", site: "" } },
 ];
 
 const ACTIVE = "knil:brand:active";
@@ -168,7 +168,7 @@ export function deleteCampaign(id: string) {
 
 // What the sample cosmetics brand starts with, so its admin is not empty.
 function seed(): { saved: string[]; sent: Sent[]; campaigns: Campaign[] } {
-  if (activeBrand() !== "ongyeol") return { saved: [], sent: [], campaigns: [] };
+  if (activeBrand() !== "flowy") return { saved: [], sent: [], campaigns: [] };
   const day = 86400000;
   const now = Date.now();
   const inDays = (n: number) => new Date(now + n * day).toISOString().slice(0, 10);

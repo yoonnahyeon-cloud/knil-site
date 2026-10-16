@@ -82,7 +82,7 @@ export default function Home() {
           {[showcase[0], ...brandSamples, ...showcase.slice(1)].map((page) => (
             <button
               key={page.profile.handle}
-              onClick={() => ["rosie", "moliv", "ongyeol"].includes(page.profile.handle) && router.push(`/@${page.profile.handle}`)}
+              onClick={() => ["rosie", "moliv", "flowy"].includes(page.profile.handle) && router.push(`/@${page.profile.handle}`)}
               className="pointer-events-auto shrink-0 snap-start text-left"
             >
               <div className="pointer-events-none">

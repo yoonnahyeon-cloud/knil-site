@@ -179,23 +179,23 @@ export const molivPage: Page = {
   ],
 };
 
-// ONGYEOL is a sample cosmetics brand: products, sales and pop-ups on the
+// FLOWY is a sample cosmetics brand: products, sales and pop-ups on the
 // page, creator campaigns in the admin.
-export const ongyeolPage: Page = {
+export const flowyPage: Page = {
   kind: "brand",
   profile: {
-    handle: "ongyeol",
-    name: "온결 ONGYEOL",
+    handle: "flowy",
+    name: "플로위 FLOWY",
     bio: "민감 피부를 위한 비건 스킨케어",
-    avatar: `${BASE}/samples/ongyeol-logo.jpg`,
-    cover: `${BASE}/samples/ongyeol-cover.jpg`,
+    avatar: `${BASE}/samples/flowy-logo.jpg`,
+    cover: `${BASE}/samples/flowy-cover.jpg`,
     theme: "#111111",
   },
   updatedAt: 0,
   chat: {
     on: true,
     ai: true,
-    guide: "시카 진정 토너 28,000원, 판테놀 장벽 크림 32,000원, 약산성 클렌징 폼 18,000원. 공식몰에서 해외 배송(미국·일본·대만·동남아) 가능, 7만원 이상 무료. 전 제품 비건 인증, 향료 무첨가. 협업 문의는 collab@ongyeol.example.",
+    guide: "시카 진정 토너 28,000원, 판테놀 장벽 크림 32,000원, 약산성 클렌징 폼 18,000원. 공식몰에서 해외 배송(미국·일본·대만·동남아) 가능, 7만원 이상 무료. 전 제품 비건 인증, 향료 무첨가. 협업 문의는 collab@flowy.example.",
   },
   blocks: [
     { id: "shop", type: "link", title: "공식 온라인몰", sub: "첫 구매 20% 쿠폰 · 해외 배송", label: "쇼핑하기", url: "https://example.com" },
@@ -205,9 +205,9 @@ export const ongyeolPage: Page = {
       title: "BEST",
       note: "가장 많이 찾는 제품",
       items: [
-        { id: "p1", name: "시카 진정 토너", price: "28,000원", url: "https://example.com", image: `${BASE}/samples/ongyeol-toner.jpg` },
-        { id: "p2", name: "판테놀 장벽 크림", price: "32,000원", url: "https://example.com", image: `${BASE}/samples/ongyeol-cream.jpg` },
-        { id: "p3", name: "약산성 클렌징 폼", price: "18,000원", url: "https://example.com", image: `${BASE}/samples/ongyeol-foam.jpg` },
+        { id: "p1", name: "시카 진정 토너", price: "28,000원", url: "https://example.com", image: `${BASE}/samples/flowy-toner.jpg` },
+        { id: "p2", name: "판테놀 장벽 크림", price: "32,000원", url: "https://example.com", image: `${BASE}/samples/flowy-cream.jpg` },
+        { id: "p3", name: "약산성 클렌징 폼", price: "18,000원", url: "https://example.com", image: `${BASE}/samples/flowy-foam.jpg` },
       ],
     },
     {
@@ -228,8 +228,8 @@ export const ongyeolPage: Page = {
       note: "@knil 크리에이터",
       items: [
         { id: "g1", label: "ROSIE의 진정 루틴", url: `${BASE}/@rosie`, image: `${BASE}/samples/rosie.jpg` },
-        { id: "g2", label: "장벽 크림 2주 후기", url: "", image: `${BASE}/samples/ongyeol-cream.jpg` },
-        { id: "g3", label: "토너 패드 꿀팁", url: "", image: `${BASE}/samples/ongyeol-toner.jpg` },
+        { id: "g2", label: "장벽 크림 2주 후기", url: "", image: `${BASE}/samples/flowy-cream.jpg` },
+        { id: "g3", label: "토너 패드 꿀팁", url: "", image: `${BASE}/samples/flowy-toner.jpg` },
       ],
     },
     {
@@ -241,7 +241,7 @@ export const ongyeolPage: Page = {
         { id: "tt", platform: "TikTok", url: "https://tiktok.com", followers: "" },
       ],
     },
-    { id: "co", type: "link", title: "크리에이터 협업 문의", sub: "제품 리뷰 · 공동구매 · 팝업", label: "문의하기", url: "mailto:collab@ongyeol.example" },
+    { id: "co", type: "link", title: "크리에이터 협업 문의", sub: "제품 리뷰 · 공동구매 · 팝업", label: "문의하기", url: "mailto:collab@flowy.example" },
   ],
 };
 
@@ -561,10 +561,10 @@ demoThreads.push(
   },
 );
 
-// ONGYEOL's inbox: overseas shoppers.
+// FLOWY's inbox: overseas shoppers.
 demoThreads.push(
   {
-    thread: { id: "o1", handle: "ongyeol", lang: "en", name: "Mia (LA)", last: "", unread: 1, at: now - 20 * min },
+    thread: { id: "o1", handle: "flowy", lang: "en", name: "Mia (LA)", last: "", unread: 1, at: now - 20 * min },
     messages: [
       { id: "a", from: "visitor", visitor: "Do you ship the cica toner to the US? How long does it take?", ko: "시카 토너 미국으로 배송되나요? 얼마나 걸려요?", at: now - 22 * min },
       { id: "b", from: "ai", visitor: "Yes! We ship to the US from our official store, usually in 7–10 days. Orders over ₩70,000 ship free.", ko: "네! 공식몰에서 미국 배송돼요. 보통 7–10일 걸리고 7만원 이상이면 무료 배송이에요.", at: now - 22 * min + 5000 },
@@ -572,7 +572,7 @@ demoThreads.push(
     ],
   },
   {
-    thread: { id: "o2", handle: "ongyeol", lang: "zh-TW", name: "小雯", last: "", unread: 0, at: now - 5 * 60 * min },
+    thread: { id: "o2", handle: "flowy", lang: "zh-TW", name: "小雯", last: "", unread: 0, at: now - 5 * 60 * min },
     messages: [
       { id: "a", from: "visitor", visitor: "請問屏障面霜有添加香料嗎？", ko: "장벽 크림에 향료가 들어있나요?", at: now - 5 * 60 * min },
       { id: "b", from: "ai", visitor: "沒有喔！全系列都是純素認證、無添加香料。", ko: "아니요! 전 제품 비건 인증에 향료 무첨가예요.", at: now - 5 * 60 * min + 5000 },
@@ -582,7 +582,7 @@ demoThreads.push(
 
 // What the sample page's AI says back to a new visitor message.
 export function demoAiReply(lang: string, handle = "rosie"): { visitor: string; ko: string } {
-  if (handle === "ongyeol") {
+  if (handle === "flowy") {
     const ko = "문의 감사합니다! 담당자가 확인하고 이 채팅으로 답해 드릴게요.";
     const visitor: Record<string, string> = {
       ko,
@@ -638,5 +638,5 @@ showcase.push(
 );
 
 // Sample pages that live only in this browser, never on the server.
-export const brandSamples = [molivPage, ongyeolPage];
+export const brandSamples = [molivPage, flowyPage];
 export const SAMPLE_HANDLES = new Set([...showcase.map((p) => p.profile.handle), ...brandSamples.map((p) => p.profile.handle)]);

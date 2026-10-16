@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
   Building2,
+  Check,
   ChartColumn,
   Megaphone,
   Search,
@@ -163,7 +164,15 @@ export function AppShell({ children, wide }: { children: (page: Page) => React.R
             </a>
           </>
         )}
-        <nav className="mt-6 space-y-0.5">
+        <button onClick={copy} className="mt-2 flex h-11 w-full items-center gap-2 rounded-[14px] bg-surface pr-1.5 pl-3.5 text-left">
+          <Link2 size={15} className="shrink-0 text-mute" />
+          <span className="min-w-0 flex-1 truncate text-[13px] font-semibold">{displayUrl(handle)}</span>
+          <span className={`flex h-8 shrink-0 items-center gap-1 rounded-[10px] px-2.5 text-[12px] font-bold ${copied ? "bg-ink text-white" : "bg-white text-ink"}`}>
+            {copied ? <Check size={13} strokeWidth={3} /> : <Copy size={13} />} {copied ? "복사됨" : "복사"}
+          </span>
+        </button>
+        <p className="mt-1.5 px-1 text-[11px] text-mute">SNS 프로필 링크에 붙여 넣으세요</p>
+        <nav className="mt-5 space-y-0.5">
           {side.map((n) => (
             <Link
               key={n.href}

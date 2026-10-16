@@ -28,11 +28,11 @@ export function BrandSwitcher({ className = "", compact }: { className?: string;
       <button onClick={() => setOpen(!open)} className={`flex w-full items-center gap-3 rounded-2xl text-left ${compact ? "" : "bg-surface p-3"}`}>
         <Avatar name={current.page?.profile.name ?? current.brand.name} src={current.page?.profile.avatar} size={compact ? 36 : 40} />
         <span className="min-w-0 flex-1">
-          <span className="block truncate text-[15px] font-bold">{current.brand.name}</span>
+          <span className={`block truncate font-bold ${compact ? "text-[15px]" : "text-[14px] tracking-tight"}`}>{current.brand.name}</span>
           <span className="block truncate text-[12px] text-mute">{current.brand.kind}</span>
         </span>
-        <span className="flex h-8 shrink-0 items-center gap-0.5 rounded-full bg-ink pr-2 pl-3 text-[12px] font-bold text-white">
-          전환 <ChevronDown size={15} strokeWidth={2.6} className={`transition-transform ${open ? "rotate-180" : ""}`} />
+        <span className={`flex h-8 shrink-0 items-center justify-center gap-0.5 rounded-full bg-ink text-[12px] font-bold text-white ${compact ? "pr-2 pl-3" : "w-8"}`}>
+          {compact && "전환"} <ChevronDown size={15} strokeWidth={2.6} className={`transition-transform ${open ? "rotate-180" : ""}`} />
         </span>
       </button>
       {open && (
