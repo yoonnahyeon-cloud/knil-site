@@ -88,3 +88,61 @@ export function demoEvents(): KnilEvent[] {
   cache = out;
   return out;
 }
+
+// Extra fictional pages, shown only as previews on the home screen.
+export const showcase: Page[] = [
+  demoPage,
+  {
+    profile: { handle: "minu.table", name: "MINU", bio: "집밥과 동네 맛집" },
+    updatedAt: 0,
+    blocks: [
+      {
+        id: "ch",
+        type: "channels",
+        items: [
+          { id: "ig", platform: "Instagram", url: "", followers: "9.4만" },
+          { id: "yt", platform: "YouTube", url: "", followers: "3.1만" },
+        ],
+      },
+      { id: "v", type: "video", heading: "New Video", title: "10분 완성 원팬 파스타", meta: "새 영상 · 오늘", duration: "08:12", url: "" },
+      {
+        id: "p",
+        type: "products",
+        title: "Kitchen Picks",
+        note: "매일 쓰는 도구",
+        items: [
+          { id: "a", name: "무쇠 팬 24cm", price: "39,000원", url: "" },
+          { id: "b", name: "올리브 오일", price: "16,500원", url: "" },
+        ],
+      },
+      { id: "l", type: "link", title: "공동구매", sub: "제철 귤 5kg · D-2", label: "참여하기", url: "" },
+    ],
+  },
+  {
+    profile: { handle: "hana.trip", name: "HANA", bio: "travel, film, slow days" },
+    updatedAt: 0,
+    blocks: [
+      {
+        id: "ch",
+        type: "channels",
+        items: [
+          { id: "ig", platform: "Instagram", url: "", followers: "15.2만" },
+          { id: "tt", platform: "TikTok", url: "", followers: "6.8만" },
+        ],
+      },
+      {
+        id: "g",
+        type: "gallery",
+        title: "Places",
+        note: "지난 여행",
+        items: [
+          { id: "a", label: "교토", url: "" },
+          { id: "b", label: "리스본", url: "" },
+          { id: "c", label: "제주", url: "" },
+        ],
+      },
+      { id: "l1", type: "link", title: "Brand Collaboration", sub: "캐리어 협업 · 10.20 – 10.31", label: "진행 중", url: "" },
+      { id: "l2", type: "link", title: "여행 가이드북", sub: "PDF · 교토 3박 4일", label: "바로 가기", url: "" },
+    ],
+  },
+];

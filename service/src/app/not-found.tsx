@@ -40,7 +40,7 @@ export default function NotFound() {
         {state.handle ? `@${state.handle} 페이지를 찾을 수 없어요.` : "페이지를 찾을 수 없어요."}
       </p>
       <p className="mt-1 text-mute">{state.handle ? "아직 아무도 쓰지 않는 아이디예요." : "주소를 다시 확인해 주세요."}</p>
-      <Link href={state.handle ? `/start?h=${state.handle}` : "/start"} className="btn mt-10">
+      <Link href={state.handle ? `/?h=${state.handle}` : "/"} className="btn mt-10">
         {state.handle ? `@${state.handle}로 내 KNIL 만들기` : "내 KNIL 만들기"}
       </Link>
     </main>

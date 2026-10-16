@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { takePendingHandle } from "@/lib/pending";
 import { LIVE, createPage, getSession, handleProblem } from "@/lib/store";
 
 export default function Start() {
@@ -14,7 +15,7 @@ export default function Start() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const h = new URLSearchParams(location.search).get("h");
+    const h = new URLSearchParams(location.search).get("h") ?? takePendingHandle();
     if (h) setHandle(h.toLowerCase());
     if (LIVE)
       getSession().then((s) => {
