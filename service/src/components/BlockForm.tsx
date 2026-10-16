@@ -1,15 +1,16 @@
 "use client";
 
 import { createContext, useContext, useState } from "react";
-import { Images, Link2, Play, ShoppingBag, Users, type LucideIcon } from "lucide-react";
+import { CalendarDays, Images, Link2, Play, ShoppingBag, Users, type LucideIcon } from "lucide-react";
 import { Field } from "@/components/Sheet";
 import type { Tone } from "@/components/ui";
 import { resizeImage } from "@/lib/image";
 import { uid } from "@/lib/store";
-import { PLATFORMS, type Block, type BlockType, type GalleryItem, type Platform, type ProductItem } from "@/lib/types";
+import { EVENT_KINDS, PLATFORMS, type Block, type BlockType, type CalendarEvent, type EventKind, type GalleryItem, type Platform, type ProductItem } from "@/lib/types";
 
 export const BLOCK_INFO: Record<BlockType, { name: string; desc: string; icon: LucideIcon; tone: Tone }> = {
-  channels: { name: "채널", desc: "Instagram, YouTube 등 내 채널과 팔로워 수", icon: Users, tone: "purple" },
+  channels: { name: "SNS 계정", desc: "Instagram, YouTube 등 내 계정 바로 가기", icon: Users, tone: "purple" },
+  calendar: { name: "캘린더", desc: "공구, 기획전, 라이브 일정을 달력으로", icon: CalendarDays, tone: "amber" },
   link: { name: "링크", desc: "쇼핑몰, 협업, 공동구매 등 바로 가기 한 줄", icon: Link2, tone: "ink" },
   video: { name: "영상", desc: "새 영상 하나를 크게 보여주기", icon: Play, tone: "pink" },
   gallery: { name: "룩 · 사진", desc: "옆으로 넘겨 보는 사진 모음", icon: Images, tone: "sky" },
@@ -21,6 +22,8 @@ export function newBlock(type: BlockType): Block {
   switch (type) {
     case "channels":
       return { id, type, items: [{ id: uid(), platform: "Instagram", url: "", followers: "" }] };
+    case "calendar":
+      return { id, type, title: "이번 달 일정", note: "", items: [{ id: uid(), title: "", start: today(), end: "", kind: "공구", url: "" }] };
     case "link":
       return { id, type, title: "", sub: "", label: "", url: "" };
     case "video":
@@ -32,10 +35,17 @@ export function newBlock(type: BlockType): Block {
   }
 }
 
+function today() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
 export function blockTitle(b: Block): string {
   switch (b.type) {
     case "channels":
-      return b.items.map((c) => c.platform).join(", ") || "채널";
+      return b.items.map((c) => c.platform).join(" · ") || "계정을 추가해 주세요";
+    case "calendar":
+      return `${b.title || "캘린더"} · 일정 ${b.items.length}개`;
     case "link":
       return b.title || "제목 없음";
     case "video":
@@ -71,13 +81,48 @@ export function BlockForm({ block, onChange }: { block: Block; onChange: (b: Blo
           <Field label="영상 링크" type="url" value={block.url} onChange={(v) => set("url", v)} placeholder="https://youtube.com/..." />
         </>
       );
+    case "calendar":
+      return (
+        <>
+          <Field label="제목" value={block.title} onChange={(v) => set("title", v)} placeholder="10월 공구 일정" />
+          <Field label="오른쪽 문구" value={block.note} onChange={(v) => set("note", v)} placeholder="알림 받으려면 DM 주세요" />
+          <Items
+            items={block.items}
+            onChange={(items) => set("items", items)}
+            make={(): CalendarEvent => ({ id: uid(), title: "", start: today(), end: "", kind: "공구", url: "" })}
+            addLabel="일정 추가"
+            render={(ev, upd) => (
+              <>
+                <div className="mt-2 flex flex-wrap gap-1.5">
+                  {EVENT_KINDS.map((k) => (
+                    <button key={k} type="button" onClick={() => upd({ ...ev, kind: k as EventKind })} className={`rounded-full px-3 py-1 text-[13px] font-bold ${ev.kind === k ? "bg-ink text-white" : "bg-surface"}`}>
+                      {k}
+                    </button>
+                  ))}
+                </div>
+                <Field label="일정 이름" value={ev.title} onChange={(v) => upd({ ...ev, title: v })} placeholder="수분 쿠션 공구" />
+                <div className="grid grid-cols-2 gap-2">
+                  <Field label="시작일" type="date" value={ev.start} onChange={(v) => upd({ ...ev, start: v, end: ev.end && ev.end < v ? v : ev.end })} />
+                  <Field label="종료일 (선택)" type="date" value={ev.end} onChange={(v) => upd({ ...ev, end: v && v < ev.start ? ev.start : v })} />
+                </div>
+                <Field label="링크 (선택)" type="url" value={ev.url} onChange={(v) => upd({ ...ev, url: v })} placeholder="https://" />
+              </>
+            )}
+          />
+        </>
+      );
     case "channels":
       return (
+        <>
+        <label className="mt-2 flex items-center justify-between rounded-2xl bg-surface px-4 py-3">
+          <span className="text-[14px] font-semibold">팔로워 수 보이기</span>
+          <input type="checkbox" checked={!!block.showFollowers} onChange={(e) => set("showFollowers", e.target.checked)} className="size-5 accent-[#7c4dff]" />
+        </label>
         <Items
           items={block.items}
           onChange={(items) => set("items", items)}
           make={() => ({ id: uid(), platform: "Instagram" as Platform, url: "", followers: "" })}
-          addLabel="채널 추가"
+          addLabel="계정 추가"
           render={(c, upd) => (
             <>
               <label className="mt-2 block">
@@ -93,6 +138,7 @@ export function BlockForm({ block, onChange }: { block: Block; onChange: (b: Blo
             </>
           )}
         />
+        </>
       );
     case "gallery":
       return (

@@ -4,7 +4,10 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
+  Building2,
   ChartColumn,
+  Megaphone,
+  Search,
   Copy,
   Crown,
   ExternalLink,
@@ -19,6 +22,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { Avatar } from "@/components/CreatorPage";
+import { getBrand, setMode, useMode, type Mode } from "@/lib/brand";
 import { BASE, displayUrl, publicUrl } from "@/lib/base";
 import { getMyPage, useStore } from "@/lib/store";
 import type { Page } from "@/lib/types";
@@ -34,6 +38,27 @@ const TABS: Nav[] = [
   { href: "/collab", label: "협업", icon: Handshake },
   { href: "/menu", label: "전체", icon: Menu, also: ["/settings", "/invite", "/membership", "/dm"] },
 ];
+
+const BRAND_TABS: Nav[] = [
+  { href: "/brand", label: "홈", icon: House },
+  { href: "/brand/creators", label: "크리에이터", icon: Search },
+  { href: "/chat", label: "채팅", icon: MessageCircleMore },
+  { href: "/brand/proposals", label: "제안", icon: Send, also: ["/brand/campaigns"] },
+  { href: "/menu", label: "전체", icon: Menu, also: ["/settings", "/brand/profile"] },
+];
+
+const BRAND_SIDE: Nav[] = [
+  { href: "/brand", label: "홈", icon: House },
+  { href: "/brand/creators", label: "크리에이터 찾기", icon: Search },
+  { href: "/brand/proposals", label: "보낸 제안", icon: Send },
+  { href: "/brand/campaigns", label: "캠페인", icon: Megaphone },
+  { href: "/chat", label: "해외 고객 채팅", icon: MessageCircleMore },
+  { href: "/brand/profile", label: "브랜드 프로필", icon: Building2 },
+  { href: "/settings", label: "설정", icon: Settings },
+];
+
+const HOME: Record<Mode, string> = { creator: "/home", brand: "/brand" };
+const CREATOR_ONLY = ["/home", "/edit", "/stats", "/dm", "/collab", "/invite", "/membership"];
 
 // Sidebar on a computer, where there is room for every screen.
 const SIDE: Nav[] = [
@@ -54,15 +79,29 @@ export function AppShell({ children, wide }: { children: (page: Page) => React.R
   const router = useRouter();
   const path = usePathname().replace(/\/$/, "");
   const page = useStore(getMyPage);
+  const stored = useMode();
   const [copied, setCopied] = useState(false);
+  // Screens that belong to one side switch the view to that side.
+  const mode: Mode = path.includes("/brand") ? "brand" : CREATOR_ONLY.some((r) => path.endsWith(r)) ? "creator" : stored;
 
   useEffect(() => {
     if (page === null) router.replace("/");
   }, [page, router]);
+  useEffect(() => {
+    if (mode !== stored) setMode(mode);
+  }, [mode, stored]);
 
   if (!page) return null;
   const handle = page.profile.handle;
   const on = (n: Nav) => path.endsWith(n.href) || !!n.also?.some((a) => path.endsWith(a));
+  const tabs = mode === "brand" ? BRAND_TABS : TABS;
+  const side = mode === "brand" ? BRAND_SIDE : SIDE;
+  const brand = getBrand();
+  const switchTo = (m: Mode) => {
+    if (m === mode) return;
+    setMode(m);
+    router.push(HOME[m]);
+  };
 
   const copy = async () => {
     try {
@@ -75,21 +114,41 @@ export function AppShell({ children, wide }: { children: (page: Page) => React.R
   return (
     <div className="min-h-dvh lg:pl-[248px]">
       <aside className="fixed inset-y-0 left-0 z-30 hidden w-[248px] flex-col border-r border-rule bg-white px-4 py-6 lg:flex">
-        <Link href="/home" className="px-3 font-display text-[26px] font-extrabold tracking-tight">
+        <Link href={HOME[mode]} className="px-3 font-display text-[26px] font-extrabold tracking-tight">
           knil<span className="text-signal">.</span>
         </Link>
-        <div className="mt-6 flex items-center gap-3 rounded-2xl bg-surface p-3">
-          <Avatar name={page.profile.name} src={page.profile.avatar} size={40} />
-          <div className="min-w-0">
-            <p className="truncate text-[15px] font-bold">{page.profile.name}</p>
-            <p className="truncate text-[12px] text-mute">@{handle}</p>
-          </div>
-        </div>
-        <a href={`${BASE}/@${handle}`} target="_blank" rel="noopener" className="btn-accent mt-3 h-11 gap-1.5 text-[14px]">
-          내 페이지 보기 <ExternalLink size={15} />
-        </a>
+        <ModeSwitch mode={mode} onChange={switchTo} className="mt-4" />
+        {mode === "creator" ? (
+          <>
+            <div className="mt-4 flex items-center gap-3 rounded-2xl bg-surface p-3">
+              <Avatar name={page.profile.name} src={page.profile.avatar} size={40} />
+              <div className="min-w-0">
+                <p className="truncate text-[15px] font-bold">{page.profile.name}</p>
+                <p className="truncate text-[12px] text-mute">@{handle}</p>
+              </div>
+            </div>
+            <a href={`${BASE}/@${handle}`} target="_blank" rel="noopener" className="btn-accent mt-3 h-11 gap-1.5 text-[14px]">
+              내 페이지 보기 <ExternalLink size={15} />
+            </a>
+          </>
+        ) : (
+          <>
+            <Link href="/brand/profile" className="mt-4 flex items-center gap-3 rounded-2xl bg-ink p-3 text-white">
+              <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-signal">
+                <Building2 size={20} />
+              </span>
+              <div className="min-w-0">
+                <p className="truncate text-[15px] font-bold">{brand.name || "브랜드 이름 정하기"}</p>
+                <p className="truncate text-[12px] text-white/60">{brand.kind}</p>
+              </div>
+            </Link>
+            <Link href="/brand/creators" className="btn-accent mt-3 h-11 gap-1.5 text-[14px]">
+              <Search size={15} /> 크리에이터 찾기
+            </Link>
+          </>
+        )}
         <nav className="mt-6 space-y-0.5">
-          {SIDE.map((n) => (
+          {side.map((n) => (
             <Link
               key={n.href}
               href={n.href}
@@ -103,17 +162,22 @@ export function AppShell({ children, wide }: { children: (page: Page) => React.R
       </aside>
 
       <div className={`mx-auto pb-[calc(72px+env(safe-area-inset-bottom))] lg:pb-16 ${wide ? "max-w-[480px] lg:max-w-[1120px] lg:px-10" : "max-w-[480px] lg:max-w-[680px] lg:px-6"}`}>
-        <header className="sticky top-0 z-30 flex h-14 items-center gap-2 bg-white/90 px-5 pt-[env(safe-area-inset-top)] backdrop-blur lg:hidden">
-          <Link href="/home" className="font-display text-[22px] font-extrabold tracking-tight">
+        <header className="sticky top-0 z-30 flex h-14 items-center gap-2 bg-white/90 px-4 pt-[env(safe-area-inset-top)] backdrop-blur lg:hidden">
+          <Link href={HOME[mode]} className="font-display text-[22px] font-extrabold tracking-tight">
             knil<span className="text-signal">.</span>
           </Link>
-          <button onClick={copy} className="ml-1 flex min-w-0 flex-1 items-center gap-1.5 rounded-full bg-surface px-3 py-1.5 text-left text-[13px] font-semibold">
-            <span className="truncate">{copied ? <span className="text-signal">주소를 복사했어요</span> : displayUrl(handle)}</span>
-            <Copy size={13} className="shrink-0 text-mute" />
-          </button>
-          <a href={`${BASE}/@${handle}`} target="_blank" rel="noopener" aria-label="내 페이지" className="grid size-9 shrink-0 place-items-center rounded-full bg-ink text-white">
-            <ExternalLink size={16} />
-          </a>
+          <ModeSwitch mode={mode} onChange={switchTo} compact />
+          <span className="flex-1" />
+          {mode === "creator" && (
+            <>
+              <button onClick={copy} aria-label="주소 복사" className="flex h-9 shrink-0 items-center gap-1 rounded-full bg-surface px-3 text-[12px] font-bold">
+                <Copy size={14} /> {copied ? "복사됨" : "주소"}
+              </button>
+              <a href={`${BASE}/@${handle}`} target="_blank" rel="noopener" aria-label="내 페이지" className="grid size-9 shrink-0 place-items-center rounded-full bg-ink text-white">
+                <ExternalLink size={16} />
+              </a>
+            </>
+          )}
         </header>
 
         {children(page)}
@@ -121,7 +185,7 @@ export function AppShell({ children, wide }: { children: (page: Page) => React.R
 
       <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-rule bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur lg:hidden">
         <div className="mx-auto grid h-16 max-w-[480px] grid-cols-5">
-          {TABS.map((t) => (
+          {tabs.map((t) => (
             <Link key={t.href} href={t.href} className={`flex flex-col items-center justify-center gap-1 text-[11px] ${on(t) ? "font-bold text-ink" : "text-mute"}`}>
               <span className={`grid h-7 w-12 place-items-center rounded-full ${on(t) ? "bg-soft text-signal" : ""}`}>
                 <t.icon size={21} strokeWidth={on(t) ? 2.3 : 1.7} />
@@ -131,6 +195,27 @@ export function AppShell({ children, wide }: { children: (page: Page) => React.R
           ))}
         </div>
       </nav>
+    </div>
+  );
+}
+
+// Creator / brand view switch. Top left on a computer, in the header on a phone.
+function ModeSwitch({ mode, onChange, compact, className = "" }: { mode: Mode; onChange: (m: Mode) => void; compact?: boolean; className?: string }) {
+  const opts: { key: Mode; label: string }[] = [
+    { key: "creator", label: "크리에이터" },
+    { key: "brand", label: "브랜드" },
+  ];
+  return (
+    <div className={`grid grid-cols-2 rounded-full bg-surface p-1 ${compact ? "h-9 text-[12px]" : "h-11 text-[14px]"} ${className}`}>
+      {opts.map((o) => (
+        <button
+          key={o.key}
+          onClick={() => onChange(o.key)}
+          className={`rounded-full font-bold transition-colors ${compact ? "px-2.5" : ""} ${mode === o.key ? (o.key === "brand" ? "bg-signal text-white" : "bg-ink text-white") : "text-mute"}`}
+        >
+          {o.label}
+        </button>
+      ))}
     </div>
   );
 }

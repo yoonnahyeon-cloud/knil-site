@@ -41,6 +41,10 @@ export function remote(db: SupabaseClient) {
       const { data } = await db.from("pages").select("*").eq("handle", handle).maybeSingle();
       return data ? toPage(data as Row) : null;
     },
+    async listPages(limit: number): Promise<Page[]> {
+      const { data } = await db.from("pages").select("*").order("updated_at", { ascending: false }).limit(limit);
+      return ((data ?? []) as Row[]).map(toPage);
+    },
     async taken(handle: string) {
       const { count, error } = await db.from("pages").select("handle", { count: "exact", head: true }).eq("handle", handle);
       if (error) throw new KoreanError(error);

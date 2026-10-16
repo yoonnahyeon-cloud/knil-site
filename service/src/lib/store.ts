@@ -7,7 +7,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { BASE } from "./base";
 import { toKorean } from "./errors";
-import { demoPage } from "./demo";
+import { demoPage, showcase } from "./demo";
 import { local, localProposals } from "./local";
 import { remote } from "./remote";
 import { supabase } from "./supabase";
@@ -24,7 +24,9 @@ function changed() {
   window.dispatchEvent(new Event("knil:change"));
 }
 
-const isDemo = (handle: string) => handle === DEMO || !server;
+// Sample creators exist only in the app, never on the server.
+const SAMPLES = new Set(showcase.map((p) => p.profile.handle));
+const isDemo = (handle: string) => SAMPLES.has(handle) || !server;
 
 // Who is using the editor. `handle` is null for a signed-in account that
 // has not picked its address yet.
@@ -50,9 +52,14 @@ export async function getPage(handle: string): Promise<Page | null> {
   return server!.getPage(handle);
 }
 
+// Recently updated real pages, for brands looking for creators.
+export async function publicPages(limit = 60): Promise<Page[]> {
+  return server ? server.listPages(limit).catch(() => []) : [];
+}
+
 export async function handleProblem(handle: string): Promise<string | null> {
   if (!HANDLE_RE.test(handle)) return "영문 소문자, 숫자, 마침표, 밑줄로 3~20자";
-  if (RESERVED.has(handle)) return "사용할 수 없는 아이디입니다";
+  if (RESERVED.has(handle) || SAMPLES.has(handle)) return "사용할 수 없는 아이디입니다";
   try {
     if (server ? await server.taken(handle) : local.taken(handle)) return "이미 사용 중인 아이디입니다";
   } catch (e) {

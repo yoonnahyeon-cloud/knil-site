@@ -95,6 +95,7 @@ function pageStrings(page: PageRow): string[] {
     if (b.type === "video") out.push(str(b.heading), str(b.title), str(b.meta));
     if (b.type === "gallery") out.push(str(b.title), str(b.note), ...items(b).map((i) => str(i.label)));
     if (b.type === "products") out.push(str(b.title), str(b.note), ...items(b).map((i) => str(i.name)));
+    if (b.type === "calendar") out.push(str(b.title), str(b.note), ...items(b).map((i) => str(i.title)), ...items(b).map((i) => str(i.kind)));
   }
   return [...new Set(out.map((s) => s.trim()).filter((s) => s && /\p{L}/u.test(s)))].slice(0, 200);
 }
@@ -159,6 +160,7 @@ function pageInfo(page: PageRow) {
     if (b.type === "video") lines.push(`Latest video: ${str(b.title)}`);
     if (b.type === "gallery") lines.push(`${str(b.title)}: ${items(b).map((i) => str(i.label)).join(", ")}`);
     if (b.type === "products") lines.push(`${str(b.title)}: ${items(b).map((i) => `${str(i.name)} ${str(i.price)}`).join(", ")}`);
+    if (b.type === "calendar") lines.push(`${str(b.title)}: ${items(b).map((i) => `${str(i.kind)} ${str(i.title)} ${str(i.start)}${i.end ? `~${str(i.end)}` : ""}`).join(", ")}`);
     if (b.type === "channels") lines.push(`Channels: ${items(b).map((i) => `${str(i.platform)} ${str(i.followers)}`).join(", ")}`);
   }
   return lines.join("\n").slice(0, 3000);

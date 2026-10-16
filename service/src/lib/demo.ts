@@ -1,11 +1,27 @@
 // ROSIE is a fictional sample creator, the same one used on the brand site.
 // Her page and statistics are illustrative only.
 
+import { BASE } from "./base";
 import type { ChatMessage, ChatThread, KnilEvent, Page, Source } from "./types";
 
+// A date n days from today as YYYY-MM-DD, so the sample calendar always looks current.
+function day(n: number) {
+  const d = new Date();
+  d.setDate(d.getDate() + n);
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+}
+
 export const demoPage: Page = {
-  profile: { handle: "rosie", name: "ROSIE", bio: "beauty, fashion, daily life" },
+  profile: { handle: "rosie", name: "ROSIE YOON", bio: "beauty, fashion, daily life", avatar: `${BASE}/samples/rosie.jpg` },
   updatedAt: 0,
+  portfolio: {
+    intro: "데일리 뷰티와 가을 룩을 매주 릴스로 올려요",
+    categories: ["뷰티", "패션"],
+    tags: ["데일리메이크업", "가을룩", "협찬릴스"],
+    region: "서울",
+    audience: "20대 여성",
+    collabs: "스킨케어 브랜드 릴스 6회, 패션 공동구매 2회",
+  },
   chat: { on: true, ai: true, guide: "립 틴트 03 로즈는 18,000원, 수분 쿠션 21호는 32,000원. 해외 배송은 SHOP 링크에서 가능. 협찬 문의는 '협업 제안하기'로." },
   blocks: [
     {
@@ -16,6 +32,17 @@ export const demoPage: Page = {
         { id: "yt", platform: "YouTube", url: "https://youtube.com", followers: "12.4만" },
         { id: "tt", platform: "TikTok", url: "https://tiktok.com", followers: "19.8만" },
         { id: "xhs", platform: "Xiaohongshu", url: "https://xiaohongshu.com", followers: "4.2만" },
+      ],
+    },
+    {
+      id: "cal",
+      type: "calendar",
+      title: "공구 · 기획전 일정",
+      note: "알림 받고 놓치지 마세요",
+      items: [
+        { id: "e1", title: "수분 쿠션 공동구매", start: day(-2), end: day(2), kind: "공구", url: "https://example.com" },
+        { id: "e2", title: "가을 니트 기획전", start: day(5), end: day(9), kind: "기획전", url: "https://example.com" },
+        { id: "e3", title: "인스타 라이브 Q&A", start: day(12), end: day(12), kind: "라이브", url: "" },
       ],
     },
     {
@@ -96,6 +123,7 @@ export const showcase: Page[] = [
   {
     profile: { handle: "minu.table", name: "MINU", bio: "집밥과 동네 맛집" },
     updatedAt: 0,
+    portfolio: { intro: "10분 집밥 레시피와 동네 맛집", categories: ["푸드", "리빙"], tags: ["집밥", "원팬요리"], region: "부산", audience: "30대 직장인", collabs: "주방용품 공동구매 3회" },
     blocks: [
       {
         id: "ch",
@@ -122,6 +150,7 @@ export const showcase: Page[] = [
   {
     profile: { handle: "hana.trip", name: "HANA", bio: "travel, film, slow days" },
     updatedAt: 0,
+    portfolio: { intro: "필름 카메라로 담는 느린 여행", categories: ["여행"], tags: ["필름사진", "교토", "호캉스"], region: "제주", audience: "20대 후반 여성", collabs: "캐리어 브랜드, 호텔 숙박 협찬" },
     blocks: [
       {
         id: "ch",
@@ -246,3 +275,25 @@ export function demoAiReply(lang: string): { visitor: string; ko: string } {
   };
   return { ko, visitor: visitor[lang] ?? visitor.en };
 }
+
+const sample = (handle: string, name: string, bio: string, ch: [string, string][], portfolio: Page["portfolio"]): Page => ({
+  profile: { handle, name, bio },
+  updatedAt: 0,
+  portfolio,
+  blocks: [{ id: "ch", type: "channels", items: ch.map(([platform, followers], i) => ({ id: String(i), platform: platform as "Instagram", url: "", followers })) }],
+});
+
+showcase.push(
+  sample("jun.fit", "JUN", "홈트와 식단, 매일 30분", [["Instagram", "6.2만"], ["YouTube", "18.5만"]], {
+    intro: "운동 초보를 위한 홈트 루틴", categories: ["운동"], tags: ["홈트", "다이어트", "식단"], region: "서울", audience: "20–30대 남녀", collabs: "프로틴 브랜드 유튜브 PPL 4회",
+  }),
+  sample("sora.home", "SORA", "작은 집을 넓게 쓰는 법", [["Instagram", "11.3만"], ["Threads", "2.1만"]], {
+    intro: "원룸 인테리어와 수납 아이디어", categories: ["리빙"], tags: ["원룸인테리어", "수납"], region: "경기", audience: "20대 1인 가구", collabs: "가구 브랜드 공동구매 5회",
+  }),
+  sample("leo.tech", "LEO", "새로 나온 기기 먼저 써보기", [["YouTube", "32만"], ["X", "4.8만"]], {
+    intro: "스마트폰, 노트북 리뷰", categories: ["테크"], tags: ["언박싱", "리뷰"], region: "서울", audience: "20–40대 남성", collabs: "가전 브랜드 리뷰 12회",
+  }),
+  sample("yuna.glow", "YUNA", "skin, clinic, self care", [["Instagram", "15.7만"], ["TikTok", "9.9만"], ["Xiaohongshu", "3.4만"]], {
+    intro: "피부 관리와 클리닉 시술 후기", categories: ["뷰티"], tags: ["피부관리", "시술후기", "K뷰티"], region: "서울 강남", audience: "20–30대 여성, 중화권 팬", collabs: "피부과 시술 후기 8회",
+  }),
+);

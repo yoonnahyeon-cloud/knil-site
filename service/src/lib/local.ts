@@ -32,7 +32,23 @@ function pages(): Record<string, Page> {
   const stored = read<Record<string, Page>>(K.pages, {});
   const d = demoPage.profile.handle;
   if (!stored[d]) stored[d] = demoPage;
-  else if (!stored[d].chat) stored[d] = { ...stored[d], chat: demoPage.chat };
+  else {
+    // Bring an older copy of the sample page up to date with the current sample.
+    let p = stored[d];
+    if (!p.chat) p = { ...p, chat: demoPage.chat };
+    if (p.profile.name === "ROSIE" && !p.profile.avatar) p = { ...p, profile: { ...p.profile, name: demoPage.profile.name, avatar: demoPage.profile.avatar } };
+    // Only once, so a deleted calendar block stays deleted.
+    if (!p.blocks.some((b) => b.type === "calendar") && !read("knil:demo:cal", false)) {
+      write("knil:demo:cal", true);
+      const cal = demoPage.blocks.find((b) => b.type === "calendar")!;
+      const at = p.blocks.findIndex((b) => b.type === "channels") + 1;
+      p = { ...p, blocks: [...p.blocks.slice(0, at), cal, ...p.blocks.slice(at)] };
+    }
+    if (p !== stored[d]) {
+      stored[d] = p;
+      write(K.pages, stored);
+    }
+  }
   return stored;
 }
 

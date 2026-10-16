@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { ArrowUpRight, Check, Globe, Mail, MessageCircle, Play, Share } from "lucide-react";
+import { CalendarView } from "@/components/CalendarView";
 import { PlatformMark } from "@/components/Platform";
 import { Field, Sheet } from "@/components/Sheet";
 import { VisitorChat } from "@/components/VisitorChat";
@@ -117,7 +118,7 @@ export function CreatorPage({ page: original, preview = false, lang: fixedLang }
 
       <div className="space-y-3 px-5 pt-7 pb-6">
         {blocks.map((b) => (
-          <BlockView key={b.id} block={b} go={go} name={profile.name} />
+          <BlockView key={b.id} block={b} go={go} name={profile.name} lang={lang} t={(w) => (translated && dict?.[w]) || w} />
         ))}
         {blocks.length === 0 && <p className="rounded-2xl bg-surface py-10 text-center text-mute">{t.empty}</p>}
       </div>
@@ -193,8 +194,10 @@ function Head({ title, note }: { title: string; note?: string }) {
 
 const linkProps = (url: string) => ({ href: url || "#", target: "_blank", rel: "noopener" });
 
-function BlockView({ block: b, go, name }: { block: Block; go: Go; name: string }) {
+function BlockView({ block: b, go, name, lang, t }: { block: Block; go: Go; name: string; lang: string; t: (s: string) => string }) {
   switch (b.type) {
+    case "calendar":
+      return <CalendarView block={b} lang={lang} t={t} onOpen={(e) => go(`${b.id}:${e.id}`, e.url)} />;
     case "channels": {
       const items = b.items.filter((c) => c.url || c.followers);
       if (!items.length) return null;
@@ -205,7 +208,7 @@ function BlockView({ block: b, go, name }: { block: Block; go: Go; name: string 
               <PlatformMark platform={c.platform} size={34} />
               <span className="min-w-0">
                 <span className="block truncate text-[14px] font-bold">{c.platform}</span>
-                <span className="block text-[12px] text-mute">{c.followers}</span>
+                {b.showFollowers && c.followers && <span className="block text-[12px] text-mute">{c.followers}</span>}
               </span>
             </a>
           ))}
@@ -289,8 +292,20 @@ function platformOf(url: string) {
 }
 
 // A brand's collaboration request; lands in the creator's 제안함.
-function ProposalSheet({ handle, name, onClose }: { handle: string; name: string; onClose: () => void }) {
-  const [f, setF] = useState({ brand: "", contact: "", budget: "", message: "" });
+export function ProposalSheet({
+  handle,
+  name,
+  onClose,
+  prefill,
+  onSent,
+}: {
+  handle: string;
+  name: string;
+  onClose: () => void;
+  prefill?: { brand: string; contact: string };
+  onSent?: (p: { budget: string; message: string }) => void;
+}) {
+  const [f, setF] = useState({ brand: prefill?.brand ?? "", contact: prefill?.contact ?? "", budget: "", message: "" });
   const [state, setState] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const ok = f.brand.trim() && f.contact.trim().length >= 3 && f.message.trim();
   const set = (k: keyof typeof f) => (v: string) => setF({ ...f, [k]: v });
@@ -300,6 +315,7 @@ function ProposalSheet({ handle, name, onClose }: { handle: string; name: string
     setState("sending");
     try {
       await sendProposal({ handle, brand: f.brand.trim(), contact: f.contact.trim(), budget: f.budget.trim(), message: f.message.trim() });
+      onSent?.({ budget: f.budget.trim(), message: f.message.trim() });
       setState("sent");
     } catch {
       setState("error");

@@ -8,10 +8,17 @@ export type ChannelItem = { id: string; platform: Platform; url: string; followe
 export type GalleryItem = { id: string; label: string; url: string; image?: string };
 export type ProductItem = { id: string; name: string; price: string; url: string; image?: string };
 
+// One schedule entry on a calendar block: a group buy, a sale, a live.
+// Dates are "YYYY-MM-DD"; `end` is empty for one-day entries.
+export const EVENT_KINDS = ["공구", "기획전", "라이브", "이벤트", "휴무"] as const;
+export type EventKind = (typeof EVENT_KINDS)[number];
+export type CalendarEvent = { id: string; title: string; start: string; end: string; kind: EventKind; url: string };
+
 type Base = { id: string; hidden?: boolean };
 
 export type Block =
-  | (Base & { type: "channels"; items: ChannelItem[] })
+  | (Base & { type: "channels"; items: ChannelItem[]; showFollowers?: boolean })
+  | (Base & { type: "calendar"; title: string; note: string; items: CalendarEvent[] })
   | (Base & { type: "link"; title: string; sub: string; label: string; url: string })
   | (Base & { type: "video"; title: string; heading: string; meta: string; duration: string; url: string; image?: string })
   | (Base & { type: "gallery"; title: string; note: string; items: GalleryItem[] })

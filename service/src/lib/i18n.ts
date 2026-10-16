@@ -282,6 +282,9 @@ export function pageStrings(page: Page): string[] {
       case "products":
         out.push(b.title, b.note, ...b.items.map((i) => i.name));
         break;
+      case "calendar":
+        out.push(b.title, b.note, ...b.items.map((i) => i.title), ...b.items.map((i) => i.kind));
+        break;
     }
   }
   return [...new Set(out.map((s) => s.trim()).filter((s) => s && /\p{L}/u.test(s)))];
@@ -300,6 +303,8 @@ export function translatePage(page: Page, dict: Record<string, string>): Page {
         return { ...b, title: t(b.title), note: t(b.note), items: b.items.map((i) => ({ ...i, label: t(i.label) })) };
       case "products":
         return { ...b, title: t(b.title), note: t(b.note), items: b.items.map((i) => ({ ...i, name: t(i.name) })) };
+      case "calendar":
+        return { ...b, title: t(b.title), note: t(b.note), items: b.items.map((i) => ({ ...i, title: t(i.title) })) };
       default:
         return b;
     }
