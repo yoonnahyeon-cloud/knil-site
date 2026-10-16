@@ -4,7 +4,11 @@ import { useEffect, useState } from "react";
 import { Globe, Handshake, Languages, Megaphone, X, type LucideIcon } from "lucide-react";
 import { IconTile, type Tone } from "@/components/ui";
 
-const SEEN = "knil:brand:intro";
+// Shown each time the app is opened in the brand view, unless "오늘 하루 보지
+// 않기" was picked in the last 24 hours.
+const HIDE_UNTIL = "knil:brand:intro:until";
+const SHOWN = "knil:brand:intro:shown";
+const DAY = 24 * 60 * 60 * 1000;
 
 const ITEMS: { icon: LucideIcon; tone: Tone; title: string; body: string; tags: string[] }[] = [
   {
@@ -44,21 +48,24 @@ export function BrandIntro({ open: forced, onClose }: { open?: boolean; onClose?
   useEffect(() => {
     if (forced) return setOpen(true);
     try {
-      if (!localStorage.getItem(SEEN)) setOpen(true);
+      if (Number(localStorage.getItem(HIDE_UNTIL) ?? 0) > Date.now()) return;
+      if (sessionStorage.getItem(SHOWN)) return;
+      setOpen(true);
     } catch {}
   }, [forced]);
 
   if (!open) return null;
-  const close = () => {
+  const close = (today?: boolean) => {
     try {
-      localStorage.setItem(SEEN, "1");
+      sessionStorage.setItem(SHOWN, "1");
+      if (today) localStorage.setItem(HIDE_UNTIL, String(Date.now() + DAY));
     } catch {}
     setOpen(false);
     onClose?.();
   };
 
   return (
-    <div className="fixed inset-0 z-[70] flex items-end justify-center bg-ink/40 backdrop-blur-[2px] lg:items-center lg:p-8" onClick={close}>
+    <div className="fixed inset-0 z-[70] flex items-end justify-center bg-ink/40 backdrop-blur-[2px] lg:items-center lg:p-8" onClick={() => close()}>
       <div
         className="flex max-h-[92dvh] w-full max-w-[480px] flex-col overflow-hidden rounded-t-[28px] bg-white lg:rounded-[28px]"
         onClick={(e) => e.stopPropagation()}
@@ -68,7 +75,7 @@ export function BrandIntro({ open: forced, onClose }: { open?: boolean; onClose?
             <span className="inline-flex items-center gap-2 rounded-xl bg-surface p-1 pr-3 text-[12px] font-semibold">
               <span className="rounded-lg bg-ink px-2 py-0.5 text-[11px] text-white">KNIL</span> 브랜드 계정
             </span>
-            <button onClick={close} aria-label="닫기" className="grid size-9 place-items-center rounded-full bg-surface">
+            <button onClick={() => close()} aria-label="닫기" className="grid size-9 place-items-center rounded-full bg-surface">
               <X size={18} />
             </button>
           </div>
@@ -99,8 +106,11 @@ export function BrandIntro({ open: forced, onClose }: { open?: boolean; onClose?
           </div>
         </div>
         <div className="shrink-0 px-6 pt-2 pb-[max(20px,env(safe-area-inset-bottom))]">
-          <button onClick={close} className="btn w-full">
+          <button onClick={() => close()} className="btn w-full">
             시작하기
+          </button>
+          <button onClick={() => close(true)} className="mt-1 h-10 w-full text-[13px] font-semibold text-mute">
+            오늘 하루 보지 않기
           </button>
         </div>
       </div>
