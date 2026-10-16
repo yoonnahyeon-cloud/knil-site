@@ -14,7 +14,7 @@ import type { Block, Page } from "@/lib/types";
 
 const TONES = ["bg-tone-1", "bg-tone-2", "bg-tone-3", "bg-tone-4"];
 
-// What a visitor sees at knil.com/@handle. `preview` turns off click
+// What a visitor sees at knil.kr/@handle. `preview` turns off click
 // tracking and navigation, for the live preview inside the editor; `lang`
 // then fixes the language shown.
 export function CreatorPage({ page: original, preview = false, lang: fixedLang }: { page: Page; preview?: boolean; lang?: string }) {

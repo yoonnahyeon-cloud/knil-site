@@ -18,7 +18,7 @@ export default function SettingsPage() {
               <div className="flex items-center gap-3 py-2.5">
                 <IconTile icon={AtSign} tone="soft" size={34} />
                 <dt className="flex-1 text-mute">주소</dt>
-                <dd className="font-bold">knil.com/@{page.profile.handle}</dd>
+                <dd className="font-bold">knil.kr/@{page.profile.handle}</dd>
               </div>
               <div className="flex items-center gap-3 py-2.5">
                 <IconTile icon={UserRound} tone="gray" size={34} />

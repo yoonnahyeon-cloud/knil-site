@@ -244,7 +244,7 @@ function BrandHome({ page }: { page: Page }) {
             <Avatar name={page.profile.name} src={page.profile.avatar} size={44} />
             <span className="min-w-0 flex-1">
               <span className="block font-bold">브랜드 페이지</span>
-              <span className="block truncate text-[12px] text-ink/60">knil.com/@{page.profile.handle} · 제품, 세일 일정, 리뷰</span>
+              <span className="block truncate text-[12px] text-ink/60">knil.kr/@{page.profile.handle} · 제품, 세일 일정, 리뷰</span>
             </span>
             <Send size={17} className="shrink-0 text-mute" />
           </Link>

@@ -90,7 +90,7 @@ export default function Home() {
                   <CreatorPage page={page} preview lang="ko" />
                 </PhoneFrame>
               </div>
-              <p className="mt-2 text-center text-[12px] font-semibold text-mute">knil.com/@{page.profile.handle}</p>
+              <p className="mt-2 text-center text-[12px] font-semibold text-mute">knil.kr/@{page.profile.handle}</p>
             </button>
           ))}
           <span className="w-1 shrink-0" />
@@ -159,7 +159,7 @@ export default function Home() {
   );
 }
 
-// "knil.com/@ [아이디] 바로 만들기": check the address before sign-up.
+// "knil.kr/@ [아이디] 바로 만들기": check the address before sign-up.
 function Claim({ onGo }: { onGo: (handle: string) => void }) {
   const [handle, setHandle] = useState("");
   const [problem, setProblem] = useState<string | null>(null);
@@ -191,7 +191,7 @@ function Claim({ onGo }: { onGo: (handle: string) => void }) {
       className="mt-7"
     >
       <div className="flex h-14 items-center rounded-2xl bg-surface px-5 text-ink focus-within:ring-2 focus-within:ring-ink">
-        <span className="shrink-0 font-semibold text-mute">knil.com/@</span>
+        <span className="shrink-0 font-semibold text-mute">knil.kr/@</span>
         <input
           value={handle}
           onChange={(e) => setHandle(e.target.value.toLowerCase().replace(/\s/g, ""))}

@@ -76,7 +76,7 @@ export default function Start() {
         <label className="mt-10 block">
           <span className="text-[13px] font-semibold text-ink/70">주소</span>
           <div className="mt-1.5 flex items-center rounded-xl border border-rule bg-surface pl-3.5 focus-within:border-signal focus-within:bg-white">
-            <span className="shrink-0 py-2.5 font-semibold text-mute">knil.com/@</span>
+            <span className="shrink-0 py-2.5 font-semibold text-mute">knil.kr/@</span>
             <input
               value={handle}
               onChange={(e) => setHandle(e.target.value.toLowerCase().replace(/\s/g, ""))}
