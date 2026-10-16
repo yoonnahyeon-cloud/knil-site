@@ -179,6 +179,72 @@ export const molivPage: Page = {
   ],
 };
 
+// ONGYEOL is a sample cosmetics brand: products, sales and pop-ups on the
+// page, creator campaigns in the admin.
+export const ongyeolPage: Page = {
+  kind: "brand",
+  profile: {
+    handle: "ongyeol",
+    name: "온결 ONGYEOL",
+    bio: "민감 피부를 위한 비건 스킨케어",
+    avatar: `${BASE}/samples/ongyeol-logo.jpg`,
+    cover: `${BASE}/samples/ongyeol-cover.jpg`,
+    theme: "#111111",
+  },
+  updatedAt: 0,
+  chat: {
+    on: true,
+    ai: true,
+    guide: "시카 진정 토너 28,000원, 판테놀 장벽 크림 32,000원, 약산성 클렌징 폼 18,000원. 공식몰에서 해외 배송(미국·일본·대만·동남아) 가능, 7만원 이상 무료. 전 제품 비건 인증, 향료 무첨가. 협업 문의는 collab@ongyeol.example.",
+  },
+  blocks: [
+    { id: "shop", type: "link", title: "공식 온라인몰", sub: "첫 구매 20% 쿠폰 · 해외 배송", label: "쇼핑하기", url: "https://example.com" },
+    {
+      id: "best",
+      type: "products",
+      title: "BEST",
+      note: "가장 많이 찾는 제품",
+      items: [
+        { id: "p1", name: "시카 진정 토너", price: "28,000원", url: "https://example.com", image: `${BASE}/samples/ongyeol-toner.jpg` },
+        { id: "p2", name: "판테놀 장벽 크림", price: "32,000원", url: "https://example.com", image: `${BASE}/samples/ongyeol-cream.jpg` },
+        { id: "p3", name: "약산성 클렌징 폼", price: "18,000원", url: "https://example.com", image: `${BASE}/samples/ongyeol-foam.jpg` },
+      ],
+    },
+    {
+      id: "sale",
+      type: "calendar",
+      title: "세일 · 팝업 일정",
+      note: "놓치지 마세요",
+      items: [
+        { id: "e1", title: "가을 메가 세일", start: day(-1), end: day(5), kind: "기획전", url: "https://example.com" },
+        { id: "e2", title: "성수 팝업스토어", start: day(8), end: day(14), kind: "이벤트", url: "" },
+        { id: "e3", title: "신제품 런칭 라이브", start: day(11), end: "", kind: "라이브", url: "" },
+      ],
+    },
+    {
+      id: "rv",
+      type: "gallery",
+      title: "크리에이터 리뷰",
+      note: "@knil 크리에이터",
+      items: [
+        { id: "g1", label: "ROSIE의 진정 루틴", url: `${BASE}/@rosie`, image: `${BASE}/samples/rosie.jpg` },
+        { id: "g2", label: "장벽 크림 2주 후기", url: "", image: `${BASE}/samples/ongyeol-cream.jpg` },
+        { id: "g3", label: "토너 패드 꿀팁", url: "", image: `${BASE}/samples/ongyeol-toner.jpg` },
+      ],
+    },
+    {
+      id: "ch",
+      type: "channels",
+      items: [
+        { id: "ig", platform: "Instagram", url: "https://instagram.com", followers: "" },
+        { id: "yt", platform: "YouTube", url: "https://youtube.com", followers: "" },
+        { id: "tt", platform: "TikTok", url: "https://tiktok.com", followers: "" },
+      ],
+    },
+    { id: "co", type: "link", title: "크리에이터 협업 문의", sub: "제품 리뷰 · 공동구매 · 팝업", label: "문의하기", url: "mailto:collab@ongyeol.example" },
+  ],
+};
+
 // Extra fictional pages, shown only as previews on the home screen.
 export const showcase: Page[] = [
   demoPage,
@@ -243,6 +309,32 @@ export const showcase: Page[] = [
 // that real pages get from the server.
 const DEMO_DICT: Record<string, Record<string, string>> = {
   en: {
+    "민감 피부를 위한 비건 스킨케어": "Vegan skincare for sensitive skin",
+    "공식 온라인몰": "Official store",
+    "첫 구매 20% 쿠폰 · 해외 배송": "20% off your first order · Ships worldwide",
+    "쇼핑하기": "Shop",
+    "가장 많이 찾는 제품": "Most loved",
+    "시카 진정 토너": "Cica calming toner",
+    "판테놀 장벽 크림": "Panthenol barrier cream",
+    "약산성 클렌징 폼": "Low-pH cleansing foam",
+    "28,000원": "₩28,000",
+    "32,000원": "₩32,000",
+    "18,000원": "₩18,000",
+    "세일 · 팝업 일정": "Sales & pop-ups",
+    "놓치지 마세요": "Don't miss out",
+    "가을 메가 세일": "Autumn mega sale",
+    "성수 팝업스토어": "Seongsu pop-up store",
+    "신제품 런칭 라이브": "New launch live",
+    "기획전": "Sale",
+    "라이브": "Live",
+    "크리에이터 리뷰": "Creator reviews",
+    "@knil 크리에이터": "by KNIL creators",
+    "ROSIE의 진정 루틴": "ROSIE's calming routine",
+    "장벽 크림 2주 후기": "Barrier cream, 2 weeks in",
+    "토너 패드 꿀팁": "Toner pad tips",
+    "크리에이터 협업 문의": "Creator collaborations",
+    "제품 리뷰 · 공동구매 · 팝업": "Reviews · Group buys · Pop-ups",
+    "문의하기": "Contact",
     "리프팅 · 스킨부스터 · 안티에이징 클리닉": "Lifting · Skin boosters · Anti-aging clinic",
     "상담 예약": "Book a consultation",
     "외국어 상담 가능": "English · 日本語 · 中文",
@@ -281,6 +373,32 @@ const DEMO_DICT: Record<string, Record<string, string>> = {
     "바로 가기": "Open",
   },
   ja: {
+    "민감 피부를 위한 비건 스킨케어": "敏感肌のためのヴィーガンスキンケア",
+    "공식 온라인몰": "公式オンラインストア",
+    "첫 구매 20% 쿠폰 · 해외 배송": "初回20%オフ · 海外配送OK",
+    "쇼핑하기": "買う",
+    "가장 많이 찾는 제품": "人気No.1",
+    "시카 진정 토너": "シカ鎮静トナー",
+    "판테놀 장벽 크림": "パンテノール バリアクリーム",
+    "약산성 클렌징 폼": "弱酸性クレンジングフォーム",
+    "28,000원": "28,000ウォン",
+    "32,000원": "32,000ウォン",
+    "18,000원": "18,000ウォン",
+    "세일 · 팝업 일정": "セール・ポップアップ",
+    "놓치지 마세요": "お見逃しなく",
+    "가을 메가 세일": "秋のメガセール",
+    "성수 팝업스토어": "聖水ポップアップストア",
+    "신제품 런칭 라이브": "新製品ローンチライブ",
+    "기획전": "セール",
+    "라이브": "ライブ",
+    "크리에이터 리뷰": "クリエイターレビュー",
+    "@knil 크리에이터": "KNILクリエイター",
+    "ROSIE의 진정 루틴": "ROSIEの鎮静ルーティン",
+    "장벽 크림 2주 후기": "バリアクリーム2週間レビュー",
+    "토너 패드 꿀팁": "トナーパッドのコツ",
+    "크리에이터 협업 문의": "クリエイターコラボのお問い合わせ",
+    "제품 리뷰 · 공동구매 · 팝업": "レビュー・共同購入・ポップアップ",
+    "문의하기": "問い合わせ",
     "리프팅 · 스킨부스터 · 안티에이징 클리닉": "リフトアップ・スキンブースター・アンチエイジングクリニック",
     "상담 예약": "カウンセリング予約",
     "외국어 상담 가능": "日本語で相談できます",
@@ -320,6 +438,32 @@ const DEMO_DICT: Record<string, Record<string, string>> = {
     "바로 가기": "見る",
   },
   "zh-CN": {
+    "민감 피부를 위한 비건 스킨케어": "敏感肌专用纯素护肤",
+    "공식 온라인몰": "官方商城",
+    "첫 구매 20% 쿠폰 · 해외 배송": "首单8折 · 支持海外配送",
+    "쇼핑하기": "去购买",
+    "가장 많이 찾는 제품": "人气单品",
+    "시카 진정 토너": "积雪草舒缓爽肤水",
+    "판테놀 장벽 크림": "泛醇屏障面霜",
+    "약산성 클렌징 폼": "弱酸性洁面泡沫",
+    "28,000원": "28,000韩元",
+    "32,000원": "32,000韩元",
+    "18,000원": "18,000韩元",
+    "세일 · 팝업 일정": "促销 · 快闪店",
+    "놓치지 마세요": "别错过",
+    "가을 메가 세일": "秋季大促",
+    "성수 팝업스토어": "圣水快闪店",
+    "신제품 런칭 라이브": "新品发布直播",
+    "기획전": "促销",
+    "라이브": "直播",
+    "크리에이터 리뷰": "博主测评",
+    "@knil 크리에이터": "KNIL 博主",
+    "ROSIE의 진정 루틴": "ROSIE 的舒缓护肤流程",
+    "장벽 크림 2주 후기": "屏障面霜两周测评",
+    "토너 패드 꿀팁": "化妆棉小技巧",
+    "크리에이터 협업 문의": "博主合作咨询",
+    "제품 리뷰 · 공동구매 · 팝업": "测评 · 团购 · 快闪",
+    "문의하기": "咨询",
     "리프팅 · 스킨부스터 · 안티에이징 클리닉": "提拉 · 水光 · 抗衰老诊所",
     "상담 예약": "预约咨询",
     "외국어 상담 가능": "可用中文咨询",
@@ -417,8 +561,38 @@ demoThreads.push(
   },
 );
 
+// ONGYEOL's inbox: overseas shoppers.
+demoThreads.push(
+  {
+    thread: { id: "o1", handle: "ongyeol", lang: "en", name: "Mia (LA)", last: "", unread: 1, at: now - 20 * min },
+    messages: [
+      { id: "a", from: "visitor", visitor: "Do you ship the cica toner to the US? How long does it take?", ko: "시카 토너 미국으로 배송되나요? 얼마나 걸려요?", at: now - 22 * min },
+      { id: "b", from: "ai", visitor: "Yes! We ship to the US from our official store, usually in 7–10 days. Orders over ₩70,000 ship free.", ko: "네! 공식몰에서 미국 배송돼요. 보통 7–10일 걸리고 7만원 이상이면 무료 배송이에요.", at: now - 22 * min + 5000 },
+      { id: "c", from: "visitor", visitor: "Is it safe for acne-prone skin?", ko: "트러블 피부에도 괜찮나요?", at: now - 20 * min },
+    ],
+  },
+  {
+    thread: { id: "o2", handle: "ongyeol", lang: "zh-TW", name: "小雯", last: "", unread: 0, at: now - 5 * 60 * min },
+    messages: [
+      { id: "a", from: "visitor", visitor: "請問屏障面霜有添加香料嗎？", ko: "장벽 크림에 향료가 들어있나요?", at: now - 5 * 60 * min },
+      { id: "b", from: "ai", visitor: "沒有喔！全系列都是純素認證、無添加香料。", ko: "아니요! 전 제품 비건 인증에 향료 무첨가예요.", at: now - 5 * 60 * min + 5000 },
+    ],
+  },
+);
+
 // What the sample page's AI says back to a new visitor message.
 export function demoAiReply(lang: string, handle = "rosie"): { visitor: string; ko: string } {
+  if (handle === "ongyeol") {
+    const ko = "문의 감사합니다! 담당자가 확인하고 이 채팅으로 답해 드릴게요.";
+    const visitor: Record<string, string> = {
+      ko,
+      en: "Thanks for your message! Our team will reply here soon.",
+      ja: "お問い合わせありがとうございます！担当者がこのチャットでお返事します。",
+      "zh-CN": "感谢你的留言！我们会尽快在这里回复你。",
+      "zh-TW": "謝謝你的留言！我們會盡快在這裡回覆你。",
+    };
+    return { ko, visitor: visitor[lang] ?? visitor.en };
+  }
   if (handle === "moliv") {
     const ko = "문의 감사합니다! 담당 코디네이터가 확인하고 이 채팅으로 안내해 드릴게요.";
     const visitor: Record<string, string> = {
@@ -464,4 +638,5 @@ showcase.push(
 );
 
 // Sample pages that live only in this browser, never on the server.
-export const SAMPLE_HANDLES = new Set([...showcase.map((p) => p.profile.handle), molivPage.profile.handle]);
+export const brandSamples = [molivPage, ongyeolPage];
+export const SAMPLE_HANDLES = new Set([...showcase.map((p) => p.profile.handle), ...brandSamples.map((p) => p.profile.handle)]);

@@ -22,7 +22,8 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { Avatar } from "@/components/CreatorPage";
-import { BRAND_HANDLE, getBrand, setMode, useMode, type Mode } from "@/lib/brand";
+import { activeBrand, getBrand, isClinic, setMode, useMode, type Mode } from "@/lib/brand";
+import { BrandSwitcher } from "@/components/BrandSwitcher";
 import { BASE, displayUrl, publicUrl } from "@/lib/base";
 import { getMyPage, getPage, useStore } from "@/lib/store";
 import type { Page } from "@/lib/types";
@@ -39,22 +40,40 @@ const TABS: Nav[] = [
   { href: "/menu", label: "전체", icon: Menu, also: ["/settings", "/invite", "/membership", "/dm"] },
 ];
 
-const BRAND_TABS: Nav[] = [
+// A clinic lives on patient consultations; a brand on creator campaigns.
+const CLINIC_TABS: Nav[] = [
   { href: "/brand", label: "홈", icon: House },
   { href: "/brand/link", label: "페이지", icon: Link2 },
   { href: "/chat", label: "상담", icon: MessageCircleMore },
   { href: "/brand/creators", label: "크리에이터", icon: Search, also: ["/brand/proposals", "/brand/campaigns"] },
   { href: "/menu", label: "전체", icon: Menu, also: ["/settings", "/brand/profile"] },
 ];
-
-const BRAND_SIDE: Nav[] = [
+const BRAND_TABS: Nav[] = [
   { href: "/brand", label: "홈", icon: House },
-  { href: "/brand/link", label: "브랜드 페이지", icon: Link2 },
+  { href: "/brand/campaigns", label: "캠페인", icon: Megaphone },
+  { href: "/brand/creators", label: "크리에이터", icon: Search, also: ["/brand/proposals"] },
+  { href: "/chat", label: "채팅", icon: MessageCircleMore },
+  { href: "/menu", label: "전체", icon: Menu, also: ["/settings", "/brand/profile", "/brand/link"] },
+];
+
+const CLINIC_SIDE: Nav[] = [
+  { href: "/brand", label: "홈", icon: House },
+  { href: "/brand/link", label: "병원 페이지", icon: Link2 },
   { href: "/chat", label: "해외 고객 상담", icon: MessageCircleMore },
   { href: "/brand/creators", label: "크리에이터 찾기", icon: Search },
   { href: "/brand/proposals", label: "보낸 제안", icon: Send },
   { href: "/brand/campaigns", label: "캠페인", icon: Megaphone },
-  { href: "/brand/profile", label: "브랜드 프로필", icon: Building2 },
+  { href: "/brand/profile", label: "계정 정보", icon: Building2 },
+  { href: "/settings", label: "설정", icon: Settings },
+];
+const BRAND_SIDE: Nav[] = [
+  { href: "/brand", label: "홈", icon: House },
+  { href: "/brand/campaigns", label: "캠페인", icon: Megaphone },
+  { href: "/brand/creators", label: "크리에이터 찾기", icon: Search },
+  { href: "/brand/proposals", label: "협업 관리", icon: Send },
+  { href: "/brand/link", label: "브랜드 페이지", icon: Link2 },
+  { href: "/chat", label: "해외 고객 채팅", icon: MessageCircleMore },
+  { href: "/brand/profile", label: "계정 정보", icon: Building2 },
   { href: "/settings", label: "설정", icon: Settings },
 ];
 
@@ -80,7 +99,7 @@ export function AppShell({ children, wide }: { children: (page: Page) => React.R
   const router = useRouter();
   const path = usePathname().replace(/\/$/, "");
   const mine = useStore(getMyPage);
-  const brandPage = useStore(() => getPage(BRAND_HANDLE));
+  const brandPage = useStore(() => getPage(activeBrand()));
   const stored = useMode();
   const [copied, setCopied] = useState(false);
   // Screens that belong to one side switch the view to that side.
@@ -98,9 +117,10 @@ export function AppShell({ children, wide }: { children: (page: Page) => React.R
   if (!mine || !page) return null;
   const handle = page.profile.handle;
   const on = (n: Nav) => path.endsWith(n.href) || !!n.also?.some((a) => path.endsWith(a));
-  const tabs = mode === "brand" ? BRAND_TABS : TABS;
-  const side = mode === "brand" ? BRAND_SIDE : SIDE;
   const brand = getBrand();
+  const clinic = isClinic(brand);
+  const tabs = mode === "brand" ? (clinic ? CLINIC_TABS : BRAND_TABS) : TABS;
+  const side = mode === "brand" ? (clinic ? CLINIC_SIDE : BRAND_SIDE) : SIDE;
   const switchTo = (m: Mode) => {
     if (m === mode) return;
     setMode(m);
@@ -137,15 +157,9 @@ export function AppShell({ children, wide }: { children: (page: Page) => React.R
           </>
         ) : (
           <>
-            <Link href="/brand/profile" className="mt-4 flex items-center gap-3 rounded-2xl bg-surface p-3">
-              <Avatar name={page.profile.name} src={page.profile.avatar} size={40} />
-              <div className="min-w-0">
-                <p className="truncate text-[15px] font-bold">{brand.name || page.profile.name}</p>
-                <p className="truncate text-[12px] text-mute">{brand.kind}</p>
-              </div>
-            </Link>
+            <BrandSwitcher className="mt-4" />
             <a href={`${BASE}/@${handle}`} target="_blank" rel="noopener" className="btn mt-3 h-11 gap-1.5 text-[14px]">
-              브랜드 페이지 보기 <ExternalLink size={15} />
+              {clinic ? "병원" : "브랜드"} 페이지 보기 <ExternalLink size={15} />
             </a>
           </>
         )}

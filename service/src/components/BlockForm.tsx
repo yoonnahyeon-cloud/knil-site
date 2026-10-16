@@ -130,7 +130,7 @@ export function BlockForm({ block, onChange }: { block: Block; onChange: (b: Blo
         <>
         <label className="mt-2 flex items-center justify-between rounded-2xl bg-surface px-4 py-3">
           <span className="text-[14px] font-semibold">팔로워 수 보이기</span>
-          <input type="checkbox" checked={!!block.showFollowers} onChange={(e) => set("showFollowers", e.target.checked)} className="size-5 accent-[#7c4dff]" />
+          <input type="checkbox" checked={!!block.showFollowers} onChange={(e) => set("showFollowers", e.target.checked)} className="size-5 accent-[#111111]" />
         </label>
         <Items
           items={block.items}
@@ -271,7 +271,7 @@ function Items<T extends { id: string }>({
           {render(item, update(i))}
         </div>
       ))}
-      <button onClick={() => onChange([...items, make()])} className="btn-ghost w-full border-dashed border-signal/50 text-signal">
+      <button onClick={() => onChange([...items, make()])} className="btn-ghost w-full border-dashed border-rule">
         + {addLabel}
       </button>
     </div>

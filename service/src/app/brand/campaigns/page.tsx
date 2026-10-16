@@ -1,11 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CalendarDays, Gift, Megaphone, Plus, Users } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { Field, Sheet } from "@/components/Sheet";
 import { Empty, IconTile, PageTitle } from "@/components/ui";
-import { campaigns, deleteCampaign, saveCampaign, type Campaign } from "@/lib/brand";
+import { activeBrand, campaigns, deleteCampaign, saveCampaign, type Campaign } from "@/lib/brand";
 import { useStore } from "@/lib/store";
 import { CATEGORIES } from "@/lib/types";
 
@@ -17,8 +17,12 @@ type Draft = Omit<Campaign, "id" | "at"> & { id?: string };
 const EMPTY: Draft = { title: "", category: "뷰티", reward: "", slots: "", deadline: "", body: "" };
 
 function Campaigns() {
-  const list = useStore(async () => campaigns());
+  const list = useStore(async () => campaigns(), [activeBrand()]);
   const [draft, setDraft] = useState<Draft | null>(null);
+  // "캠페인 만들기" on the brand home opens the form straight away.
+  useEffect(() => {
+    if (new URLSearchParams(location.search).get("new")) setDraft(EMPTY);
+  }, []);
 
   return (
     <main className="px-5 pb-12">
@@ -31,7 +35,7 @@ function Campaigns() {
         크리에이터 쪽 공개 모집은 곧 열려요. 지금은 초안으로 저장돼요.
       </div>
 
-      <button onClick={() => setDraft(EMPTY)} className="flex h-14 w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-signal/40 bg-soft/50 font-bold text-signal">
+      <button onClick={() => setDraft(EMPTY)} className="flex h-14 w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-rule font-bold">
         <Plus size={20} strokeWidth={2.6} /> 새 캠페인
       </button>
 

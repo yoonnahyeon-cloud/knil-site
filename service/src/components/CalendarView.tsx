@@ -7,11 +7,11 @@ import type { Block, CalendarEvent } from "@/lib/types";
 type Cal = Extract<Block, { type: "calendar" }>;
 
 export const KIND_COLOR: Record<string, string> = {
-  공구: "#7c4dff",
-  기획전: "#ff5fa2",
-  라이브: "#3d8bff",
-  이벤트: "#19c6a7",
-  휴무: "#8d8d98",
+  공구: "#111111",
+  기획전: "#8f8bb0",
+  라이브: "#7f90a8",
+  이벤트: "#8a9e85",
+  휴무: "#bdbdbd",
 };
 
 const DAY = 86400000;
@@ -88,7 +88,7 @@ export function CalendarView({
 
         <div className="grid grid-cols-7 px-2 pt-2 text-center text-[10px] font-bold text-mute">
           {weekdays.map((w, i) => (
-            <span key={i} className={i === 0 ? "text-[#ff5f6d]" : i === 6 ? "text-[#3d8bff]" : ""}>
+            <span key={i} className={i === 0 ? "text-[#8a8a8a]" : i === 6 ? "text-[#7f90a8]" : ""}>
               {w}
             </span>
           ))}
@@ -100,12 +100,12 @@ export function CalendarView({
             const isToday = day === today.getTime();
             return (
               <div key={i} className="min-h-[52px] rounded-lg px-0.5 pt-1">
-                <span className={`mx-auto grid size-5 place-items-center rounded-full text-[11px] font-bold ${isToday ? "bg-signal text-white" : i % 7 === 0 ? "text-[#ff5f6d]" : ""}`}>
+                <span className={`mx-auto grid size-5 place-items-center rounded-full text-[11px] font-bold ${isToday ? "bg-signal text-white" : i % 7 === 0 ? "text-[#8a8a8a]" : ""}`}>
                   {new Date(day).getDate()}
                 </span>
                 <div className="mt-0.5 space-y-px">
                   {list.slice(0, 2).map((e) => (
-                    <span key={e.id} className="block truncate rounded-[3px] px-0.5 text-[8.5px] font-bold leading-[13px] text-white" style={{ background: KIND_COLOR[e.kind] ?? "#7c4dff" }}>
+                    <span key={e.id} className="block truncate rounded-[3px] px-0.5 text-[8.5px] font-bold leading-[13px] text-white" style={{ background: KIND_COLOR[e.kind] ?? "#111111" }}>
                       {startOf(e) === day || new Date(day).getDay() === 0 ? e.title : " "}
                     </span>
                   ))}
@@ -130,7 +130,7 @@ export function CalendarView({
                 onClick={onOpen(e)}
                 className={`flex items-center gap-3 rounded-2xl bg-surface p-3 ${d.text === "END" ? "opacity-50" : ""}`}
               >
-                <span className="h-9 w-1 shrink-0 rounded-full" style={{ background: KIND_COLOR[e.kind] ?? "#7c4dff" }} />
+                <span className="h-9 w-1 shrink-0 rounded-full" style={{ background: KIND_COLOR[e.kind] ?? "#111111" }} />
                 <span className="min-w-0 flex-1">
                   <span className="flex items-center gap-1.5">
                     <span className="shrink-0 text-[11px] font-extrabold" style={{ color: KIND_COLOR[e.kind] }}>

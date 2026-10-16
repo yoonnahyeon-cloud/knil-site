@@ -54,14 +54,15 @@ export function Empty({ title, body, icon, children }: { title: string; body?: s
 }
 
 const TONES = {
-  purple: "bg-signal text-white",
+  // Pastel tiles with black icons; `ink` is the one strong tile.
+  purple: "bg-lilac text-ink",
   ink: "bg-ink text-white",
-  soft: "bg-soft text-signal",
+  soft: "bg-surface text-ink",
   gray: "bg-surface text-ink",
-  pink: "bg-[#e07a98] text-white",
-  mint: "bg-[#7a9a7c] text-white",
-  sky: "bg-[#6b7c9f] text-white",
-  amber: "bg-[#c9995a] text-white",
+  pink: "bg-blush text-ink",
+  mint: "bg-sage text-ink",
+  sky: "bg-mist text-ink",
+  amber: "bg-sand text-ink",
 };
 export type Tone = keyof typeof TONES;
 

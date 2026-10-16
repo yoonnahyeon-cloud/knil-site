@@ -7,17 +7,17 @@ import { ArrowRight, CalendarCheck, ChartColumn, Handshake, Languages, Link2, ty
 import { CreatorPage } from "@/components/CreatorPage";
 import { PhoneFrame } from "@/components/PhoneFrame";
 import { LANGS } from "@/lib/i18n";
-import { molivPage, showcase } from "@/lib/demo";
+import { brandSamples, showcase } from "@/lib/demo";
 import { setPendingHandle } from "@/lib/pending";
 import { LIVE, getSession, handleProblem, tryDemo } from "@/lib/store";
 
 // Pastel panels in the brandazine manner: one strong line, one gray line.
 const FEATURES: { title: string; body: string; icon: LucideIcon; bg: string; dark?: boolean; tag?: string }[] = [
-  { title: "SNS, 영상, 상품, 일정을", body: "블록으로 쌓아 한 페이지에.", icon: Link2, bg: "bg-surface" },
+  { title: "SNS, 영상, 상품, 일정을", body: "블록으로 쌓아 한 페이지에.", icon: Link2, bg: "bg-mist" },
   { title: "해외 팬과 고객의 메시지를", body: "한국어로 읽고 답하세요.", icon: Languages, bg: "bg-ink text-white", dark: true, tag: "13개 언어" },
-  { title: "병원 · 브랜드는 상담 예약을", body: "외국어로 받아 채팅으로 확정.", icon: CalendarCheck, bg: "bg-[linear-gradient(180deg,#fbf1e4,#fdf8f1)]" },
-  { title: "브랜드와 크리에이터가", body: "제안하고 협의하는 곳.", icon: Handshake, bg: "bg-[linear-gradient(180deg,#dfe9d8,#f3f6ef)]" },
-  { title: "누가 무엇을 눌렀는지", body: "방문, 클릭, 유입 경로까지.", icon: ChartColumn, bg: "bg-surface" },
+  { title: "병원 · 브랜드는 상담 예약을", body: "외국어로 받아 채팅으로 확정.", icon: CalendarCheck, bg: "bg-sand" },
+  { title: "브랜드와 크리에이터가", body: "제안하고 협의하는 곳.", icon: Handshake, bg: "bg-sage" },
+  { title: "누가 무엇을 눌렀는지", body: "방문, 클릭, 유입 경로까지.", icon: ChartColumn, bg: "bg-lilac" },
 ];
 
 const CARD_W = 200;
@@ -72,17 +72,17 @@ export default function Home() {
         <Claim onGo={(h) => (setPendingHandle(h), router.push(LIVE ? "/login" : `/start?h=${h}`))} />
       </section>
 
-      <section className="mx-3 mt-8 overflow-hidden rounded-[32px] bg-[linear-gradient(180deg,#647392_0%,#aab4c8_70%,#c9d0dc_100%)] pt-8 pb-6">
-        <p className="px-6 text-[20px] font-extrabold leading-snug tracking-tight text-white">
+      <section className="mx-3 mt-8 overflow-hidden rounded-[32px] bg-surface pt-8 pb-6">
+        <p className="px-6 text-[20px] font-extrabold leading-snug tracking-tight">
           방문자 휴대폰에서
           <br />
-          <span className="text-white/60">보이는 그대로.</span>
+          <span className="text-[#9a9a9a]">보이는 그대로.</span>
         </p>
         <div className="no-scrollbar mt-6 flex snap-x snap-mandatory scroll-px-6 gap-4 overflow-x-auto px-6 pb-2">
-          {[molivPage, ...showcase].map((page) => (
+          {[showcase[0], ...brandSamples, ...showcase.slice(1)].map((page) => (
             <button
               key={page.profile.handle}
-              onClick={() => ["rosie", "moliv"].includes(page.profile.handle) && router.push(`/@${page.profile.handle}`)}
+              onClick={() => ["rosie", "moliv", "ongyeol"].includes(page.profile.handle) && router.push(`/@${page.profile.handle}`)}
               className="pointer-events-auto shrink-0 snap-start text-left"
             >
               <div className="pointer-events-none">
@@ -90,7 +90,7 @@ export default function Home() {
                   <CreatorPage page={page} preview lang="ko" />
                 </PhoneFrame>
               </div>
-              <p className="mt-2 text-center text-[12px] font-semibold text-white/80">knil.com/@{page.profile.handle}</p>
+              <p className="mt-2 text-center text-[12px] font-semibold text-mute">knil.com/@{page.profile.handle}</p>
             </button>
           ))}
           <span className="w-1 shrink-0" />
@@ -110,7 +110,7 @@ export default function Home() {
                 <span className={`grid size-10 place-items-center rounded-2xl ${f.dark ? "bg-white/15" : "bg-white"}`}>
                   <f.icon size={20} />
                 </span>
-                {f.tag && <span className="rounded-lg bg-[#3d8bff] px-2 py-0.5 text-[11px] font-bold text-white">{f.tag}</span>}
+                {f.tag && <span className="rounded-lg bg-white px-2 py-0.5 text-[11px] font-bold text-ink">{f.tag}</span>}
               </span>
               <span className="mt-6">
                 <span className="block text-[19px] font-extrabold leading-snug tracking-tight">{f.title}</span>
@@ -122,11 +122,11 @@ export default function Home() {
       </section>
 
       <section className="mx-5 mt-12 rounded-[28px] bg-surface p-5">
-        <span className="rounded-full bg-signal px-2.5 py-1 text-[11px] font-bold text-white">해외 팬 채팅</span>
+        <span className="rounded-full bg-ink px-2.5 py-1 text-[11px] font-bold text-white">해외 팬 채팅</span>
         <p className="mt-3 text-[22px] font-extrabold leading-tight tracking-tight">
           주소는 하나,
           <br />
-          <span className="text-signal">언어마다 다른 프로필</span>
+          <span className="text-[#9a9a9a]">언어마다 다른 프로필</span>
         </p>
         <p className="mt-1.5 text-[13px] text-mute">방문자 휴대폰 언어로 페이지가 번역되고, 팬이 자기 언어로 보낸 메시지를 한국어로 읽어요.</p>
         <div className="mt-4 grid grid-cols-5 gap-2">

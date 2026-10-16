@@ -83,16 +83,16 @@ function Dashboard({ page }: { page: Page }) {
 
   return (
     <main className="px-5 pb-12">
-      <section className="mt-4 overflow-hidden rounded-[28px] bg-[linear-gradient(165deg,#56647f_0%,#7f8ca7_60%,#a9b3c6_100%)] p-5 text-white lg:mt-8">
+      <section className="mt-4 overflow-hidden rounded-[28px] bg-white p-5 ring-1 ring-rule lg:mt-8">
         <div className="flex items-center gap-3">
-          <div className="rounded-full ring-2 ring-white/40">
+          <div className="rounded-full">
             <Avatar name={page.profile.name} src={page.profile.avatar} size={52} />
           </div>
           <div className="min-w-0 flex-1">
             <p className="truncate text-[20px] font-extrabold tracking-tight">{page.profile.name}</p>
-            <p className="truncate text-[13px] text-white/60">{displayUrl(handle)}</p>
+            <p className="truncate text-[13px] text-mute">{displayUrl(handle)}</p>
           </div>
-          <Link href="/membership" className="shrink-0 rounded-full bg-white/15 px-3 py-1 text-[12px] font-bold backdrop-blur">
+          <Link href="/membership" className="shrink-0 rounded-full bg-surface px-3 py-1 text-[12px] font-bold">
             FREE
           </Link>
         </div>
@@ -102,8 +102,8 @@ function Dashboard({ page }: { page: Page }) {
             { label: "오늘 클릭", value: clicks(today.getTime()), icon: MousePointerClick },
             { label: "7일 방문", value: views(weekStart), icon: ChartColumn },
           ].map((s) => (
-            <div key={s.label} className="rounded-2xl bg-white/10 p-3 backdrop-blur">
-              <p className="flex items-center gap-1 text-[11px] text-white/60">
+            <div key={s.label} className="rounded-2xl bg-surface p-3">
+              <p className="flex items-center gap-1 text-[11px] text-mute">
                 <s.icon size={12} /> {s.label}
               </p>
               <p className="mt-1 text-[22px] font-extrabold leading-none">{list ? fmt(s.value) : "–"}</p>
@@ -111,10 +111,10 @@ function Dashboard({ page }: { page: Page }) {
           ))}
         </Link>
         <div className="mt-3 grid grid-cols-2 gap-2">
-          <a href={`${BASE}/@${handle}`} target="_blank" rel="noopener" className="flex h-11 items-center justify-center gap-1.5 rounded-[14px] bg-white text-[14px] font-bold text-ink">
+          <a href={`${BASE}/@${handle}`} target="_blank" rel="noopener" className="flex h-11 items-center justify-center gap-1.5 rounded-[14px] bg-ink text-[14px] font-bold text-white">
             <ExternalLink size={16} /> 내 페이지
           </a>
-          <button onClick={copy} className="flex h-11 items-center justify-center gap-1.5 rounded-[14px] bg-white/15 text-[14px] font-bold backdrop-blur">
+          <button onClick={copy} className="flex h-11 items-center justify-center gap-1.5 rounded-[14px] bg-surface text-[14px] font-bold">
             {copied ? <Check size={16} /> : <Copy size={16} />} {copied ? "복사했어요" : "주소 복사"}
           </button>
         </div>
@@ -131,21 +131,21 @@ function Dashboard({ page }: { page: Page }) {
         ))}
       </div>
 
-      <Link href="/chat" className="mt-7 block overflow-hidden rounded-[24px] bg-ink p-5 text-white">
-        <span className="inline-block rounded-full bg-signal px-2.5 py-1 text-[11px] font-bold">NEW</span>
+      <Link href="/chat" className="mt-7 block overflow-hidden rounded-[24px] bg-mist p-5">
+        <span className="inline-block rounded-full bg-ink px-2.5 py-1 text-[11px] font-bold text-white">NEW</span>
         <p className="mt-3 text-[20px] font-extrabold leading-tight tracking-tight">
           주소는 하나,
           <br />
-          <span className="text-[#b9a6ff]">언어마다 다른 프로필</span>
+          <span className="text-ink/45">언어마다 다른 프로필</span>
         </p>
-        <p className="mt-1.5 text-[13px] text-white/60">해외 팬이 자기 언어로 보고, 묻고, 답을 받아요.</p>
+        <p className="mt-1.5 text-[13px] text-ink/60">해외 팬이 자기 언어로 보고, 묻고, 답을 받아요.</p>
         <div className="mt-4 flex -space-x-1.5">
           {LANGS.slice(0, 9).map((l) => (
-            <span key={l.code} className="grid size-8 place-items-center rounded-full bg-white/10 text-[16px] ring-2 ring-ink">
+            <span key={l.code} className="grid size-8 place-items-center rounded-full bg-white text-[16px] ring-2 ring-mist">
               {l.flag}
             </span>
           ))}
-          <span className="grid size-8 place-items-center rounded-full bg-white/10 text-[11px] font-bold ring-2 ring-ink">+{LANGS.length - 9}</span>
+          <span className="grid size-8 place-items-center rounded-full bg-white text-[11px] font-bold ring-2 ring-mist">+{LANGS.length - 9}</span>
         </div>
       </Link>
 
@@ -180,7 +180,7 @@ function Dashboard({ page }: { page: Page }) {
 
       <SectionHead title="브랜드 협업" icon={Handshake} more={{ href: "/collab/?tab=inbox", label: "제안함" }} />
       <div className="grid grid-cols-2 gap-2">
-        <Link href="/collab/?tab=inbox" className="rounded-[22px] bg-soft p-4">
+        <Link href="/collab/?tab=inbox" className="rounded-[22px] bg-lilac p-4">
           <Inbox size={20} className="text-signal" />
           <p className="mt-3 text-[13px] text-ink/60">새 제안</p>
           <p className="text-[24px] font-extrabold leading-tight text-signal">{inbox ? `${fresh}건` : "–"}</p>
@@ -192,15 +192,15 @@ function Dashboard({ page }: { page: Page }) {
         </div>
       </div>
 
-      <Link href="/dm" className="mt-3 flex items-center gap-3 rounded-[22px] bg-ink p-4 text-white">
-        <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-white/20">
+      <Link href="/dm" className="mt-3 flex items-center gap-3 rounded-[22px] bg-white p-4 ring-1 ring-rule">
+        <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-surface">
           <Send size={20} />
         </span>
         <span className="min-w-0 flex-1">
           <span className="block text-[15px] font-bold">댓글에 링크가 자동으로 도착</span>
-          <span className="block text-[12px] text-white/75">Instagram 자동 DM</span>
+          <span className="block text-[12px] text-mute">Instagram 자동 DM</span>
         </span>
-        <Soon className="!bg-white/20 !text-white" />
+        <Soon />
       </Link>
     </main>
   );

@@ -24,7 +24,7 @@ function Profile() {
       </PageTitle>
 
       <div className="rounded-[24px] bg-ink p-5 text-white">
-        <span className="rounded-full bg-signal px-2.5 py-1 text-[11px] font-bold">{b.kind}</span>
+        <span className="rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-bold">{b.kind}</span>
         <p className="mt-3 text-[22px] font-extrabold">{b.name || "브랜드 이름"}</p>
         <p className="mt-1 text-[14px] text-white/60">{b.intro || "한 줄 소개가 여기에 보여요"}</p>
       </div>

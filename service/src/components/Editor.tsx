@@ -115,7 +115,7 @@ export function Editor({ page }: { page: Page }) {
             onToggle={(b) => setBlocks(page.blocks.map((x) => (x.id === b.id ? { ...x, hidden: !x.hidden } : x)))}
           />
 
-          <button onClick={() => setOpen({ kind: "add" })} className="mt-4 flex h-14 w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-signal/40 bg-soft/50 font-bold text-signal">
+          <button onClick={() => setOpen({ kind: "add" })} className="mt-4 flex h-14 w-full items-center justify-center gap-2 rounded-2xl border-2 border-dashed border-rule font-bold">
             <Plus size={20} strokeWidth={2.6} /> 블록 추가
           </button>
         </div>
@@ -263,15 +263,14 @@ function BlockList({ blocks, onReorder, onOpen, onToggle }: { blocks: Block[]; o
   );
 }
 
-// Accent colors a page can pick; the first is KNIL's own.
+// Accent colors a page can pick: black first, then muted tones.
 const THEMES = [
-  { name: "퍼플", hex: "#7c4dff" },
-  { name: "블랙", hex: "#0b0b0f" },
+  { name: "블랙", hex: "#111111" },
+  { name: "차콜", hex: "#4a4a4a" },
   { name: "브라운", hex: "#483a2d" },
-  { name: "슬레이트", hex: "#5b6b8c" },
+  { name: "미스트", hex: "#6d7f99" },
   { name: "세이지", hex: "#6f8a6a" },
-  { name: "로즈", hex: "#d4577b" },
-  { name: "스카이", hex: "#3d8bff" },
+  { name: "라벤더", hex: "#7c7a9c" },
 ];
 
 function ProfileSheet({ profile, brand, onClose, onSave, onDraft }: { profile: Profile; brand: boolean; onClose: () => void; onSave: (p: Profile) => void; onDraft: (p: Profile) => void }) {

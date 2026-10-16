@@ -1,7 +1,7 @@
 // Browser-storage backend. Used when no Supabase settings are configured,
 // and always for the sample account so visitors can try the editor freely.
 
-import { demoEvents, demoPage, molivPage } from "./demo";
+import { brandSamples, demoEvents, demoPage } from "./demo";
 import type { KnilEvent, Page, Proposal, ProposalStatus } from "./types";
 
 const K = {
@@ -31,7 +31,7 @@ function write(key: string, value: unknown) {
 function pages(): Record<string, Page> {
   const stored = read<Record<string, Page>>(K.pages, {});
   const d = demoPage.profile.handle;
-  if (!stored.moliv) stored.moliv = molivPage;
+  for (const b of brandSamples) if (!stored[b.profile.handle]) stored[b.profile.handle] = b;
   if (!stored[d]) stored[d] = demoPage;
   else {
     // Bring an older copy of the sample page up to date with the current sample.

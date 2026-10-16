@@ -93,7 +93,7 @@ export function CreatorPage({ page: original, preview = false, lang: fixedLang }
         ) : profile.avatar ? (
           <img src={profile.avatar} alt="" className="absolute inset-0 size-full scale-125 object-cover opacity-70 blur-2xl" />
         ) : (
-          <div className="absolute inset-0 bg-[linear-gradient(180deg,#647392_0%,#aab4c8_100%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(180deg,#2b2b2b_0%,#111111_100%)]" />
         )}
         <div className="absolute inset-x-0 top-0 flex items-center justify-between p-4">
           <button onClick={share} aria-label="share" className="grid size-10 place-items-center rounded-full bg-white/20 text-white backdrop-blur">
@@ -215,7 +215,7 @@ export function CreatorPage({ page: original, preview = false, lang: fixedLang }
 export function Avatar({ name, src, size = 64 }: { name: string; src?: string; size?: number }) {
   return (
     <div
-      className="grid shrink-0 place-items-center overflow-hidden rounded-full bg-[linear-gradient(135deg,#8c97ad,#3a3f4a)] font-display font-bold text-white"
+      className="grid shrink-0 place-items-center overflow-hidden rounded-full bg-[linear-gradient(135deg,#3a3a3a,#111111)] font-display font-bold text-white"
       style={{ width: size, height: size, fontSize: size * 0.4 }}
     >
       {src ? <img src={src} alt="" className="size-full object-cover" /> : (name.trim()[0] ?? "K").toUpperCase()}

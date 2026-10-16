@@ -4,7 +4,7 @@
 // Function (supabase/functions/knil), which translates with Claude; the
 // sample page and the storage-only preview keep everything in this browser.
 
-import { SAMPLE_HANDLES, demoAiReply, demoDict, molivPage, demoPage, demoThreads } from "./demo";
+import { SAMPLE_HANDLES, brandSamples, demoAiReply, demoDict, demoPage, demoThreads } from "./demo";
 import { KoreanError } from "./errors";
 import { supabase } from "./supabase";
 import type { ChatMessage, ChatSettings, ChatThread, Page } from "./types";
@@ -107,7 +107,7 @@ export async function visitorSend(handle: string, lang: string, name: string, te
     const at = Date.now();
     // The preview cannot translate, so the creator sees the visitor's words.
     addLocal(mine.chatId, { id: uid(), from: "visitor", visitor: text, ko: ko ?? text, at }, true);
-    const page = handle === DEMO ? demoPage : handle === molivPage.profile.handle ? molivPage : null;
+    const page = handle === DEMO ? demoPage : (brandSamples.find((b) => b.profile.handle === handle) ?? null);
     if (page?.chat?.ai) addLocal(mine.chatId, { id: uid(), from: "ai", ...demoAiReply(lang, handle), at: at + 1 }, false);
     return;
   }
