@@ -2,35 +2,61 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { createPage, handleProblem } from "@/lib/store";
+import { LIVE, createPage, getSession, handleProblem } from "@/lib/store";
 
 export default function Start() {
   const router = useRouter();
   const [handle, setHandle] = useState("");
   const [name, setName] = useState("");
-  const [touched, setTouched] = useState(false);
+  const [problem, setProblem] = useState<string | null>(null);
+  const [checking, setChecking] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const h = new URLSearchParams(location.search).get("h");
     if (h) setHandle(h.toLowerCase());
-  }, []);
+    if (LIVE)
+      getSession().then((s) => {
+        if (!s || s.demo) router.replace("/login");
+        else if (s.handle) router.replace("/edit");
+      });
+  }, [router]);
 
-  const problem = handle ? handleProblem(handle) : null;
-  const ready = handle && !problem && name.trim();
+  // Check the address as it is typed, after a short pause.
+  useEffect(() => {
+    if (!handle) return setProblem(null);
+    setChecking(true);
+    const t = setTimeout(async () => {
+      setProblem(await handleProblem(handle).catch(() => null));
+      setChecking(false);
+    }, 300);
+    return () => clearTimeout(t);
+  }, [handle]);
 
-  const submit = (e: React.FormEvent) => {
+  const ready = handle && !problem && !checking && name.trim() && !busy;
+
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setTouched(true);
     if (!ready) return;
-    createPage(handle, name.trim());
-    router.push("/edit");
+    setBusy(true);
+    setError("");
+    try {
+      await createPage(handle, name.trim());
+      router.replace("/edit");
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "만들지 못했어요");
+      setBusy(false);
+    }
   };
 
   return (
     <main className="mx-auto flex min-h-dvh max-w-[480px] flex-col px-6 pt-[max(24px,env(safe-area-inset-top))] pb-[max(24px,env(safe-area-inset-bottom))]">
-      <button onClick={() => router.back()} className="-ml-1 self-start p-1 text-[22px] leading-none" aria-label="뒤로">
-        ←
-      </button>
+      {!LIVE && (
+        <button onClick={() => router.back()} className="-ml-1 self-start p-1 text-[22px] leading-none" aria-label="뒤로">
+          ←
+        </button>
+      )}
 
       <form onSubmit={submit} className="flex flex-1 flex-col">
         <h1 className="mt-8 text-[26px] font-bold leading-snug tracking-[-0.04em]">
@@ -55,19 +81,23 @@ export default function Start() {
             />
           </div>
           <span className={`mt-1.5 block text-[13px] ${problem ? "text-signal" : "text-mute"}`}>
-            {problem ?? (handle ? "사용할 수 있는 주소예요" : "영문 소문자, 숫자, 마침표, 밑줄로 3~20자")}
+            {!handle
+              ? "영문 소문자, 숫자, 마침표, 밑줄로 3~20자"
+              : checking
+                ? "확인하는 중…"
+                : (problem ?? "사용할 수 있는 주소예요")}
           </span>
         </label>
 
         <label className="mt-6 block">
           <span className="text-[13px] text-mute">이름</span>
           <input value={name} onChange={(e) => setName(e.target.value)} placeholder="페이지에 보일 이름" className="field" maxLength={30} />
-          {touched && !name.trim() && <span className="mt-1.5 block text-[13px] text-signal">이름을 입력해 주세요</span>}
         </label>
 
+        {error && <p className="mt-4 text-[13px] text-signal">{error}</p>}
         <div className="flex-1" />
         <button className="btn w-full" disabled={!ready}>
-          시작하기
+          {busy ? "만드는 중…" : "시작하기"}
         </button>
       </form>
     </main>

@@ -3,10 +3,10 @@
 import { useState } from "react";
 import { AppShell } from "@/components/AppShell";
 import { Avatar, CreatorPage } from "@/components/CreatorPage";
-import { BLOCK_INFO, BlockForm, ImagePick, SmallBtn, blockTitle, newBlock } from "@/components/BlockForm";
+import { BLOCK_INFO, BlockForm, ImagePick, SmallBtn, UploadContext, blockTitle, newBlock } from "@/components/BlockForm";
 import { Field, Sheet } from "@/components/Sheet";
 import { normalizeUrl } from "@/lib/image";
-import { savePage } from "@/lib/store";
+import { savePage, storeImage } from "@/lib/store";
 import type { Block, BlockType, Page, Profile } from "@/lib/types";
 
 export default function EditPage() {
@@ -20,10 +20,11 @@ function Editor({ page }: { page: Page }) {
   const [open, setOpen] = useState<Open>(null);
   const [error, setError] = useState("");
 
-  const commit = (next: Page) => {
-    if (!savePage(next)) setError("저장 공간이 부족해요. 사진 수를 줄여 주세요.");
-    else setError("");
-  };
+  const commit = (next: Page) =>
+    savePage(next).then(
+      () => setError(""),
+      () => setError("저장하지 못했어요. 연결을 확인하고 다시 시도해 주세요."),
+    );
   const setBlocks = (blocks: Block[]) => commit({ ...page, blocks });
   const move = (i: number, d: number) => {
     const next = [...page.blocks];
@@ -32,6 +33,7 @@ function Editor({ page }: { page: Page }) {
   };
 
   return (
+    <UploadContext.Provider value={(d) => storeImage(d, page.profile.handle)}>
     <main>
       <div className="sticky top-14 z-20 grid grid-cols-2 border-b border-rule bg-paper">
         {(["edit", "preview"] as const).map((m) => (
@@ -115,6 +117,7 @@ function Editor({ page }: { page: Page }) {
         />
       )}
     </main>
+    </UploadContext.Provider>
   );
 }
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { createContext, useContext, useState } from "react";
 import { Field } from "@/components/Sheet";
 import { resizeImage } from "@/lib/image";
 import { uid } from "@/lib/store";
@@ -188,21 +189,35 @@ export function SmallBtn({ children, ...rest }: React.ButtonHTMLAttributes<HTMLB
   );
 }
 
+// Where picked photos go: browser storage for the preview, Supabase Storage
+// for real accounts. Provided by the editor.
+export const UploadContext = createContext<(dataUrl: string) => Promise<string>>(async (d) => d);
+
 export function ImagePick({ label, value, onChange, wide }: { label: string; value?: string; onChange: (v?: string) => void; wide?: boolean }) {
+  const upload = useContext(UploadContext);
+  const [busy, setBusy] = useState(false);
   return (
     <div className="mt-3">
       <span className="text-[13px] text-mute">{label}</span>
       <div className="mt-1.5 flex items-end gap-3">
         <label className={`relative grid cursor-pointer place-items-center overflow-hidden border border-dashed border-mute bg-white ${wide ? "aspect-video w-40" : "size-20"}`}>
-          {value ? <img src={value} alt="" className="absolute inset-0 size-full object-cover" /> : <span className="text-[22px] text-mute">+</span>}
+          {value ? <img src={value} alt="" className="absolute inset-0 size-full object-cover" /> : <span className="text-[22px] text-mute">{busy ? "…" : "+"}</span>}
           <input
             type="file"
             accept="image/*"
             className="sr-only"
             onChange={async (e) => {
               const f = e.target.files?.[0];
-              if (f) onChange(await resizeImage(f));
               e.target.value = "";
+              if (!f) return;
+              setBusy(true);
+              try {
+                onChange(await upload(await resizeImage(f)));
+              } catch {
+                alert("사진을 올리지 못했어요. 다시 시도해 주세요.");
+              } finally {
+                setBusy(false);
+              }
             }}
           />
         </label>

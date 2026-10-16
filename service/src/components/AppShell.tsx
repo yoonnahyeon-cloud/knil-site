@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { BASE, displayUrl, publicUrl } from "@/lib/base";
-import { getPage, getSession, useStore } from "@/lib/store";
+import { getMyPage, useStore } from "@/lib/store";
 import type { Page } from "@/lib/types";
 
 const TABS = [
@@ -17,10 +17,7 @@ const TABS = [
 export function AppShell({ children }: { children: (page: Page) => React.ReactNode }) {
   const router = useRouter();
   const path = usePathname();
-  const page = useStore(() => {
-    const h = getSession();
-    return h ? getPage(h) : null;
-  });
+  const page = useStore(getMyPage);
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {

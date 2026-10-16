@@ -17,7 +17,8 @@ export default function NotFound() {
   useEffect(() => {
     const path = decodeURIComponent(location.pathname).slice(BASE.length);
     const handle = path.match(/^\/@([a-z0-9._]+)\/?$/)?.[1] ?? null;
-    const page = handle ? getPage(handle) : null;
+    (async () => {
+    const page = handle ? await getPage(handle).catch(() => null) : null;
     setState({ page, handle });
     if (page) {
       document.title = `${page.profile.name} | KNIL`;
@@ -26,6 +27,7 @@ export default function NotFound() {
         record({ kind: "view", handle: page.profile.handle });
       }
     }
+    })();
   }, []);
 
   if (!state) return null;

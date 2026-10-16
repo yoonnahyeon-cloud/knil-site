@@ -22,8 +22,8 @@ export default function SettingsPage() {
             </div>
           </dl>
           <button
-            onClick={() => {
-              signOut();
+            onClick={async () => {
+              await signOut();
               router.replace("/");
             }}
             className="btn-ghost mt-8 w-full"

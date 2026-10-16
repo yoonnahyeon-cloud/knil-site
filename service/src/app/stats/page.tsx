@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { AppShell } from "@/components/AppShell";
 import { BLOCK_INFO } from "@/components/BlockForm";
-import { events } from "@/lib/store";
+import { events, useStore } from "@/lib/store";
 import type { Block, Page } from "@/lib/types";
 
 export default function StatsPage() {
@@ -17,11 +17,13 @@ function Stats({ page }: { page: Page }) {
   const [range, setRange] = useState<7 | 30>(7);
   const handle = page.profile.handle;
 
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const start = today.getTime() - (range - 1) * DAY;
+  const list = useStore(() => events(handle, start), [handle, start]);
+
   const s = useMemo(() => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const start = today.getTime() - (range - 1) * DAY;
-    const list = events(handle).filter((e) => e.at >= start);
+    if (!list) return null;
     const views = list.filter((e) => e.kind === "view");
     const clicks = list.filter((e) => e.kind === "click");
 
@@ -44,7 +46,9 @@ function Stats({ page }: { page: Page }) {
       targets: count(clicks.map((e) => e.target ?? "")).map(([t, n]) => ({ ...label(page.blocks, t), n })),
       sources: count(views.map((e) => e.source)),
     };
-  }, [range, handle, page.blocks]);
+  }, [list, range, start, page.blocks]);
+
+  if (!s) return <p className="py-20 text-center text-mute">불러오는 중…</p>;
 
   const max = Math.max(1, ...s.days.map((d) => d.views));
   const rate = s.views ? ((s.clicks / s.views) * 100).toFixed(1) : "0";
