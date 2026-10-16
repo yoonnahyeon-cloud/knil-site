@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@theme {
+  --color-paper: #f7f6f2;
+  --color-ink: #0c0c0b;
+  --color-mute: #8a8984;
+  --color-rule: #d9d7d0;
+  --color-signal: #ff4b14;
+  --color-tone-1: #c4bcb0;
+  --color-tone-2: #2b2a27;
+  --color-tone-3: #dcd5ca;
+  --color-tone-4: #aaa196;
+
+  --font-sans: "Pretendard Variable", Pretendard, system-ui, sans-serif;
+  --font-display: var(--font-archivo), "Pretendard Variable", Pretendard, sans-serif;
+}
+
+html {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  background: var(--color-paper);
+  font-family: var(--font-sans);
+  word-break: keep-all;
+  letter-spacing: -0.02em;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Form controls at 16px so iOS does not zoom in on focus. */
+input,
+textarea,
+select {
+  font-size: 16px;
+}
+
+@layer components {
+  .field {
+    @apply w-full rounded-none border-0 border-b border-rule bg-transparent py-2.5 outline-none placeholder:text-mute/70 focus:border-ink;
+  }
+  .btn {
+    @apply inline-flex h-12 items-center justify-center bg-ink px-5 font-semibold text-paper active:opacity-80 disabled:opacity-30;
+  }
+  .btn-ghost {
+    @apply inline-flex h-12 items-center justify-center border border-ink px-5 font-semibold active:bg-ink/5;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
