@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { X } from "lucide-react";
 
 // Full-height bottom sheet used for every edit form.
 export function Sheet({
@@ -32,16 +33,23 @@ export function Sheet({
         onClick={(e) => e.stopPropagation()}
       >
         <header className="flex h-14 shrink-0 items-center justify-between px-4">
-          <button onClick={onClose} className="h-10 px-2 text-mute">
-            취소
-          </button>
+          {onSave ? (
+            <button onClick={onClose} className="h-10 px-2 text-mute">
+              취소
+            </button>
+          ) : (
+            // Visitors see some sheets, so no words here.
+            <button onClick={onClose} aria-label="close" className="grid size-9 place-items-center rounded-full bg-surface">
+              <X size={18} />
+            </button>
+          )}
           <span className="font-bold">{title}</span>
           {onSave ? (
-            <button onClick={onSave} className="h-9 rounded-full bg-signal px-4 text-[14px] font-bold text-white">
+            <button onClick={onSave} className="h-9 rounded-xl bg-ink px-4 text-[14px] font-bold text-white">
               저장
             </button>
           ) : (
-            <span className="w-12" />
+            <span className="w-9" />
           )}
         </header>
         <div className="min-h-0 flex-1 overflow-y-auto px-5 pt-2 pb-[max(32px,env(safe-area-inset-bottom))]">{children}</div>

@@ -4,13 +4,13 @@
 // Function (supabase/functions/knil), which translates with Claude; the
 // sample page and the storage-only preview keep everything in this browser.
 
-import { demoAiReply, demoDict, demoPage, demoThreads } from "./demo";
+import { SAMPLE_HANDLES, demoAiReply, demoDict, molivPage, demoPage, demoThreads } from "./demo";
 import { KoreanError } from "./errors";
 import { supabase } from "./supabase";
 import type { ChatMessage, ChatSettings, ChatThread, Page } from "./types";
 
 const DEMO = demoPage.profile.handle;
-const isLocal = (handle: string) => handle === DEMO || !supabase;
+const isLocal = (handle: string) => SAMPLE_HANDLES.has(handle) || !supabase;
 const uid = () => Math.random().toString(36).slice(2, 10);
 
 function changed() {
@@ -42,15 +42,16 @@ async function call<T>(body: Record<string, unknown>): Promise<T> {
 type Box = { threads: ChatThread[]; messages: Record<string, ChatMessage[]> };
 const BOX = "knil:chats";
 
+// Sample conversations are added to the box the first time it misses them,
+// so samples added later also show up in an existing browser.
 function box(): Box {
-  const stored = read<Box | null>(BOX, null);
-  if (stored) return stored;
-  const seeded: Box = { threads: [], messages: {} };
+  const b = read<Box | null>(BOX, null) ?? { threads: [], messages: {} };
   for (const d of demoThreads) {
-    seeded.threads.push({ ...d.thread, last: d.messages.at(-1)!.ko });
-    seeded.messages[d.thread.id] = d.messages;
+    if (b.messages[d.thread.id]) continue;
+    b.threads.push({ ...d.thread, last: d.messages.at(-1)!.ko });
+    b.messages[d.thread.id] = d.messages;
   }
-  return seeded;
+  return b;
 }
 
 function addLocal(id: string, m: ChatMessage, unread: boolean) {
@@ -91,7 +92,9 @@ export async function visitorMessages(handle: string): Promise<ChatMessage[]> {
   return messages;
 }
 
-export async function visitorSend(handle: string, lang: string, name: string, text: string): Promise<void> {
+// `ko` is what the owner reads when this browser cannot translate (sample
+// pages); the server translates real pages itself.
+export async function visitorSend(handle: string, lang: string, name: string, text: string, ko?: string): Promise<void> {
   let mine = read<Mine | null>(mineKey(handle), null);
   if (isLocal(handle)) {
     if (!mine) {
@@ -103,9 +106,9 @@ export async function visitorSend(handle: string, lang: string, name: string, te
     }
     const at = Date.now();
     // The preview cannot translate, so the creator sees the visitor's words.
-    addLocal(mine.chatId, { id: uid(), from: "visitor", visitor: text, ko: text, at }, true);
-    const page = handle === DEMO ? demoPage : null;
-    if (page?.chat?.ai) addLocal(mine.chatId, { id: uid(), from: "ai", ...demoAiReply(lang), at: at + 1 }, false);
+    addLocal(mine.chatId, { id: uid(), from: "visitor", visitor: text, ko: ko ?? text, at }, true);
+    const page = handle === DEMO ? demoPage : handle === molivPage.profile.handle ? molivPage : null;
+    if (page?.chat?.ai) addLocal(mine.chatId, { id: uid(), from: "ai", ...demoAiReply(lang, handle), at: at + 1 }, false);
     return;
   }
   const res = await call<{ chatId: string; token: string }>({ action: "send", handle, lang, name, text, chatId: mine?.chatId, token: mine?.token });

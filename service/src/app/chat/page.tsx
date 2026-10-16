@@ -53,11 +53,12 @@ function Inbox({ page }: { page: Page }) {
   const list = useStore(() => threads(handle), [handle, tick]);
   const settings = page.chat ?? DEFAULT_CHAT;
   const unread = list?.reduce((s, t) => s + t.unread, 0) ?? 0;
+  const who = page.kind === "brand" ? "고객" : "팬";
 
   return (
     <main className="px-5 pb-12">
-      <PageTitle icon={MessageCircleMore} sub="팬이 자기 언어로 보내면 한국어로 읽고, 한국어로 답하면 팬의 언어로 전해져요.">
-        해외 팬 채팅
+      <PageTitle icon={MessageCircleMore} sub={`${who}이 자기 언어로 보내면 한국어로 읽고, 한국어로 답하면 ${who}의 언어로 전해져요.`}>
+        {page.kind === "brand" ? "해외 고객 상담" : "해외 팬 채팅"}
       </PageTitle>
 
       <ChatSettingsCard page={page} settings={settings} />

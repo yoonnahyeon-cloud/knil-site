@@ -1,12 +1,12 @@
 "use client";
 
 import { createContext, useContext, useState } from "react";
-import { CalendarDays, Images, Link2, Play, ShoppingBag, Users, type LucideIcon } from "lucide-react";
+import { CalendarCheck, CalendarDays, Images, Link2, MapPin, Play, ShoppingBag, Users, type LucideIcon } from "lucide-react";
 import { Field } from "@/components/Sheet";
 import type { Tone } from "@/components/ui";
 import { resizeImage } from "@/lib/image";
 import { uid } from "@/lib/store";
-import { EVENT_KINDS, PLATFORMS, type Block, type BlockType, type CalendarEvent, type EventKind, type GalleryItem, type Platform, type ProductItem } from "@/lib/types";
+import { EVENT_KINDS, PLATFORMS, type Block, type BlockType, type CalendarEvent, type EventKind, type GalleryItem, type Platform, type ProductItem, type Treatment } from "@/lib/types";
 
 export const BLOCK_INFO: Record<BlockType, { name: string; desc: string; icon: LucideIcon; tone: Tone }> = {
   channels: { name: "SNS 계정", desc: "Instagram, YouTube 등 내 계정 바로 가기", icon: Users, tone: "purple" },
@@ -15,7 +15,13 @@ export const BLOCK_INFO: Record<BlockType, { name: string; desc: string; icon: L
   video: { name: "영상", desc: "새 영상 하나를 크게 보여주기", icon: Play, tone: "pink" },
   gallery: { name: "룩 · 사진", desc: "옆으로 넘겨 보는 사진 모음", icon: Images, tone: "sky" },
   products: { name: "상품", desc: "내가 쓰는 제품과 가격", icon: ShoppingBag, tone: "mint" },
+  booking: { name: "상담 예약", desc: "시술 · 서비스를 고르고 날짜를 정해 예약 요청", icon: CalendarCheck, tone: "purple" },
+  place: { name: "오시는 길", desc: "주소, 운영 시간, 전화, 지도", icon: MapPin, tone: "soft" },
 };
+
+// Which blocks each kind of page offers, in the order shown in "블록 추가".
+export const CREATOR_BLOCKS: BlockType[] = ["channels", "calendar", "link", "video", "gallery", "products"];
+export const BRAND_BLOCKS: BlockType[] = ["booking", "place", "channels", "products", "gallery", "calendar", "video", "link"];
 
 export function newBlock(type: BlockType): Block {
   const id = uid();
@@ -32,6 +38,10 @@ export function newBlock(type: BlockType): Block {
       return { id, type, title: "Daily Look", note: "", items: [{ id: uid(), label: "", url: "" }] };
     case "products":
       return { id, type, title: "Picks", note: "", items: [{ id: uid(), name: "", price: "", url: "" }] };
+    case "booking":
+      return { id, type, title: "상담 예약", note: "", items: [{ id: uid(), name: "", price: "", duration: "" }] };
+    case "place":
+      return { id, type, title: "오시는 길", address: "", hours: "", phone: "", map: "" };
   }
 }
 
@@ -53,6 +63,10 @@ export function blockTitle(b: Block): string {
     case "gallery":
     case "products":
       return `${b.title || "제목 없음"} · ${b.items.length}개`;
+    case "booking":
+      return `${b.title || "상담 예약"} · 시술 ${b.items.length}개`;
+    case "place":
+      return b.address || "주소를 입력해 주세요";
   }
 }
 
@@ -138,6 +152,41 @@ export function BlockForm({ block, onChange }: { block: Block; onChange: (b: Blo
             </>
           )}
         />
+        </>
+      );
+    case "booking":
+      return (
+        <>
+          <p className="mt-2 rounded-2xl bg-soft px-4 py-3 text-[13px] leading-relaxed text-ink/80">
+            방문자가 시술과 날짜를 골라 예약을 요청하면 <b>채팅</b>으로 들어와요. 외국어로 와도 한국어로 보여요.
+          </p>
+          <Field label="제목" value={block.title} onChange={(v) => set("title", v)} placeholder="상담 예약" />
+          <Field label="오른쪽 문구" value={block.note} onChange={(v) => set("note", v)} placeholder="외국어 상담 가능" />
+          <Items
+            items={block.items}
+            onChange={(items) => set("items", items)}
+            make={(): Treatment => ({ id: uid(), name: "", price: "", duration: "" })}
+            addLabel="시술 · 서비스 추가"
+            render={(it, upd) => (
+              <>
+                <Field label="이름" value={it.name} onChange={(v) => upd({ ...it, name: v })} placeholder="리쥬란 힐러" />
+                <div className="grid grid-cols-2 gap-2">
+                  <Field label="가격 (선택)" value={it.price} onChange={(v) => upd({ ...it, price: v })} placeholder="상담 후 안내" />
+                  <Field label="소요 시간 (선택)" value={it.duration} onChange={(v) => upd({ ...it, duration: v })} placeholder="30분" />
+                </div>
+              </>
+            )}
+          />
+        </>
+      );
+    case "place":
+      return (
+        <>
+          <Field label="제목" value={block.title} onChange={(v) => set("title", v)} placeholder="오시는 길" />
+          <Field label="주소" value={block.address} onChange={(v) => set("address", v)} placeholder="서울 강남구 압구정로 000, 5층" />
+          <Field label="운영 시간" value={block.hours} onChange={(v) => set("hours", v)} placeholder={"평일 10:00 – 20:00\n토요일 10:00 – 16:00"} multiline />
+          <Field label="전화번호" type="tel" value={block.phone} onChange={(v) => set("phone", v)} placeholder="02-000-0000" />
+          <Field label="지도 링크 (선택)" type="url" value={block.map} onChange={(v) => set("map", v)} placeholder="네이버 지도, 구글 지도 공유 링크" />
         </>
       );
     case "gallery":

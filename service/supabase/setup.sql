@@ -66,6 +66,8 @@ create policy "owner deletes media" on storage.objects for delete to authenticat
 -- Run once in Supabase > SQL Editor after schema.sql.
 
 alter table public.pages add column if not exists portfolio jsonb not null default '{}'::jsonb;
+-- Page look: cover photo and accent color.
+alter table public.pages add column if not exists look jsonb not null default '{}'::jsonb;
 
 create table if not exists public.proposals (
   id          bigint generated always as identity primary key,

@@ -58,10 +58,10 @@ const TONES = {
   ink: "bg-ink text-white",
   soft: "bg-soft text-signal",
   gray: "bg-surface text-ink",
-  pink: "bg-[#ff5fa2] text-white",
-  mint: "bg-[#19c6a7] text-white",
-  sky: "bg-[#3d8bff] text-white",
-  amber: "bg-[#ffb020] text-white",
+  pink: "bg-[#e07a98] text-white",
+  mint: "bg-[#7a9a7c] text-white",
+  sky: "bg-[#6b7c9f] text-white",
+  amber: "bg-[#c9995a] text-white",
 };
 export type Tone = keyof typeof TONES;
 

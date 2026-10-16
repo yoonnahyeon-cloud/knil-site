@@ -285,6 +285,12 @@ export function pageStrings(page: Page): string[] {
       case "calendar":
         out.push(b.title, b.note, ...b.items.map((i) => i.title), ...b.items.map((i) => i.kind));
         break;
+      case "booking":
+        out.push(b.title, b.note, ...b.items.flatMap((i) => [i.name, i.price, i.duration]));
+        break;
+      case "place":
+        out.push(b.title, b.address, b.hours);
+        break;
     }
   }
   return [...new Set(out.map((s) => s.trim()).filter((s) => s && /\p{L}/u.test(s)))];
@@ -305,9 +311,50 @@ export function translatePage(page: Page, dict: Record<string, string>): Page {
         return { ...b, title: t(b.title), note: t(b.note), items: b.items.map((i) => ({ ...i, name: t(i.name) })) };
       case "calendar":
         return { ...b, title: t(b.title), note: t(b.note), items: b.items.map((i) => ({ ...i, title: t(i.title) })) };
+      case "booking":
+        return { ...b, title: t(b.title), note: t(b.note), items: b.items.map((i) => ({ ...i, name: t(i.name), price: t(i.price), duration: t(i.duration) })) };
+      case "place":
+        return { ...b, title: t(b.title), address: t(b.address), hours: t(b.hours) };
       default:
         return b;
     }
   });
   return { ...page, profile: { ...page.profile, bio: t(page.profile.bio) }, blocks };
 }
+
+// Words on a clinic's or brand's page and its booking form.
+export type BookUI = {
+  book: string;
+  chat: string;
+  pick: string;
+  date: string;
+  time: string;
+  times: [string, string, string];
+  name: string;
+  contact: string;
+  note: string;
+  submit: string;
+  done: string;
+  doneSub: string;
+  openChat: string;
+  hours: string;
+  call: string;
+  map: string;
+};
+
+const BOOK: Record<string, BookUI> = {
+  ko: { book: "상담 예약", chat: "채팅 상담", pick: "시술 · 서비스", date: "희망 날짜", time: "희망 시간", times: ["오전", "오후", "저녁"], name: "이름", contact: "연락처 (이메일, WhatsApp, LINE)", note: "궁금한 점 (선택)", submit: "예약 요청 보내기", done: "예약 요청을 보냈어요", doneSub: "확인 후 채팅과 남겨주신 연락처로 확정 안내를 드려요.", openChat: "채팅 열기", hours: "운영 시간", call: "전화", map: "지도" },
+  en: { book: "Book a consultation", chat: "Chat with us", pick: "Treatment", date: "Preferred date", time: "Preferred time", times: ["Morning", "Afternoon", "Evening"], name: "Name", contact: "Email, WhatsApp or LINE", note: "Questions (optional)", submit: "Send request", done: "Request sent", doneSub: "We'll confirm in this chat and through the contact you left.", openChat: "Open chat", hours: "Hours", call: "Call", map: "Map" },
+  ja: { book: "カウンセリング予約", chat: "チャット相談", pick: "施術・メニュー", date: "希望日", time: "希望時間帯", times: ["午前", "午後", "夕方"], name: "お名前", contact: "メール、WhatsApp、LINE", note: "ご質問（任意）", submit: "予約リクエストを送る", done: "予約リクエストを送りました", doneSub: "確認後、チャットとご連絡先に確定のご案内をお送りします。", openChat: "チャットを開く", hours: "営業時間", call: "電話", map: "地図" },
+  "zh-CN": { book: "预约咨询", chat: "在线咨询", pick: "项目", date: "希望日期", time: "希望时间", times: ["上午", "下午", "晚上"], name: "姓名", contact: "邮箱、WhatsApp 或微信", note: "想咨询的问题（选填）", submit: "发送预约申请", done: "预约申请已发送", doneSub: "确认后会通过聊天和你留下的联系方式通知你。", openChat: "打开聊天", hours: "营业时间", call: "电话", map: "地图" },
+  "zh-TW": { book: "預約諮詢", chat: "線上諮詢", pick: "項目", date: "希望日期", time: "希望時段", times: ["上午", "下午", "晚上"], name: "姓名", contact: "Email、WhatsApp 或 LINE", note: "想詢問的問題（選填）", submit: "送出預約申請", done: "預約申請已送出", doneSub: "確認後會透過聊天和你留下的聯絡方式通知你。", openChat: "開啟聊天", hours: "營業時間", call: "電話", map: "地圖" },
+  th: { book: "จองปรึกษา", chat: "แชทสอบถาม", pick: "ทรีตเมนต์", date: "วันที่ต้องการ", time: "ช่วงเวลาที่ต้องการ", times: ["เช้า", "บ่าย", "เย็น"], name: "ชื่อ", contact: "อีเมล, WhatsApp หรือ LINE", note: "คำถาม (ไม่บังคับ)", submit: "ส่งคำขอจอง", done: "ส่งคำขอจองแล้ว", doneSub: "เราจะยืนยันทางแชทนี้และช่องทางติดต่อที่คุณให้ไว้", openChat: "เปิดแชท", hours: "เวลาทำการ", call: "โทร", map: "แผนที่" },
+  vi: { book: "Đặt lịch tư vấn", chat: "Nhắn tin tư vấn", pick: "Dịch vụ", date: "Ngày mong muốn", time: "Khung giờ mong muốn", times: ["Sáng", "Chiều", "Tối"], name: "Tên", contact: "Email, WhatsApp hoặc Zalo", note: "Câu hỏi (không bắt buộc)", submit: "Gửi yêu cầu", done: "Đã gửi yêu cầu", doneSub: "Chúng tôi sẽ xác nhận qua khung chat này và liên hệ bạn để lại.", openChat: "Mở chat", hours: "Giờ làm việc", call: "Gọi", map: "Bản đồ" },
+  id: { book: "Buat janji konsultasi", chat: "Chat dengan kami", pick: "Perawatan", date: "Tanggal pilihan", time: "Waktu pilihan", times: ["Pagi", "Siang", "Malam"], name: "Nama", contact: "Email, WhatsApp atau LINE", note: "Pertanyaan (opsional)", submit: "Kirim permintaan", done: "Permintaan terkirim", doneSub: "Kami akan mengonfirmasi lewat chat ini dan kontak yang kamu tinggalkan.", openChat: "Buka chat", hours: "Jam buka", call: "Telepon", map: "Peta" },
+  es: { book: "Reservar consulta", chat: "Escríbenos", pick: "Tratamiento", date: "Fecha preferida", time: "Horario preferido", times: ["Mañana", "Tarde", "Noche"], name: "Nombre", contact: "Email, WhatsApp o LINE", note: "Preguntas (opcional)", submit: "Enviar solicitud", done: "Solicitud enviada", doneSub: "Te confirmaremos por este chat y por el contacto que dejaste.", openChat: "Abrir chat", hours: "Horario", call: "Llamar", map: "Mapa" },
+  fr: { book: "Réserver une consultation", chat: "Nous écrire", pick: "Soin", date: "Date souhaitée", time: "Créneau souhaité", times: ["Matin", "Après-midi", "Soir"], name: "Nom", contact: "E-mail, WhatsApp ou LINE", note: "Questions (facultatif)", submit: "Envoyer la demande", done: "Demande envoyée", doneSub: "Nous confirmerons dans ce chat et via le contact laissé.", openChat: "Ouvrir le chat", hours: "Horaires", call: "Appeler", map: "Plan" },
+  de: { book: "Beratung buchen", chat: "Chat starten", pick: "Behandlung", date: "Wunschdatum", time: "Wunschzeit", times: ["Vormittag", "Nachmittag", "Abend"], name: "Name", contact: "E-Mail, WhatsApp oder LINE", note: "Fragen (optional)", submit: "Anfrage senden", done: "Anfrage gesendet", doneSub: "Wir bestätigen in diesem Chat und über deinen Kontakt.", openChat: "Chat öffnen", hours: "Öffnungszeiten", call: "Anrufen", map: "Karte" },
+  pt: { book: "Agendar consulta", chat: "Fale conosco", pick: "Tratamento", date: "Data preferida", time: "Horário preferido", times: ["Manhã", "Tarde", "Noite"], name: "Nome", contact: "E-mail, WhatsApp ou LINE", note: "Dúvidas (opcional)", submit: "Enviar pedido", done: "Pedido enviado", doneSub: "Vamos confirmar por este chat e pelo contato informado.", openChat: "Abrir chat", hours: "Horário", call: "Ligar", map: "Mapa" },
+  ru: { book: "Записаться на консультацию", chat: "Написать нам", pick: "Процедура", date: "Желаемая дата", time: "Желаемое время", times: ["Утро", "День", "Вечер"], name: "Имя", contact: "Email, WhatsApp или LINE", note: "Вопросы (необязательно)", submit: "Отправить заявку", done: "Заявка отправлена", doneSub: "Мы подтвердим запись в этом чате и по указанному контакту.", openChat: "Открыть чат", hours: "Часы работы", call: "Позвонить", map: "Карта" },
+};
+export const bookUi = (code: string): BookUI => BOOK[code] ?? BOOK.en;

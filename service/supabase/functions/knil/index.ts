@@ -96,6 +96,8 @@ function pageStrings(page: PageRow): string[] {
     if (b.type === "gallery") out.push(str(b.title), str(b.note), ...items(b).map((i) => str(i.label)));
     if (b.type === "products") out.push(str(b.title), str(b.note), ...items(b).map((i) => str(i.name)));
     if (b.type === "calendar") out.push(str(b.title), str(b.note), ...items(b).map((i) => str(i.title)), ...items(b).map((i) => str(i.kind)));
+    if (b.type === "booking") out.push(str(b.title), str(b.note), ...items(b).flatMap((i) => [str(i.name), str(i.price), str(i.duration)]));
+    if (b.type === "place") out.push(str(b.title), str(b.address), str(b.hours));
   }
   return [...new Set(out.map((s) => s.trim()).filter((s) => s && /\p{L}/u.test(s)))].slice(0, 200);
 }
@@ -121,9 +123,9 @@ async function translatePage({ handle, lang }: { handle: unknown; lang: unknown 
   if (!strings.length) return { dict: {} };
 
   const out = await ask<{ items: string[] }>(
-    `You translate the text of a creator's link-in-bio page into ${target}. The text is mostly Korean, sometimes mixed with English.
+    `You translate the text of a link-in-bio page (a creator's, or a brand's or clinic's) into ${target}. The text is mostly Korean, sometimes mixed with English.
 Return exactly one translation per input string, in the same order.
-Keep brand names, product model numbers, people's names, @handles, prices and emoji as they are.
+Keep brand names, product model numbers, people's names, @handles, prices, phone numbers and emoji as they are. Write Korean street addresses in the usual form for ${target} readers.
 Use short, natural wording that reads well on a phone. If a string is already ${target}, return it unchanged.`,
     JSON.stringify(strings),
     { type: "object", properties: { items: { type: "array", items: { type: "string" } } }, required: ["items"], additionalProperties: false },
@@ -162,6 +164,8 @@ function pageInfo(page: PageRow) {
     if (b.type === "products") lines.push(`${str(b.title)}: ${items(b).map((i) => `${str(i.name)} ${str(i.price)}`).join(", ")}`);
     if (b.type === "calendar") lines.push(`${str(b.title)}: ${items(b).map((i) => `${str(i.kind)} ${str(i.title)} ${str(i.start)}${i.end ? `~${str(i.end)}` : ""}`).join(", ")}`);
     if (b.type === "channels") lines.push(`Channels: ${items(b).map((i) => `${str(i.platform)} ${str(i.followers)}`).join(", ")}`);
+    if (b.type === "booking") lines.push(`Bookable (visitors send requests with the "${str(b.title)}" button): ${items(b).map((i) => `${str(i.name)} ${str(i.duration)} ${str(i.price)}`).join(", ")}`);
+    if (b.type === "place") lines.push(`Address: ${str(b.address)}; hours: ${str(b.hours).replace(/\n/g, ", ")}; phone: ${str(b.phone)}`);
   }
   return lines.join("\n").slice(0, 3000);
 }

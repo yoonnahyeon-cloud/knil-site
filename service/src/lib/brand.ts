@@ -50,7 +50,10 @@ export const BRAND_KINDS = ["브랜드", "기업", "병원 · 클리닉", "매�
 export type BrandProfile = { name: string; kind: string; intro: string; contact: string; site: string };
 const PROFILE = "knil:brand";
 export const emptyBrand: BrandProfile = { name: "", kind: "브랜드", intro: "", contact: "", site: "" };
-export const getBrand = (): BrandProfile => ({ ...emptyBrand, ...read<Partial<BrandProfile>>(PROFILE, {}) });
+// Until brand accounts live on the server, the brand view shows the sample clinic.
+export const BRAND_HANDLE = "moliv";
+const SAMPLE_BRAND: BrandProfile = { name: "모리브 MOLIV", kind: "병원 · 클리닉", intro: "리프팅 · 스킨부스터 · 안티에이징 클리닉", contact: "contact@moliv.example", site: "" };
+export const getBrand = (): BrandProfile => ({ ...SAMPLE_BRAND, ...read<Partial<BrandProfile>>(PROFILE, {}) });
 export const saveBrand = (b: BrandProfile) => write(PROFILE, b);
 
 // ---- creators to discover ----

@@ -7,7 +7,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { BASE } from "./base";
 import { toKorean } from "./errors";
-import { demoPage, showcase } from "./demo";
+import { SAMPLE_HANDLES, demoPage } from "./demo";
 import { local, localProposals } from "./local";
 import { remote } from "./remote";
 import { supabase } from "./supabase";
@@ -25,7 +25,7 @@ function changed() {
 }
 
 // Sample creators exist only in the app, never on the server.
-const SAMPLES = new Set(showcase.map((p) => p.profile.handle));
+const SAMPLES = SAMPLE_HANDLES;
 const isDemo = (handle: string) => SAMPLES.has(handle) || !server;
 
 // Who is using the editor. `handle` is null for a signed-in account that

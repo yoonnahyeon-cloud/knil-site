@@ -83,7 +83,7 @@ function Dashboard({ page }: { page: Page }) {
 
   return (
     <main className="px-5 pb-12">
-      <section className="mt-4 overflow-hidden rounded-[28px] bg-[radial-gradient(130%_120%_at_100%_0%,#9b7bff_0%,#7c4dff_30%,#241a3d_70%,#0b0b0f_100%)] p-5 text-white lg:mt-8">
+      <section className="mt-4 overflow-hidden rounded-[28px] bg-[linear-gradient(165deg,#56647f_0%,#7f8ca7_60%,#a9b3c6_100%)] p-5 text-white lg:mt-8">
         <div className="flex items-center gap-3">
           <div className="rounded-full ring-2 ring-white/40">
             <Avatar name={page.profile.name} src={page.profile.avatar} size={52} />
@@ -111,10 +111,10 @@ function Dashboard({ page }: { page: Page }) {
           ))}
         </Link>
         <div className="mt-3 grid grid-cols-2 gap-2">
-          <a href={`${BASE}/@${handle}`} target="_blank" rel="noopener" className="flex h-11 items-center justify-center gap-1.5 rounded-full bg-white text-[14px] font-bold text-ink">
+          <a href={`${BASE}/@${handle}`} target="_blank" rel="noopener" className="flex h-11 items-center justify-center gap-1.5 rounded-[14px] bg-white text-[14px] font-bold text-ink">
             <ExternalLink size={16} /> 내 페이지
           </a>
-          <button onClick={copy} className="flex h-11 items-center justify-center gap-1.5 rounded-full bg-white/15 text-[14px] font-bold backdrop-blur">
+          <button onClick={copy} className="flex h-11 items-center justify-center gap-1.5 rounded-[14px] bg-white/15 text-[14px] font-bold backdrop-blur">
             {copied ? <Check size={16} /> : <Copy size={16} />} {copied ? "복사했어요" : "주소 복사"}
           </button>
         </div>
@@ -192,7 +192,7 @@ function Dashboard({ page }: { page: Page }) {
         </div>
       </div>
 
-      <Link href="/dm" className="mt-3 flex items-center gap-3 rounded-[22px] bg-[linear-gradient(120deg,#ff5fa2,#7c4dff)] p-4 text-white">
+      <Link href="/dm" className="mt-3 flex items-center gap-3 rounded-[22px] bg-ink p-4 text-white">
         <span className="grid size-11 shrink-0 place-items-center rounded-2xl bg-white/20">
           <Send size={20} />
         </span>

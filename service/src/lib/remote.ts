@@ -13,10 +13,11 @@ type Row = {
   updated_at: string;
   portfolio?: Portfolio | null;
   chat?: Partial<ChatSettings> | null;
+  look?: { cover?: string; theme?: string } | null;
 };
 
 const toPage = (r: Row): Page => ({
-  profile: { handle: r.handle, name: r.name, bio: r.bio, avatar: r.avatar_url ?? undefined },
+  profile: { handle: r.handle, name: r.name, bio: r.bio, avatar: r.avatar_url ?? undefined, cover: r.look?.cover || undefined, theme: r.look?.theme || undefined },
   blocks: r.blocks ?? [],
   updatedAt: Date.parse(r.updated_at),
   portfolio: r.portfolio ?? undefined,
@@ -63,6 +64,8 @@ export function remote(db: SupabaseClient) {
         .update({ name: profile.name, bio: profile.bio, avatar_url: profile.avatar ?? null, blocks, updated_at: new Date().toISOString() })
         .eq("handle", profile.handle);
       if (error) throw new KoreanError(error);
+      // Separate, so pages keep saving before the look column exists (setup.sql).
+      await db.from("pages").update({ look: { cover: profile.cover ?? "", theme: profile.theme ?? "" } }).eq("handle", profile.handle);
     },
     async upload(dataUrl: string): Promise<string> {
       const uid = await this.userId();

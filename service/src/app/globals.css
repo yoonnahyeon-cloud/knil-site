@@ -1,19 +1,20 @@
 @import "tailwindcss";
 
 @theme {
-  /* Black, white and one purple. `signal` is the purple accent. */
+  /* Black, white and neutral grays (after brandazine), with purple as a
+     small accent. `signal` is the accent; pages can set their own. */
   --color-paper: #ffffff;
-  --color-surface: #f4f4f7;
-  --color-ink: #0b0b0f;
-  --color-mute: #8d8d98;
-  --color-rule: #e8e8ee;
+  --color-surface: #f2f2f2;
+  --color-ink: #111111;
+  --color-mute: #8a8a8a;
+  --color-rule: #e9e9e9;
   --color-signal: #7c4dff;
   --color-soft: #efe9ff;
   --color-danger: #e5484d;
-  --color-tone-1: #e4dcff;
-  --color-tone-2: #17131f;
-  --color-tone-3: #f0eff4;
-  --color-tone-4: #b9a6ff;
+  --color-tone-1: #dfe4ee;
+  --color-tone-2: #1c1c1c;
+  --color-tone-3: #f3ede4;
+  --color-tone-4: #dde6d7;
 
   --font-sans: "Pretendard Variable", Pretendard, system-ui, sans-serif;
   --font-display: var(--font-archivo), "Pretendard Variable", Pretendard, sans-serif;
@@ -44,16 +45,16 @@ select {
 
 @layer components {
   .field {
-    @apply mt-1.5 w-full rounded-xl border border-rule bg-surface px-3.5 py-2.5 outline-none placeholder:text-mute/70 focus:border-signal focus:bg-white;
+    @apply mt-1.5 w-full rounded-xl border border-rule bg-surface px-3.5 py-2.5 outline-none placeholder:text-mute/70 focus:border-ink focus:bg-white;
   }
   .btn {
-    @apply inline-flex h-12 items-center justify-center rounded-full bg-ink px-5 font-semibold text-white active:opacity-80 disabled:opacity-30;
+    @apply inline-flex h-12 items-center justify-center rounded-[14px] bg-ink px-5 font-semibold text-white active:opacity-80 disabled:opacity-30;
   }
   .btn-ghost {
-    @apply inline-flex h-12 items-center justify-center rounded-full border border-ink px-5 font-semibold active:bg-ink/5;
+    @apply inline-flex h-12 items-center justify-center rounded-[14px] bg-surface px-5 font-semibold active:bg-rule;
   }
   .btn-accent {
-    @apply inline-flex h-12 items-center justify-center rounded-full bg-signal px-5 font-semibold text-white active:opacity-80 disabled:opacity-30;
+    @apply inline-flex h-12 items-center justify-center rounded-[14px] bg-signal px-5 font-semibold text-white active:opacity-80 disabled:opacity-30;
   }
   .no-scrollbar {
     scrollbar-width: none;

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Building2, Heart, Languages, Megaphone, MessageCircleMore, Search, Send, Sparkles, Stethoscope, Users } from "lucide-react";
+import { ExternalLink, Heart, Pencil, Languages, Megaphone, MessageCircleMore, Search, Send, Sparkles, Stethoscope, Users } from "lucide-react";
 import { AppShell } from "@/components/AppShell";
 import { CreatorSheet } from "@/components/CreatorCard";
 import { Avatar } from "@/components/CreatorPage";
@@ -11,6 +11,7 @@ import { IconTile, SectionHead, type Tone } from "@/components/ui";
 import { campaigns, formatFollowers, getBrand, listCreators, savedCreators, sentProposals, type Creator } from "@/lib/brand";
 import { threads } from "@/lib/chat";
 import { useStore } from "@/lib/store";
+import { BASE } from "@/lib/base";
 import type { Page, Platform } from "@/lib/types";
 
 export default function BrandHomePage() {
@@ -21,7 +22,7 @@ const TOOLS: { href: string; label: string; icon: typeof Search; tone: Tone }[] 
   { href: "/brand/creators", label: "크리에이터", icon: Search, tone: "purple" },
   { href: "/brand/proposals", label: "보낸 제안", icon: Send, tone: "ink" },
   { href: "/brand/campaigns", label: "캠페인", icon: Megaphone, tone: "pink" },
-  { href: "/chat", label: "고객 채팅", icon: MessageCircleMore, tone: "sky" },
+  { href: "/chat", label: "해외 상담", icon: MessageCircleMore, tone: "sky" },
 ];
 
 function BrandHome({ page }: { page: Page }) {
@@ -37,36 +38,45 @@ function BrandHome({ page }: { page: Page }) {
 
   return (
     <main className="px-5 pb-12">
-      <section className="mt-4 overflow-hidden rounded-[28px] bg-ink p-5 text-white lg:mt-8">
-        <div className="flex items-center gap-3">
-          <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-signal">
-            <Building2 size={24} />
-          </span>
-          <div className="min-w-0 flex-1">
-            <p className="truncate text-[20px] font-extrabold tracking-tight">{brand.name || "브랜드 이름을 정해 주세요"}</p>
-            <p className="text-[13px] text-white/60">{brand.kind} 계정</p>
-          </div>
-          <Link href="/brand/profile" className="shrink-0 rounded-full bg-white/15 px-3 py-1 text-[12px] font-bold">
-            프로필
+      <section className="mt-4 overflow-hidden rounded-[28px] bg-surface lg:mt-8">
+        <div className="relative h-32 bg-ink">
+          {page.profile.cover && <img src={page.profile.cover} alt="" className="absolute inset-0 size-full object-cover" />}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+          <Link href="/brand/profile" className="absolute top-3 right-3 rounded-full bg-white/85 px-3 py-1 text-[12px] font-bold backdrop-blur">
+            브랜드 정보
           </Link>
         </div>
-        <div className="mt-5 grid grid-cols-3 gap-2">
-          {[
-            { label: "보낸 제안", value: sent?.length ?? 0, icon: Send },
-            { label: "협의 · 확정", value: talking, icon: Sparkles },
-            { label: "관심 크리에이터", value: saved.length, icon: Heart },
-          ].map((s) => (
-            <div key={s.label} className="rounded-2xl bg-white/10 p-3">
-              <p className="flex items-center gap-1 text-[11px] text-white/60">
-                <s.icon size={12} /> {s.label}
-              </p>
-              <p className="mt-1 text-[22px] font-extrabold leading-none">{s.value}</p>
-            </div>
-          ))}
+        <div className="px-5 pb-5">
+          <div className="relative z-10 -mt-8 w-fit rounded-full ring-4 ring-surface">
+            <Avatar name={page.profile.name} src={page.profile.avatar} size={64} />
+          </div>
+          <p className="mt-2 truncate text-[19px] font-extrabold tracking-tight">{brand.name || page.profile.name}</p>
+          <p className="text-[12px] text-mute">
+            {brand.kind} · @{page.profile.handle}
+          </p>
+          <div className="mt-4 grid grid-cols-3 gap-2">
+            {[
+              { label: "새 상담", value: chats ? chats.reduce((n, t) => n + t.unread, 0) : 0, icon: MessageCircleMore },
+              { label: "보낸 제안", value: sent?.length ?? 0, icon: Send },
+              { label: "협의 · 확정", value: talking, icon: Sparkles },
+            ].map((x) => (
+              <div key={x.label} className="rounded-2xl bg-white p-3">
+                <p className="flex items-center gap-1 text-[11px] text-mute">
+                  <x.icon size={12} /> {x.label}
+                </p>
+                <p className="mt-1 text-[22px] font-extrabold leading-none">{x.value}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-3 grid grid-cols-2 gap-2">
+            <Link href="/brand/link" className="btn h-11 gap-1.5 text-[14px]">
+              <Pencil size={15} /> 페이지 꾸미기
+            </Link>
+            <a href={`${BASE}/@${page.profile.handle}`} target="_blank" rel="noopener" className="btn-ghost h-11 gap-1.5 text-[14px]">
+              <ExternalLink size={15} /> 페이지 보기
+            </a>
+          </div>
         </div>
-        <Link href="/brand/creators" className="mt-3 flex h-11 items-center justify-center gap-1.5 rounded-full bg-signal text-[14px] font-bold">
-          <Search size={16} /> 크리에이터 찾기
-        </Link>
       </section>
 
       <div className="mt-6 grid grid-cols-4 gap-y-4">
@@ -101,8 +111,8 @@ function BrandHome({ page }: { page: Page }) {
       <Link href="/chat" className="flex items-center gap-3 rounded-[22px] bg-soft p-4">
         <IconTile icon={Stethoscope} tone="purple" size={44} />
         <span className="min-w-0 flex-1">
-          <span className="block font-bold">외국인 고객 문의를 한국어로</span>
-          <span className="block text-[12px] text-ink/60">병원 예약, 제품 문의를 13개 언어로 받아요</span>
+          <span className="block font-bold">외국인 고객 상담을 한국어로</span>
+          <span className="block text-[12px] text-ink/60">예약 요청, 시술 문의를 13개 언어로 받아요</span>
         </span>
         <span className="shrink-0 rounded-full bg-white px-2.5 py-1 text-[12px] font-bold text-signal">{chats ? `${chats.reduce((s, t) => s + t.unread, 0)}건` : "–"}</span>
       </Link>

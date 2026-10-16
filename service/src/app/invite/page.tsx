@@ -30,7 +30,7 @@ function Invite({ handle }: { handle: string }) {
     <main className="px-5 pb-12">
       <PageTitle icon={Gift} sub="크리에이터 친구에게 KNIL을 소개해 주세요.">친구 초대</PageTitle>
 
-      <div className="rounded-[28px] bg-[radial-gradient(130%_120%_at_100%_0%,#ff8cc6_0%,#7c4dff_45%,#1d1530_100%)] px-5 py-6 text-white">
+      <div className="rounded-[28px] bg-[linear-gradient(165deg,#2a2a2a,#111111)] px-5 py-6 text-white">
         <p className="text-[22px] font-extrabold leading-tight tracking-tight">
           친구도 나도
           <br />

@@ -14,6 +14,9 @@ export const EVENT_KINDS = ["공구", "기획전", "라이브", "이벤트", "�
 export type EventKind = (typeof EVENT_KINDS)[number];
 export type CalendarEvent = { id: string; title: string; start: string; end: string; kind: EventKind; url: string };
 
+// A treatment or service a clinic or brand takes bookings for.
+export type Treatment = { id: string; name: string; price: string; duration: string };
+
 type Base = { id: string; hidden?: boolean };
 
 export type Block =
@@ -22,7 +25,11 @@ export type Block =
   | (Base & { type: "link"; title: string; sub: string; label: string; url: string })
   | (Base & { type: "video"; title: string; heading: string; meta: string; duration: string; url: string; image?: string })
   | (Base & { type: "gallery"; title: string; note: string; items: GalleryItem[] })
-  | (Base & { type: "products"; title: string; note: string; items: ProductItem[] });
+  | (Base & { type: "products"; title: string; note: string; items: ProductItem[] })
+  // Consultation booking: the request lands in the page's chat inbox.
+  | (Base & { type: "booking"; title: string; note: string; items: Treatment[] })
+  // Address, opening hours and phone, for clinics and shops.
+  | (Base & { type: "place"; title: string; address: string; hours: string; phone: string; map: string });
 
 export type BlockType = Block["type"];
 
@@ -31,9 +38,14 @@ export type Profile = {
   name: string;
   bio: string;
   avatar?: string;
+  // Wide photo at the top of the page, and the page's accent color.
+  cover?: string;
+  theme?: string;
 };
 
-export type Page = { profile: Profile; blocks: Block[]; updatedAt: number; portfolio?: Portfolio; chat?: ChatSettings };
+// `kind` is "brand" for brands, companies and clinics; their page talks to
+// customers (booking, consultation) instead of to sponsors.
+export type Page = { profile: Profile; blocks: Block[]; updatedAt: number; portfolio?: Portfolio; chat?: ChatSettings; kind?: "creator" | "brand" };
 
 // Chat with visitors in their own language. `guide` is what the AI may use
 // to answer first: prices, hours, how to book, frequent questions.

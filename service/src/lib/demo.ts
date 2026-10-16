@@ -117,6 +117,68 @@ export function demoEvents(): KnilEvent[] {
   return out;
 }
 
+// MOLIV is a sample clinic for the brand side: a page that talks to
+// overseas patients (booking, consultation) instead of to sponsors.
+export const molivPage: Page = {
+  kind: "brand",
+  profile: {
+    handle: "moliv",
+    name: "모리브 MOLIV",
+    bio: "리프팅 · 스킨부스터 · 안티에이징 클리닉",
+    avatar: `${BASE}/samples/moliv-logo.jpg`,
+    cover: `${BASE}/samples/moliv-cover.jpg`,
+    theme: "#483a2d",
+  },
+  updatedAt: 0,
+  chat: {
+    on: true,
+    ai: true,
+    guide: "리쥬란 힐러 29만원(30분), 울쎄라 리프팅·써마지 FLX는 상담 후 안내. 영어·일본어·중국어 상담 가능. 진료 시간 평일 10–20시, 토 10–16시, 일·공휴일 휴진. 예약은 '상담 예약'에서 날짜를 고르면 확인 후 확정 안내.",
+  },
+  blocks: [
+    {
+      id: "bk",
+      type: "booking",
+      title: "상담 예약",
+      note: "외국어 상담 가능",
+      items: [
+        { id: "t1", name: "울쎄라 리프팅", price: "상담 후 안내", duration: "60분" },
+        { id: "t2", name: "써마지 FLX", price: "상담 후 안내", duration: "60분" },
+        { id: "t3", name: "리쥬란 힐러", price: "290,000원", duration: "30분" },
+        { id: "t4", name: "피코 토닝", price: "99,000원", duration: "20분" },
+      ],
+    },
+    {
+      id: "ch",
+      type: "channels",
+      items: [
+        { id: "ig", platform: "Instagram", url: "https://instagram.com", followers: "" },
+        { id: "xhs", platform: "Xiaohongshu", url: "https://xiaohongshu.com", followers: "" },
+        { id: "yt", platform: "YouTube", url: "https://youtube.com", followers: "" },
+      ],
+    },
+    {
+      id: "ev",
+      type: "calendar",
+      title: "이달의 이벤트",
+      note: "첫 방문 고객",
+      items: [
+        { id: "e1", title: "가을 리프팅 위크", start: day(-3), end: day(4), kind: "이벤트", url: "" },
+        { id: "e2", title: "학회 참석 휴진", start: day(10), end: day(12), kind: "휴무", url: "" },
+      ],
+    },
+    {
+      id: "pl",
+      type: "place",
+      title: "오시는 길",
+      address: "서울 강남구 압구정로 000, 5층",
+      hours: "평일 10:00 – 20:00\n토요일 10:00 – 16:00\n일요일 · 공휴일 휴진",
+      phone: "02-000-0000",
+      map: "https://map.naver.com",
+    },
+  ],
+};
+
 // Extra fictional pages, shown only as previews on the home screen.
 export const showcase: Page[] = [
   demoPage,
@@ -181,6 +243,28 @@ export const showcase: Page[] = [
 // that real pages get from the server.
 const DEMO_DICT: Record<string, Record<string, string>> = {
   en: {
+    "리프팅 · 스킨부스터 · 안티에이징 클리닉": "Lifting · Skin boosters · Anti-aging clinic",
+    "상담 예약": "Book a consultation",
+    "외국어 상담 가능": "English · 日本語 · 中文",
+    "울쎄라 리프팅": "Ultherapy lifting",
+    "써마지 FLX": "Thermage FLX",
+    "리쥬란 힐러": "Rejuran Healer",
+    "피코 토닝": "Pico toning",
+    "상담 후 안내": "Quoted after consultation",
+    "290,000원": "₩290,000",
+    "99,000원": "₩99,000",
+    "60분": "60 min",
+    "30분": "30 min",
+    "20분": "20 min",
+    "이달의 이벤트": "This month",
+    "첫 방문 고객": "For first visits",
+    "가을 리프팅 위크": "Autumn lifting week",
+    "학회 참석 휴진": "Closed for a medical conference",
+    "이벤트": "Event",
+    "휴무": "Closed",
+    "오시는 길": "Location",
+    "서울 강남구 압구정로 000, 5층": "5F, 000 Apgujeong-ro, Gangnam-gu, Seoul",
+    "평일 10:00 – 20:00\n토요일 10:00 – 16:00\n일요일 · 공휴일 휴진": "Mon–Fri 10:00 – 20:00\nSat 10:00 – 16:00\nClosed Sundays and holidays",
     "가을 데일리 메이크업, 10분 루틴": "Fall daily makeup, a 10-minute routine",
     "새 영상 · 2일 전": "New video · 2 days ago",
     "4개의 룩": "4 looks",
@@ -197,6 +281,28 @@ const DEMO_DICT: Record<string, Record<string, string>> = {
     "바로 가기": "Open",
   },
   ja: {
+    "리프팅 · 스킨부스터 · 안티에이징 클리닉": "リフトアップ・スキンブースター・アンチエイジングクリニック",
+    "상담 예약": "カウンセリング予約",
+    "외국어 상담 가능": "日本語で相談できます",
+    "울쎄라 리프팅": "ウルセラリフト",
+    "써마지 FLX": "サーマクールFLX",
+    "리쥬란 힐러": "リジュランヒーラー",
+    "피코 토닝": "ピコトーニング",
+    "상담 후 안내": "カウンセリング後にご案内",
+    "290,000원": "290,000ウォン",
+    "99,000원": "99,000ウォン",
+    "60분": "60分",
+    "30분": "30分",
+    "20분": "20分",
+    "이달의 이벤트": "今月のイベント",
+    "첫 방문 고객": "初めての方",
+    "가을 리프팅 위크": "秋のリフトアップウィーク",
+    "학회 참석 휴진": "学会参加のため休診",
+    "이벤트": "イベント",
+    "휴무": "休診",
+    "오시는 길": "アクセス",
+    "서울 강남구 압구정로 000, 5층": "ソウル市江南区狎鴎亭路000 5階",
+    "평일 10:00 – 20:00\n토요일 10:00 – 16:00\n일요일 · 공휴일 휴진": "平日 10:00 – 20:00\n土曜 10:00 – 16:00\n日曜・祝日休診",
     "beauty, fashion, daily life": "ビューティー、ファッション、日常",
     "가을 데일리 메이크업, 10분 루틴": "秋のデイリーメイク、10分ルーティン",
     "새 영상 · 2일 전": "新着動画 · 2日前",
@@ -214,6 +320,28 @@ const DEMO_DICT: Record<string, Record<string, string>> = {
     "바로 가기": "見る",
   },
   "zh-CN": {
+    "리프팅 · 스킨부스터 · 안티에이징 클리닉": "提拉 · 水光 · 抗衰老诊所",
+    "상담 예약": "预约咨询",
+    "외국어 상담 가능": "可用中文咨询",
+    "울쎄라 리프팅": "超声刀提拉",
+    "써마지 FLX": "热玛吉 FLX",
+    "리쥬란 힐러": "丽珠兰",
+    "피코 토닝": "皮秒嫩肤",
+    "상담 후 안내": "面诊后报价",
+    "290,000원": "290,000韩元",
+    "99,000원": "99,000韩元",
+    "60분": "60分钟",
+    "30분": "30分钟",
+    "20분": "20分钟",
+    "이달의 이벤트": "本月活动",
+    "첫 방문 고객": "首次到访",
+    "가을 리프팅 위크": "秋季提拉周",
+    "학회 참석 휴진": "参加学术会议休诊",
+    "이벤트": "活动",
+    "휴무": "休诊",
+    "오시는 길": "交通",
+    "서울 강남구 압구정로 000, 5층": "首尔江南区狎鸥亭路000号 5楼",
+    "평일 10:00 – 20:00\n토요일 10:00 – 16:00\n일요일 · 공휴일 휴진": "周一至周五 10:00 – 20:00\n周六 10:00 – 16:00\n周日及公休日休诊",
     "beauty, fashion, daily life": "美妆、时尚、日常",
     "가을 데일리 메이크업, 10분 루틴": "秋季日常妆容，10分钟流程",
     "새 영상 · 2일 전": "新视频 · 2天前",
@@ -263,8 +391,45 @@ export const demoThreads: { thread: ChatThread; messages: ChatMessage[] }[] = [
   },
 ];
 
+// MOLIV's inbox: overseas patients asking and booking.
+demoThreads.push(
+  {
+    thread: { id: "m1", handle: "moliv", lang: "ja", name: "Haruka", last: "", unread: 2, at: now - 12 * min },
+    messages: [
+      { id: "a", from: "visitor", visitor: "📅 カウンセリング予約\n施術・メニュー: リジュランヒーラー\n希望日: 10/24 · 午後\n連絡先: LINE haruka_s", ko: "📅 상담 예약 요청\n시술: 리쥬란 힐러\n희망 날짜: 10/24 · 오후\n연락처: LINE haruka_s", at: now - 14 * min },
+      { id: "b", from: "ai", visitor: "ご予約リクエストありがとうございます！10/24午後の空き状況を確認して、こちらのチャットで確定のご案内をお送りします。", ko: "예약 요청 감사합니다! 10/24 오후 예약 가능 여부를 확인해 이 채팅으로 확정 안내를 드릴게요.", at: now - 14 * min + 5000 },
+      { id: "c", from: "visitor", visitor: "施術後すぐにメイクはできますか？", ko: "시술 후 바로 화장해도 되나요?", at: now - 12 * min },
+    ],
+  },
+  {
+    thread: { id: "m2", handle: "moliv", lang: "zh-CN", name: "王女士", last: "", unread: 0, at: now - 2 * 60 * min },
+    messages: [
+      { id: "a", from: "visitor", visitor: "你好，热玛吉和超声刀可以同一天做吗？", ko: "안녕하세요, 써마지랑 울쎄라를 같은 날 받을 수 있나요?", at: now - 3 * 60 * min },
+      { id: "b", from: "owner", ko: "네, 가능해요. 피부 상태를 보고 순서와 강도를 정해 드려요. 상담 예약에서 원하는 날짜를 골라 주세요.", visitor: "可以的。我们会根据皮肤状态安排顺序和强度。请在“预约咨询”里选择你方便的日期。", at: now - 2 * 60 * min },
+    ],
+  },
+  {
+    thread: { id: "m3", handle: "moliv", lang: "en", name: "Emily (Sydney)", last: "", unread: 0, at: now - 28 * 60 * min },
+    messages: [
+      { id: "a", from: "visitor", visitor: "Hi! Do you have English-speaking staff? I'm visiting Seoul next month.", ko: "안녕하세요! 영어 가능한 직원이 있나요? 다음 달에 서울에 가요.", at: now - 28 * 60 * min },
+      { id: "b", from: "ai", visitor: "Hi Emily! Yes, we offer consultations in English, Japanese and Chinese. You can pick a date under “Book a consultation” and we'll confirm here.", ko: "안녕하세요 Emily님! 네, 영어·일본어·중국어 상담이 가능해요. '상담 예약'에서 날짜를 고르시면 여기서 확정 안내를 드려요.", at: now - 28 * 60 * min + 5000 },
+    ],
+  },
+);
+
 // What the sample page's AI says back to a new visitor message.
-export function demoAiReply(lang: string): { visitor: string; ko: string } {
+export function demoAiReply(lang: string, handle = "rosie"): { visitor: string; ko: string } {
+  if (handle === "moliv") {
+    const ko = "문의 감사합니다! 담당 코디네이터가 확인하고 이 채팅으로 안내해 드릴게요.";
+    const visitor: Record<string, string> = {
+      ko,
+      en: "Thank you for reaching out! Our coordinator will check and reply in this chat.",
+      ja: "お問い合わせありがとうございます！担当コーディネーターが確認して、このチャットでご案内します。",
+      "zh-CN": "感谢咨询！我们的顾问确认后会在这里回复你。",
+      "zh-TW": "感謝諮詢！我們的顧問確認後會在這裡回覆你。",
+    };
+    return { ko, visitor: visitor[lang] ?? visitor.en };
+  }
   const ko = "메시지 고마워요! ROSIE가 확인하고 곧 답장할게요.";
   const visitor: Record<string, string> = {
     ko,
@@ -297,3 +462,6 @@ showcase.push(
     intro: "피부 관리와 클리닉 시술 후기", categories: ["뷰티"], tags: ["피부관리", "시술후기", "K뷰티"], region: "서울 강남", audience: "20–30대 여성, 중화권 팬", collabs: "피부과 시술 후기 8회",
   }),
 );
+
+// Sample pages that live only in this browser, never on the server.
+export const SAMPLE_HANDLES = new Set([...showcase.map((p) => p.profile.handle), molivPage.profile.handle]);
